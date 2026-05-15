@@ -1,0 +1,102 @@
+﻿@model EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-dark text-white">
+
+            <h3 class="mb-0">
+                Employee Details
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <strong>ID:</strong>
+                    @Model.Id
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Name:</strong>
+                    @Model.Name
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <strong>Gender:</strong>
+                    @Model.Gender
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Date Of Birth:</strong>
+                    @Model.DateOfBirth
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <strong>Email:</strong>
+                    @Model.EmailId
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Mobile:</strong>
+                    @Model.Mobile
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <strong>Salary:</strong>
+                    @Model.Salary
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Department:</strong>
+                    @(Model.DepartmentName
+                        ?? "No Department")
+                </div>
+
+            </div>
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+                    <strong>Date Of Joining:</strong>
+                    @Model.DateOfJoining
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+
+                <a asp-action="Index"
+                       class="btn btn-secondary">
+
+                    Back
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

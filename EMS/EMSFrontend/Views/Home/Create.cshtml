@@ -1,0 +1,204 @@
+﻿@model EMSFrontend.Models.CreateEmployeeViewModel
+
+@{
+    ViewData["Title"] = "Create Employee";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-dark text-white">
+
+            <h3 class="mb-0">
+                Create Employee
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Name"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Name"
+                               class="form-control" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Gender"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <select asp-for="Gender"
+                                class="form-select">
+
+                            <option value="">
+                                Select Gender
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Gender"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="DateOfBirth"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="DateOfBirth"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="DateOfBirth"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="EmailId"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="EmailId"
+                               class="form-control" />
+
+                        <span asp-validation-for="EmailId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Mobile"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Mobile"
+                               class="form-control" />
+
+                        <span asp-validation-for="Mobile"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="Salary"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Salary"
+                               class="form-control" />
+
+                        <span asp-validation-for="Salary"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label asp-for="DateOfJoining"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="DateOfJoining"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="DateOfJoining"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Department Name
+                        </label>
+
+                        <select asp-for="DepartmentId"
+                                asp-items="ViewBag.Departments"
+                                class="form-select">
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="DepartmentId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        Create Employee
+
+                    </button>
+
+                    <a asp-action="Index"
+                           class="btn btn-secondary">
+
+                        Back
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial");
+    }
+}

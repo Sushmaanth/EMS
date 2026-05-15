@@ -1,0 +1,9 @@
+
+1. Better UI
+2. Add More Feilds and bring the relationship
+3. Search shoulf be "OnChange" the data should show &
+search data should retain and debouncing.
+4. Insted of creating new page for the "Create" and "Update"
+create a bootstrap modal.
+5.Email Id - show proper Invalid Message
+6.Page size dropdown is pending

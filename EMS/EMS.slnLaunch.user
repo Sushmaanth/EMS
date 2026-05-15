@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "EMSBackend\\EMSBackend.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "EMSFrontend\\EMSFrontend.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

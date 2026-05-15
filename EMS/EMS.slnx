@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Changes.txt" />
+  </Folder>
+  <Project Path="Dtos/Dtos.csproj" />
+  <Project Path="EMSBackend/EMSBackend.csproj" />
+  <Project Path="EMSFrontend/EMSFrontend.csproj" />
+  <Project Path="Entities/Entities.csproj" />
+</Solution>

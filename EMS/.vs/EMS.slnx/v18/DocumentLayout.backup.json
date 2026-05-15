@@ -1,0 +1,456 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\views\\home\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\home\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5D9A2E3-0DAD-4BF2-BBE1-6DEC12A4A62E}|Solution Items{F5D9A2E3-0DAD-4BF2-BBE1-6DEC12A4A62E}|C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Changes.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{F5D9A2E3-0DAD-4BF2-BBE1-6DEC12A4A62E}|Solution Items{F5D9A2E3-0DAD-4BF2-BBE1-6DEC12A4A62E}|solutionrelative:Changes.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\home\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\entities\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|solutionrelative:entities\\department.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsbackend\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|solutionrelative:emsbackend\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\api\\implementation\\employeeapirequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\api\\implementation\\employeeapirequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\api\\abstraction\\irequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\api\\abstraction\\irequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\dtos\\repository\\implementation\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\implementation\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\dtos\\repository\\abstraction\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\abstraction\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\models\\departmentviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\departmentviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\models\\createemployeeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\createemployeeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\views\\home\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\home\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/G7CR/EMSDb/True/SqlTable/dbo.Employee.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\entities\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|solutionrelative:entities\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\models\\paginationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\paginationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\dtos\\repository\\abstraction\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\abstraction\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsbackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|solutionrelative:emsbackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\dtos\\departmentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\departmentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\source\\repos\\ems\\emsfrontend\\views\\home\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\home\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 295,
+          "SelectedChildIndex": 15,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CreateEmployeeViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Models\\CreateEmployeeViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\CreateEmployeeViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Models\\CreateEmployeeViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\CreateEmployeeViewModel.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAkwB4AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T12:41:11.605Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Details.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Home\\Details.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Details.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Home\\Details.cshtml",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAADAAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-14T12:35:45.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "dbo.Employee [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/G7CR/EMSDb/True/SqlTable/dbo.Employee.sql",
+              "ToolTip": "dbo.Employee [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-05-14T12:23:43.816Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Changes.txt",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Changes.txt",
+              "RelativeDocumentMoniker": "Changes.txt",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Changes.txt",
+              "RelativeToolTip": "Changes.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-05-14T11:06:42.203Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EmployeeController.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSBackend\\Controllers\\EmployeeController.cs",
+              "RelativeDocumentMoniker": "EMSBackend\\Controllers\\EmployeeController.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSBackend\\Controllers\\EmployeeController.cs",
+              "RelativeToolTip": "EMSBackend\\Controllers\\EmployeeController.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAADwv5sAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T09:44:17.657Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EmployeeApiRequest.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "RelativeToolTip": "EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "ViewState": "AgIAAI8AAAAAAAAAAADwv6gAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:54:27.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "PaginationViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Models\\PaginationViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\PaginationViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Models\\PaginationViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\PaginationViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:50:06.352Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Program.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Program.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Program.cs",
+              "RelativeToolTip": "EMSFrontend\\Program.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAQwAcAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T05:13:10.161Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "EMSFrontend\\wwwroot\\js\\site.js",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "EMSFrontend\\wwwroot\\js\\site.js",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAABIAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-05-14T01:17:10.832Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "EMSFrontend\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAwwIkAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T01:05:17.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-13T10:07:49.143Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "IEmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T09:35:59.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "EMSFrontend\\wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "EMSFrontend\\wwwroot\\css\\site.css",
+              "ViewState": "AgIAACgAAAAAAAAAAAAqwDkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-05-13T09:16:00.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "IRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\Repository\\Abstraction\\IRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Abstraction\\IRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\Repository\\Abstraction\\IRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Abstraction\\IRepository.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAYwAoAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T07:35:54.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSBackend\\Program.cs",
+              "RelativeDocumentMoniker": "EMSBackend\\Program.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSBackend\\Program.cs",
+              "RelativeToolTip": "EMSBackend\\Program.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAACcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T07:32:13.351Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Edit.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Home\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Edit.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Home\\Edit.cshtml",
+              "ViewState": "AgIAAMQAAAAAAAAAAAAQwDEAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-13T07:17:10.144Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Create.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Home\\Create.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Create.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Home\\Create.cshtml",
+              "ViewState": "AgIAAJcAAAAAAAAAAAAQwKoAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-13T06:27:24.41Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAACsAAAAAAAAAAAAAwEAAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-13T05:50:38.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Error.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Error.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Home\\Error.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Views\\Home\\Error.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Home\\Error.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-13T05:36:17.454Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\appsettings.json",
+              "RelativeDocumentMoniker": "EMSFrontend\\appsettings.json",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\appsettings.json",
+              "RelativeToolTip": "EMSFrontend\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-13T05:04:24.457Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IRequest.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "RelativeToolTip": "EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAYwBEAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T04:58:17.258Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DepartmentViewmodel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Models\\DepartmentViewmodel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\DepartmentViewmodel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\EMSFrontend\\Models\\DepartmentViewmodel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\DepartmentViewmodel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-13T04:55:52.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Department.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Department.cs",
+              "RelativeDocumentMoniker": "Entities\\Department.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Department.cs",
+              "RelativeToolTip": "Entities\\Department.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAgAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T12:37:34.202Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "ViewState": "AgIAACEBAAAAAAAAAAAQwCYBAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T12:20:44.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "DepartmentDto.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\DepartmentDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\DepartmentDto.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Dtos\\DepartmentDto.cs",
+              "RelativeToolTip": "Dtos\\DepartmentDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T12:19:01.782Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Entities\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "Entities\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAgwDQAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T12:00:33.229Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

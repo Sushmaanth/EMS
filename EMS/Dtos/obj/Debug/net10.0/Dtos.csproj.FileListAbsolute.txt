@@ -1,0 +1,15 @@
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\bin\Debug\net10.0\Dtos.deps.json
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\bin\Debug\net10.0\Dtos.dll
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\bin\Debug\net10.0\Dtos.pdb
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\bin\Debug\net10.0\Entities.dll
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\bin\Debug\net10.0\Entities.pdb
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.csproj.AssemblyReference.cache
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.AssemblyInfoInputs.cache
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.AssemblyInfo.cs
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.csproj.CoreCompileInputs.cache
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.csproj.Up2Date
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.dll
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\refint\Dtos.dll
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\Dtos.pdb
+C:\Users\SUSHMAANTH R\source\repos\EMS\Dtos\obj\Debug\net10.0\ref\Dtos.dll
