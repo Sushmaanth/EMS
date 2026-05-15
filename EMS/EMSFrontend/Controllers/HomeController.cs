@@ -16,15 +16,30 @@ namespace EMSFrontend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string searchText,int pageNumber=1)
+        public async Task<IActionResult> Index(string searchText,int pageNumber=1, int pageSize = 7)
         {
             try
-            {
-                int pageSize = 7;
+            {   
                 //var employees  =  await request.SendViewAllEmployeeRequestAsync();
                 var employees = await request.SendGetEmployeesAsync(searchText,pageNumber,pageSize);
                 ViewBag.SearchText = searchText;
                 return View(employees);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchEmployees(string searchText, int pageNumber = 1,int pageSize = 7)
+        {
+            try
+            {
+                var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
+                return PartialView("_EmployeeTable", employees);
+
             }
             catch (Exception e)
             {

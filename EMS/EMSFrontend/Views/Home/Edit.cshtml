@@ -80,8 +80,8 @@
                   
                     <div class="col-md-6 mb-3">
 
-                        <label asp-for="DateOfBirth"
-                               class="form-label fw-semibold">
+                        <label class="form-label fw-semibold">
+                            Date Of Birth
                         </label>
 
                         <input asp-for="DateOfBirth"
@@ -97,8 +97,8 @@
                     
                     <div class="col-md-6 mb-3">
 
-                        <label asp-for="EmailId"
-                               class="form-label fw-semibold">
+                        <label class="form-label fw-semibold">
+                            Email Id
                         </label>
 
                         <input asp-for="EmailId"
@@ -145,8 +145,8 @@
                 
                     <div class="col-md-6 mb-3">
 
-                        <label asp-for="DateOfJoining"
-                               class="form-label fw-semibold">
+                        <label class="form-label fw-semibold">
+                            Date Of Joining
                         </label>
 
                         <input asp-for="DateOfJoining"
@@ -162,12 +162,11 @@
                     
                     <div class="col-md-6 mb-3">
 
-                        <label asp-for="DepartmentId"
-                               class="form-label fw-semibold">
+                        <label class="form-label fw-semibold">
+                            Department Name
                         </label>
 
-                        <select asp-for="DepartmentId"
-                                asp-items="ViewBag.Departments"
+                        <select asp-for="DepartmentId" asp-items="ViewBag.Departments"
                                 class="form-select">
 
                             <option value="">

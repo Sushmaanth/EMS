@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Entities.csproj": {}
+    "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Entities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Entities.csproj": {
+    "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\Entities.csproj",
+        "projectPath": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\SUSHMAANTH R\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\SUSHMAANTH R\\source\\repos\\EMS\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -77,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.204/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

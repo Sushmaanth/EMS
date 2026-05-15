@@ -12,5 +12,7 @@
 
         public int TotalPages =>
         (int)Math.Ceiling((double)TotalRecords / PageSize);
+
+        public string? SearchText { get; set; }
     }
 }

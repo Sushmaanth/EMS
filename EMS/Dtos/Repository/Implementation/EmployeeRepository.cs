@@ -289,6 +289,7 @@ namespace Dtos.Repository.Implementation
                 TotalRecords = totalRecords,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
+                SearchText = searchText
             };
         }
 
