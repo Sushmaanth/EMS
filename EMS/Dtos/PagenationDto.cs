@@ -19,3 +19,4 @@ namespace Dtos
         public string? SearchText { get; set; }
     }
 }
+

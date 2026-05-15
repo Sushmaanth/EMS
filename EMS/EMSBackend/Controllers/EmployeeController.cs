@@ -1,5 +1,6 @@
 ﻿using Dtos;
 using Dtos.Repository.Abstraction;
+using Dtos.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,13 @@ namespace EMSBackend.Controllers
         private readonly IRepository<EmployeeDto> repository;
 
         private readonly IEmployeeRepository<EmployeeDto> employeeRepository;
+        private readonly EmployeeValidator validator;
 
-        
-
-        public EmployeeController(IRepository<EmployeeDto> repository, IEmployeeRepository<EmployeeDto> employeeRepository)
+        public EmployeeController(IRepository<EmployeeDto> repository, IEmployeeRepository<EmployeeDto> employeeRepository, EmployeeValidator validator)
         {
             this.repository = repository;
             this.employeeRepository = employeeRepository;
+            this.validator = validator;
         }
 
         [Route("all")]
@@ -47,10 +48,15 @@ namespace EMSBackend.Controllers
 
         [Route("add")]
         [HttpPost]
-        public IActionResult CreateEmployee([FromBody] EmployeeDto dto)
+        public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto dto)
         {
             try
             {
+                var errors = await validator.Validate(dto);
+                if (errors.Any())
+                {
+                    return BadRequest(errors);
+                }
                 var created = repository.Create(dto);
                 return CreatedAtAction(nameof(CreateEmployee), created);
             }
@@ -77,10 +83,15 @@ namespace EMSBackend.Controllers
 
         [Route("update/{id}")]
         [HttpPut]
-        public IActionResult UpdateEmployee([FromRoute] int id, [FromBody] EmployeeDto dto)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] EmployeeDto dto)
         {
             try
             {
+                var errors = await validator.Validate(dto);
+                if (errors.Any())
+                {
+                    return BadRequest(errors);
+                }
                 var updated = repository.Update(id, dto);
                 return Ok(updated);
             }

@@ -32,7 +32,7 @@ namespace Entities.Data
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn(1, 1);
 
-            //Name
+            //Name - 100 char
             employeeBuilder.Property<string>(e => e.Name)
                 .HasColumnType("varchar(200)");
 

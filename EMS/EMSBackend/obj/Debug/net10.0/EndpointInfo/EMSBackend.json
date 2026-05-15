@@ -227,8 +227,9 @@
             "format": "int32"
           },
           "name": {
-            "maxLength": 200,
-            "minLength": 0,
+            "maxLength": 100,
+            "minLength": 2,
+            "pattern": "^[a-zA-Z\\s\\.,-]+$",
             "type": "string"
           },
           "gender": {

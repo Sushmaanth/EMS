@@ -2,8 +2,10 @@
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
+using Dtos.Validation;
 using Entities.Data;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace EMSBackend
 {
@@ -23,6 +25,8 @@ namespace EMSBackend
             builder.Services.AddDbContext<AppDbContext>(opt=> opt.UseSqlServer(connStr, config=> config.MigrationsAssembly("EMSBackend")));
             builder.Services.AddScoped<IRepository<EmployeeDto>, EmployeeRepository>();
             builder.Services.AddScoped<IEmployeeRepository<EmployeeDto>, EmployeeRepository>();
+            builder.Services.AddScoped<EmployeeValidator>();
+
             builder.Services.AddSwaggerGen();
             builder.Services.AddOpenApi();
 

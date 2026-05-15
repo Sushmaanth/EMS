@@ -217,9 +217,9 @@ namespace Dtos.Repository.Implementation
 
                 return employee;
             }
-            catch
+            catch(Exception e)
             {
-                throw;
+                throw new Exception(e.Message);
             }
         }
 

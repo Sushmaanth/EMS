@@ -2315,6 +2315,19 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
+      "Dtos/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Entities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Dtos.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Dtos.dll": {}
+        }
+      },
       "Entities/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
@@ -6096,6 +6109,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Dtos/1.0.0": {
+      "type": "project",
+      "path": "../Dtos/Dtos.csproj",
+      "msbuildProject": "../Dtos/Dtos.csproj"
+    },
     "Entities/1.0.0": {
       "type": "project",
       "path": "../Entities/Entities.csproj",
@@ -6104,6 +6122,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "Dtos >= 1.0.0",
       "Entities >= 1.0.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 10.0.2"
     ]
@@ -6141,6 +6160,9 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
+            "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Dtos.csproj": {
+              "projectPath": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Dtos.csproj"
+            },
             "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Entities.csproj": {
               "projectPath": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Entities.csproj"
             }

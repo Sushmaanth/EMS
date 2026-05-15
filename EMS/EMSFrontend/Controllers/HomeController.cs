@@ -1,4 +1,5 @@
-﻿using EMSFrontend.Api.Abstraction;
+﻿using Dtos.Validation;
+using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Models;
 using Entities;
 using Entities.Data;
@@ -10,9 +11,12 @@ namespace EMSFrontend.Controllers
     public class HomeController : Controller
     {
         private readonly IRequest request;
-        public HomeController(IRequest request)
+        private readonly EmployeeValidator validator;
+
+        public HomeController(IRequest request, EmployeeValidator validator)
         {
             this.request = request;
+            this.validator = validator;
         }
 
         [HttpGet]
@@ -110,7 +114,10 @@ namespace EMSFrontend.Controllers
                 {
                     return View(model);
                 }
+                
+
                 var createEmployee = await request.SendCreateEmployeeRequestAsync(model);
+               
                 TempData["SuccessfullyCreatedEmployee"] = "Employee Added Successfully";
                 return RedirectToAction("Index", "Home");
             }
