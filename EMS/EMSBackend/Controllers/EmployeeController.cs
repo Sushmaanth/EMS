@@ -1,12 +1,16 @@
 ﻿using Dtos;
 using Dtos.Repository.Abstraction;
+using Dtos.Repository.Implementation;
 using Dtos.Validation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMSBackend.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -15,12 +19,14 @@ namespace EMSBackend.Controllers
 
         private readonly IEmployeeRepository<EmployeeDto> employeeRepository;
         private readonly EmployeeValidator validator;
+       
 
         public EmployeeController(IRepository<EmployeeDto> repository, IEmployeeRepository<EmployeeDto> employeeRepository, EmployeeValidator validator)
         {
             this.repository = repository;
             this.employeeRepository = employeeRepository;
             this.validator = validator;
+           
         }
 
         [Route("all")]

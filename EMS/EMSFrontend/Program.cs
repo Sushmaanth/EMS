@@ -1,3 +1,4 @@
+using Dtos.Validation;
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
 
@@ -12,7 +13,6 @@ namespace EMSFrontend
             string baseUrl = builder.Configuration.GetRequiredSection("RequestUrls:EmployeeRequestUrl").Value;
 
             builder.Services.AddHttpClient<IRequest, EmployeeApiRequest>(config => config.BaseAddress = new Uri(baseUrl));
-
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 

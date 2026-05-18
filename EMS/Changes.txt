@@ -7,3 +7,12 @@ search data should retain and debouncing.
 create a bootstrap modal.
 5.Email Id - show proper Invalid Message
 6.Page size dropdown is pending
+
+
+Admin:
+ram@example.com
+Admin@123
+
+User:
+tim@example.com
+Passwd@123

@@ -175,7 +175,6 @@ C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\EMSB
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Azure.Identity.dll
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Humanizer.dll
-C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Microsoft.Build.Framework.dll
@@ -331,3 +330,4 @@ C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\obj\Debug\net10.0\refi
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\obj\Debug\net10.0\EMSBackend.pdb
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\obj\Debug\net10.0\EMSBackend.genruntimeconfig.cache
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\obj\Debug\net10.0\ref\EMSBackend.dll
+C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSBackend\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

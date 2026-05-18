@@ -680,4 +680,6 @@ C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\obj\Debug\net10.0\ref
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\obj\Debug\net10.0\EMSFrontend.pdb
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\obj\Debug\net10.0\EMSFrontend.genruntimeconfig.cache
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\obj\Debug\net10.0\ref\EMSFrontend.dll
-C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\obj\Debug\net10.0\compressed\5m8vuhpcya-{0}-6om7irkzoc-6om7irkzoc.gz
+C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\bin\Debug\net10.0\Dtos.dll
+C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\bin\Debug\net10.0\Dtos.pdb
+C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\obj\Debug\net10.0\compressed\5m8vuhpcya-{0}-o19hhjca70-o19hhjca70.gz

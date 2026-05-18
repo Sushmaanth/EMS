@@ -3,6 +3,7 @@
     <File Path="Changes.txt" />
   </Folder>
   <Project Path="Dtos/Dtos.csproj" />
+  <Project Path="EMSAuthApi/EMSAuthApi.csproj" Id="5a26e663-1a5f-4af9-bc14-0ff0d15b79fc" />
   <Project Path="EMSBackend/EMSBackend.csproj" />
   <Project Path="EMSFrontend/EMSFrontend.csproj" />
   <Project Path="Entities/Entities.csproj" />

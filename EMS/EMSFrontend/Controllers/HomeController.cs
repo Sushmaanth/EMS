@@ -11,12 +11,12 @@ namespace EMSFrontend.Controllers
     public class HomeController : Controller
     {
         private readonly IRequest request;
-        private readonly EmployeeValidator validator;
+        //private readonly EmployeeValidator validator;
 
-        public HomeController(IRequest request, EmployeeValidator validator)
+        public HomeController(IRequest request)
         {
             this.request = request;
-            this.validator = validator;
+            //this.validator = validator;
         }
 
         [HttpGet]

@@ -28,7 +28,6 @@
         fetch(`/Home/SearchEmployees?searchText=${encodeURIComponent(searchValue)}&pageSize=${pageSize}`)
             .then(response => response.text())
             .then(data => {
-
                 document.getElementById("employee-table").innerHTML = data;
             });
     }

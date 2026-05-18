@@ -12,15 +12,21 @@ namespace Entities.Data
         {
             
         }
-
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Role { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             var employeeBuilder = modelBuilder.Entity<Employee>();
 
             var departmentBuilder = modelBuilder.Entity<Department>();
+
+            var userBuilder = modelBuilder.Entity<User>();
+
+            var roleBuilder = modelBuilder.Entity<Role>();
+
 
             //[Employee Table]
 
@@ -80,6 +86,49 @@ namespace Entities.Data
             //Name
             departmentBuilder.Property<string>(d => d.DepartmentName)
                 .HasColumnType("varchar(200)");
+
+            //[User]
+            //pk
+            userBuilder.ToTable("User").HasKey(u => u.Id);
+
+            //Id
+            userBuilder.Property<int>(u => u.Id)
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn(1, 1);
+
+            //Email Id
+            userBuilder.HasIndex(u => u.EmailId)
+               .IsUnique();
+
+            userBuilder.Property<string>(e => e.EmailId)
+                .HasColumnType("varchar(255)");
+
+            //One Role - Many User FK
+            userBuilder.HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId);
+
+            //Is Active
+            userBuilder.Property<bool>(e => e.IsActive)
+                .HasColumnType("bit");
+
+            //One Use One Employee FK Employee Id
+            userBuilder.HasOne(e => e.Employee)
+                .WithOne(u => u.User)
+                .HasForeignKey<User>(u => u.EmployeeId);
+
+            //[Role]
+            roleBuilder.ToTable("Role").HasKey(r => r.Id);
+
+            //Pk
+            roleBuilder.Property<int>(r => r.Id)
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn(1, 1);
+
+            //role Name
+            roleBuilder.Property<string>(r=> r.RoleName)
+               .HasColumnType("varchar(20)");
+           
         }
     }
 }
