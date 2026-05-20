@@ -16,3 +16,25 @@ Admin@123
 User:
 tim@example.com
 Passwd@123
+
+sansa@gmail.com
+Passwd@123
+
+EMS Flow
+---------
+
+Admin Creates Employee
+        ↓
+Employee Activates Account
+        ↓
+Password Hashed
+        ↓
+User Record Created
+        ↓
+Employee Logs In
+        ↓
+JWT Generated
+
+Error Handeling - 
+need to show erro if the user enter invalid password or email id in t front end - Login
+If the email not exists then also show error in - Account Activation

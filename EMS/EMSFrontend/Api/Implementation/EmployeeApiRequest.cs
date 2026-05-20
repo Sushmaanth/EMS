@@ -2,20 +2,39 @@
 using EMSFrontend.Models;
 using System.Collections;
 using System.Net;
+using System.Net.Http.Headers;
 namespace EMSFrontend.Api.Implementation
 {
     public class EmployeeApiRequest : IRequest
     {
         private readonly HttpClient client;
+        private readonly IHttpContextAccessor accessor;
 
-        public EmployeeApiRequest(HttpClient client)
+        public EmployeeApiRequest(HttpClient client, IHttpContextAccessor accessor)
         {
             this.client = client;
+            this.accessor = accessor;
+        }
+
+        private void SetBearerToken()
+        {
+            string token =
+                accessor.HttpContext.Session
+                    .GetString("JWToken");
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue(
+                        "Bearer",
+                        token);
+            }
         }
         public async Task<IEnumerable<EmployeeViewModel>> SendViewAllEmployeeRequestAsync()
         {
             try
             {
+                SetBearerToken();
                 var response = await client.GetAsync("all");
                 if (!response.IsSuccessStatusCode)
                 {
@@ -35,6 +54,7 @@ namespace EMSFrontend.Api.Implementation
         {
             try
             {
+                SetBearerToken();
                 var response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -53,6 +73,7 @@ namespace EMSFrontend.Api.Implementation
         {
             try
             {
+                SetBearerToken();
                 var response = await client.DeleteAsync($"delete/{id}");
                 if (!response.IsSuccessStatusCode)
                 {
@@ -71,6 +92,7 @@ namespace EMSFrontend.Api.Implementation
         {
             try
             {
+                SetBearerToken();
                 var response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}",model);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -89,6 +111,7 @@ namespace EMSFrontend.Api.Implementation
         {
             try
             {
+                SetBearerToken();
                 var response = await client.GetAsync($"employee/{id}");
                 if (!response.IsSuccessStatusCode)
                 {
@@ -130,6 +153,7 @@ namespace EMSFrontend.Api.Implementation
         {
             try
             {
+                SetBearerToken();
                 var response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
                 if (!response.IsSuccessStatusCode)
                 {
@@ -147,11 +171,11 @@ namespace EMSFrontend.Api.Implementation
             }
         }
 
-        public async Task<IEnumerable<DepartmentViewmodel>>
-     SendGetDepartmentsAsync()
+        public async Task<IEnumerable<DepartmentViewmodel>>SendGetDepartmentsAsync()
         {
             try
             {
+                SetBearerToken();
                 var response =
                     await client.GetAsync("department/all");
 

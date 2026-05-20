@@ -19,6 +19,7 @@ namespace EMSAuthApi.Controllers
             this.userRepository = userRepository;
         }
 
+
         [Route("activate-account")]
         [HttpPost]
         public IActionResult ActivateAccount([FromBody] ActivateAccountDTO dto)
@@ -37,11 +38,28 @@ namespace EMSAuthApi.Controllers
 
         [Route("login")]
         [HttpPost]
-        public IActionResult Login(LoginDto dto)
+        public IActionResult Login([FromBody]LoginDto dto)
         {
             try
             {
                 var result = authService.LoginEmployee(dto);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+            }
+        }
+
+
+        [Route("refresh-token")]
+        [HttpPost]
+        public IActionResult RefreshToken(RefreshTokenDTO dto)
+        {
+            try
+            {
+                var result = authService.RefreshToken(dto);
 
                 return Ok(result);
             }

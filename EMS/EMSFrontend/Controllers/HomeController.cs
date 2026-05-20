@@ -5,6 +5,7 @@ using Entities;
 using Entities.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 
 namespace EMSFrontend.Controllers
 {
@@ -23,7 +24,13 @@ namespace EMSFrontend.Controllers
         public async Task<IActionResult> Index(string searchText,int pageNumber=1, int pageSize = 7)
         {
             try
-            {   
+            {
+                string token = HttpContext.Session.GetString("JWToken");
+                if (string.IsNullOrEmpty(token))
+                {
+                    return RedirectToAction("Login","Auth");
+                }
+
                 //var employees  =  await request.SendViewAllEmployeeRequestAsync();
                 var employees = await request.SendGetEmployeesAsync(searchText,pageNumber,pageSize);
                 ViewBag.SearchText = searchText;

@@ -13,8 +13,26 @@ namespace EMSFrontend
             string baseUrl = builder.Configuration.GetRequiredSection("RequestUrls:EmployeeRequestUrl").Value;
 
             builder.Services.AddHttpClient<IRequest, EmployeeApiRequest>(config => config.BaseAddress = new Uri(baseUrl));
+
+            string authUrl = builder.Configuration.GetRequiredSection("RequestUrls:AuthRequestUrl").Value;
+
+            builder.Services.AddHttpClient<IAuthRequest,AuthApiRequest>(config =>config.BaseAddress = new Uri(authUrl));
+
+            builder.Services.AddHttpContextAccessor();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDistributedMemoryCache();
+
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+
+                options.Cookie.HttpOnly = true;
+
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
@@ -27,11 +45,12 @@ namespace EMSFrontend
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.MapStaticAssets();
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
 
-            app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")

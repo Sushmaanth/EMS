@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "_Layout2";
+    ViewBag.Title = "Dashboard";
+}
+<h1>Employee Page</h1>
+
+@if (TempData["SuccessfullyUserLoggegIn"] != null)
+{
+    <input type="hidden"
+           id="successfullyUserLoggegIn"
+           value="@TempData["SuccessfullyUserLoggegIn"]" />
+}

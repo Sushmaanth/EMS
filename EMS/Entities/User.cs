@@ -19,5 +19,9 @@ namespace Entities
 
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
+
+        public string? RefreshToken { get; set; }
+
+        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 }

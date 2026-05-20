@@ -19,5 +19,6 @@ namespace EMSFrontend.Api.Abstraction
 
         Task<PaginationViewModel<EmployeeViewModel>> SendGetEmployeesAsync(string? searchText,int pageNumber, int pageSize);
         Task<IEnumerable<DepartmentViewmodel>>SendGetDepartmentsAsync();
+
     }
 }

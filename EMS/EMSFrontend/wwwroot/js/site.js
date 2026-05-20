@@ -9,6 +9,12 @@
     const employeeDeletedSuccessullyMessage =
         document.getElementById("employeeDeletedSuccessully");
 
+    const successfullyAccountActivated =
+        document.getElementById("successfullyAccountActivated");
+
+    const successfullyUserLoggegIn =
+        document.getElementById("successfullyUserLoggegIn");
+
     const deleteForms =
         document.querySelectorAll(".delete-form");
 
@@ -114,7 +120,23 @@
         });
     }
 
-   
+    if (successfullyAccountActivated) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: successfullyAccountActivated.value,
+            confirmButtonColor: '#3085d6'
+        });
+    }
+
+    if (successfullyUserLoggegIn) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: successfullyUserLoggegIn.value,
+            confirmButtonColor: '#3085d6'
+        });
+    }   
 
     if (employeeUpdatedSuccessMessage) {
 

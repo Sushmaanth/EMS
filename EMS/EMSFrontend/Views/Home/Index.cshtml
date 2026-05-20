@@ -56,3 +56,10 @@
            id="employeeDeletedSuccessully"
            value="@TempData["DeletedEmployee"]" />
 }
+
+@if (TempData["SuccessfullyUserLoggegIn"] != null)
+{
+    <input type="hidden"
+           id="successfullyUserLoggegIn"
+           value="@TempData["SuccessfullyUserLoggegIn"]" />
+}

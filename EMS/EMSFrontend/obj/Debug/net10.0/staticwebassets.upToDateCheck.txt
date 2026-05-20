@@ -48,6 +48,7 @@ C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\css\site1.css
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\jquery-validation\dist\additional-methods.min.js
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
@@ -61,7 +62,9 @@ C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\jquery\di
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
 C:\Users\SUSHMAANTH R\Documents\GitHub\EMS\EMS\EMSFrontend\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
 wwwroot\css\site.css
+wwwroot\css\site1.css
 wwwroot\favicon.ico
+wwwroot\images\AccActivation.png
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\LICENSE
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
