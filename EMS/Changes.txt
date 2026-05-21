@@ -6,7 +6,7 @@ search data should retain and debouncing.
 4. Insted of creating new page for the "Create" and "Update"
 create a bootstrap modal.
 5.Email Id - show proper Invalid Message
-6.Page size dropdown is pending
+6.Page size dropdown is done.
 
 
 Admin:

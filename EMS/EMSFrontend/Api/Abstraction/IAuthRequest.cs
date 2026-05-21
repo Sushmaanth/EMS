@@ -7,8 +7,9 @@ namespace EMSFrontend.Api.Abstraction
     {
         Task<LoginResponseViewModel> LoginAsync(LoginViewModel model);
 
-        Task<LoginResponseViewModel> RefreshTokenAsync(RefreshTokenDTO model);
+        Task<LoginResponseViewModel> RefreshTokenAsync(RefreshTokenViewModel model);
 
         Task ActivateAccountAsync(AccountActivationViewModel model);
+        Task<LoginResponseViewModel> MicrosoftLoginAsync(string email);
     }
 }

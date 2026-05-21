@@ -36,6 +36,11 @@ namespace EMSFrontend.Controllers
                 ViewBag.SearchText = searchText;
                 return View(employees);
             }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please login again.";
+                return RedirectToAction("Login","Auth");
+            }
             catch (Exception e)
             {
                 TempData["ErrorMessage"] = e.Message;
@@ -51,6 +56,11 @@ namespace EMSFrontend.Controllers
                 var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
                 return PartialView("_EmployeeTable", employees);
 
+            }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please login again.";
+                return RedirectToAction("Login", "Auth");
             }
             catch (Exception e)
             {
@@ -76,6 +86,11 @@ namespace EMSFrontend.Controllers
                 }
 
                 return View(employee);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please login again.";
+                return RedirectToAction("Login", "Auth");
             }
             catch (Exception e)
             {
@@ -103,6 +118,11 @@ namespace EMSFrontend.Controllers
 
                 return View();
             }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please login again.";
+                return RedirectToAction("Login", "Auth");
+            }
             catch (Exception e)
             {
                 TempData["ErrorMessage"] = e.Message;
@@ -128,6 +148,11 @@ namespace EMSFrontend.Controllers
                 TempData["SuccessfullyCreatedEmployee"] = "Employee Added Successfully";
                 return RedirectToAction("Index", "Home");
             }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please login again.";
+                return RedirectToAction("Login", "Auth");
+            }
             catch (Exception e)
             {
 
@@ -145,6 +170,11 @@ namespace EMSFrontend.Controllers
                 await request.SendDeleteEmployeeRequestAsync(id);
                 TempData["DeletedEmployee"]= "Employee Deleted Successfully";
                 return RedirectToAction("Index", "Home");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] = "Your session has expired. Please login again.";
+                return RedirectToAction("Login","Auth");
             }
             catch (Exception e)
             {
@@ -171,6 +201,11 @@ namespace EMSFrontend.Controllers
 
                 return View(employee);
             }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] ="Your session has expired. Please login again.";
+                return RedirectToAction("Login", "Auth");
+            }
             catch (Exception e)
             {
                 TempData["ErrorMessage"] = e.Message;
@@ -186,6 +221,11 @@ namespace EMSFrontend.Controllers
                 var updateEmployee = await request.SendUpdateEmployeeRequestAsync(id, model);
                 TempData["employeeUpdateSuccessully"] = "Employee Updated Successfully";
                 return RedirectToAction("Index", "Home");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                TempData["SessionExpired"] ="Your session has expired. Please login again.";
+                return RedirectToAction("Login", "Auth");
             }
             catch (Exception e)
             {

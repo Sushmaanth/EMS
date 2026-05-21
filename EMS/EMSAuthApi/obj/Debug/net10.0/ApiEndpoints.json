@@ -33,6 +33,22 @@
   },
   {
     "ContainingType": "EMSAuthApi.Controllers.AuthController",
+    "Method": "MicrosoftLogin",
+    "RelativePath": "api/Auth/microsoft-login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EMSAuthApi.Controllers.AuthController",
     "Method": "RefreshToken",
     "RelativePath": "api/Auth/refresh-token",
     "HttpMethod": "POST",

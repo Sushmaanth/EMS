@@ -13,10 +13,7 @@ namespace EMSAuthApi.Services
         private readonly IPasswordHasher<User> passwordHasher;
         private readonly TokenService tokenService;
 
-        public AuthService(
-        AppDbContext context,
-        IPasswordHasher<User> passwordHasher,
-        TokenService tokenService)
+        public AuthService(AppDbContext context, IPasswordHasher<User> passwordHasher,TokenService tokenService)
         {
             this.context = context;
             this.passwordHasher = passwordHasher;
@@ -51,7 +48,7 @@ namespace EMSAuthApi.Services
 
                 user.RefreshToken = refreshToken;
 
-                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(1);
+                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(2);
 
                 context.SaveChanges();
                 return new LoginResponseDTO
@@ -64,7 +61,7 @@ namespace EMSAuthApi.Services
             }
             catch (Exception e)
             {
-                throw new Exception($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+                throw;
             }
         }
 
@@ -115,6 +112,55 @@ namespace EMSAuthApi.Services
 
                 Role = user.Role.RoleName
             };
+        }
+
+        internal object MicrosoftLogin(string email)
+        {
+            try
+            {
+                var user = context.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefault(u =>
+                        u.EmailId == email);
+
+                if (user == null)
+                {
+                    throw new Exception(
+                        "User not registered in EMS");
+                }
+
+                if (!user.IsActive)
+                {
+                    throw new Exception(
+                        "User account inactive");
+                }
+
+                string token = tokenService.GenerateToken(user);
+
+                string refreshToken = tokenService.GenerateRefreshToken();
+
+                user.RefreshToken = refreshToken;
+
+                user.RefreshTokenExpiryTime =DateTime.Now.AddMinutes(30);
+
+                context.SaveChanges();
+
+                return new LoginResponseDTO
+                {
+                    Token = token,
+
+                    RefreshToken = refreshToken,
+
+                    EmailId = user.EmailId,
+
+                    Role = user.Role.RoleName
+                };
+            }
+
+            catch (Exception e)
+            {
+                throw new Exception($"Exception: {e.Message}");
+            }
         }
     }
 }

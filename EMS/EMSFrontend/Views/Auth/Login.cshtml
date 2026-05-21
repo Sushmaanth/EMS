@@ -38,16 +38,18 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-modern w-100 mb-4">
+                <button type="submit" class="btn btn-primary btn-modern w-100 mb-3">
                     Sign In
                 </button>
 
-                <div class="text-center pt-2 border-top border-light-subtle">
+                <div class="text-center pt-0 mt-0 border-top border-light-subtle mb-3">
                     <p class="text-muted small mb-0">
                         Account activation not done? 
                         <a asp-action="ActivateAccount" class="text-decoration-none text-primary fw-semibold ms-1">Activate Account</a>
                     </p>
                 </div>
+
+                <a asp-action="MicrosoftLogin" asp-controller="Auth" class="btn microsoft-btn w-100"><img src="~/images/microsoft-svgrepo-com.svg" alt="microsoft logo" class="ms-logo"/>Sign in with Microsoft</a>
             </form>
         </div>
     </div>
@@ -57,6 +59,13 @@
     <input type="hidden"
            id="successfullyAccountActivated"
            value="@TempData["SuccessfullyAccountActivated"]" />
+}
+
+@if (TempData["SessionExpired"] != null)
+{
+    <input type="hidden"
+           id="sessionExpired"
+           value="@TempData["SessionExpired"]" />
 }
 
 @section Scripts {

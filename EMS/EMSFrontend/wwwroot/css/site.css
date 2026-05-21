@@ -18,7 +18,26 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
+    color: #1e293b;
+    background-color: #f1f5f9;
+    background-image: radial-gradient(at 0% 0%, rgba(243, 232, 255, 1) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(224, 242, 254, 1) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(237, 233, 254, 1) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(224, 242, 254, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border) !important;
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.02) !important;
+}
+
+.header-container h1 {
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #0f172a;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -46,6 +65,11 @@ body {
     justify-content: space-between;
 }
 
+.table {
+    margin-bottom: 0;
+}
+
+
 .employee-table-container {
     height: 500px;
     overflow-y: auto;
@@ -59,4 +83,35 @@ body {
 
 .employee-row {
     cursor: pointer;
+}
+
+.employee-table thead tr {
+    background: rgba(15, 23, 42, 0.05) !important;
+    border-bottom: 2px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+.employee-table th {
+    color: #FFFFFF !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 1rem 1.25rem !important;
+    border: none !important;
+}
+
+.employee-table td {
+    padding: 1rem 1.25rem !important;
+    color: #334155;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+    background: transparent !important;
+}
+
+.employee-row {
+    transition: all 0.2s ease;
+}
+.employee-row:hover {
+    background: rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2);
 }

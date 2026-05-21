@@ -1,6 +1,8 @@
 using Dtos.Validation;
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 
 namespace EMSFrontend
 {
@@ -10,13 +12,31 @@ namespace EMSFrontend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            string baseUrl = builder.Configuration.GetRequiredSection("RequestUrls:EmployeeRequestUrl").Value;
+            string baseUrl = builder.Configuration["RequestUrls:EmployeeRequestUrl"]!;
 
             builder.Services.AddHttpClient<IRequest, EmployeeApiRequest>(config => config.BaseAddress = new Uri(baseUrl));
 
-            string authUrl = builder.Configuration.GetRequiredSection("RequestUrls:AuthRequestUrl").Value;
+            string authUrl = builder.Configuration["RequestUrls:AuthRequestUrl"]!;
 
-            builder.Services.AddHttpClient<IAuthRequest,AuthApiRequest>(config =>config.BaseAddress = new Uri(authUrl));
+            builder.Services.AddHttpClient<IAuthRequest, AuthApiRequest>(config => config.BaseAddress = new Uri(authUrl));
+
+            //Microsoft OAuth
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                options.DefaultChallengeScheme =
+                    MicrosoftAccountDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddMicrosoftAccount(options =>
+            {
+                options.ClientId =
+                    builder.Configuration["Authentication:Microsoft:ClientId"];
+
+                options.ClientSecret =
+                    builder.Configuration["Authentication:Microsoft:ClientSecret"];
+            });
 
             builder.Services.AddHttpContextAccessor();
 

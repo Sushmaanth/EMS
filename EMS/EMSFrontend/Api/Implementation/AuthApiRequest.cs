@@ -51,7 +51,7 @@ namespace EMSFrontend.Api.Implementation
             }
         }
 
-        public async Task<LoginResponseViewModel> RefreshTokenAsync(RefreshTokenDTO model)
+        public async Task<LoginResponseViewModel> RefreshTokenAsync(RefreshTokenViewModel model)
         {
             try
             {
@@ -70,6 +70,28 @@ namespace EMSFrontend.Api.Implementation
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public async Task<LoginResponseViewModel> MicrosoftLoginAsync(string email)
+        {
+            try
+            {
+                var response = await client.PostAsJsonAsync("microsoft-login", email);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+
+                    throw new Exception(error);
+                }
+
+                return await response.Content.ReadFromJsonAsync<LoginResponseViewModel>();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+           
         }
     }
 }

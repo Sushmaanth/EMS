@@ -73,9 +73,9 @@ namespace Dtos.Repository.Implementation
                 }
 
                 }
-            catch (Exception e)
+            catch
             {
-                throw new Exception("Can't create a user account");
+                throw;
             }
         }
     }

@@ -68,5 +68,13 @@ namespace EMSAuthApi.Controllers
                 return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
             }
         }
+        [Route("microsoft-login")]
+        [HttpPost]
+        public IActionResult MicrosoftLogin([FromBody] string email)
+        {
+            var result =authService.MicrosoftLogin(email);
+
+            return Ok(result);
+        }
     }
 }

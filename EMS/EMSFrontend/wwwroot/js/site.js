@@ -24,6 +24,9 @@
     const pageSizeDropdown =
         document.getElementById("pageSize");
 
+    const sessionExpired =
+        document.getElementById("sessionExpired");
+
     let debounceTimer;
 
     function loadEmployees(searchValue) {
@@ -108,7 +111,14 @@
         });
     }
 
-    
+    if (sessionExpired) {
+        Swal.fire({
+            icon: 'warning',
+            title: '⏳',
+            text: sessionExpired.value,
+            confirmButtonColor: '#3085d6'
+        });
+    }
 
     if (employeeAddedSuccessMessage) {
 
