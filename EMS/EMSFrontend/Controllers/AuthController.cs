@@ -1,4 +1,5 @@
-﻿using EMSFrontend.Api.Abstraction;
+﻿using Dtos;
+using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Models;
 using Humanizer;
 using Microsoft.AspNetCore.Authentication;
@@ -147,11 +148,24 @@ namespace EMSFrontend.Controllers
             return RedirectToAction("Index","Home");
         }
 
+        [HttpGet]
+        public IActionResult ResetPassword(string token)
+        {
+            var model = new ResetPasswordDto
+            {
+                Token = token
+            };
+
+            return View(model);
+        }
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
 
             return RedirectToAction("Login","Auth");
         }
+
+
     }
 }

@@ -36,6 +36,8 @@ namespace EMSFrontend
 
                 options.ClientSecret =
                     builder.Configuration["Authentication:Microsoft:ClientSecret"];
+
+                options.AuthorizationEndpoint += "?prompt=select_account";
             });
 
             builder.Services.AddHttpContextAccessor();

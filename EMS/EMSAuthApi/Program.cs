@@ -29,6 +29,7 @@ namespace EMSAuthApi
             builder.Services.AddScoped<TokenService>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<IUserRepository<ActivateAccountDTO>,UserRepository>();
+            builder.Services.AddScoped<EmailService>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options=>

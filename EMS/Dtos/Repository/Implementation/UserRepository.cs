@@ -20,8 +20,7 @@ namespace Dtos.Repository.Implementation
         {
             try
             {
-                var employeeExists = context.Employees
-            .FirstOrDefault(e => e.EmailId == data.EmailId);
+                var employeeExists = context.Employees.FirstOrDefault(e => e.EmailId == data.EmailId);
 
                 if (employeeExists == null)
                 {
@@ -35,8 +34,6 @@ namespace Dtos.Repository.Implementation
                 {
                     throw new Exception("Employee role not found");
                 }
-
-
 
                 var userExists = context.Users
                 .Any(u => u.EmailId == data.EmailId);
@@ -71,8 +68,7 @@ namespace Dtos.Repository.Implementation
                 {
                     throw new Exception("User creation is failed");
                 }
-
-                }
+            }
             catch
             {
                 throw;

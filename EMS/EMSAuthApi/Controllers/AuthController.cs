@@ -72,9 +72,47 @@ namespace EMSAuthApi.Controllers
         [HttpPost]
         public IActionResult MicrosoftLogin([FromBody] string email)
         {
-            var result =authService.MicrosoftLogin(email);
+            try
+            {
+                var result = authService.MicrosoftLogin(email);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+            }
+        }
 
-            return Ok(result);
+        [Route("forgot-password")]
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
+        {
+            try
+            {
+                var result = await authService.ForgotPasswordAsync(dto);
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+            }
+        }
+
+        [Route("reset-password")]
+        [HttpPost]
+
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto dto) 
+        {
+            try
+            {
+                var result = await authService.ResetPasswordAsync(dto);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+            }
         }
     }
 }
