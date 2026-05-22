@@ -24,16 +24,12 @@ namespace EMSAuthApi.Controllers
         [HttpPost]
         public IActionResult ActivateAccount([FromBody] ActivateAccountDTO dto)
         {
-            try
+            var result = userRepository.AccountActivation(dto);
+            if (!result.Success)
             {
-                var result = userRepository.AccountActivation(dto);
-
-                return CreatedAtAction(nameof(ActivateAccount), result);
+                return BadRequest(result.Message);
             }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+            return CreatedAtAction(nameof(ActivateAccount), result);
         }
 
         [Route("login")]

@@ -33,11 +33,13 @@ namespace Dtos.Repository.Implementation
                     DepartmentId = data.DepartmentId
                 };
 
-                var entity = context.Add(e);
+                context.Add(e);
                 int result = context.SaveChanges();
 
-                if (result > 0)
+                if (result <= 0)
                 {
+                   throw new Exception("Unable to create employee");
+                }
                     var employee = context.Employees
                  .Where(emp => emp.Id == e.Id)
                  .Select(emp => new EmployeeDto
@@ -58,15 +60,10 @@ namespace Dtos.Repository.Implementation
                  .FirstOrDefault();
 
                     return employee;
-                }
-                else
-                {
-                    throw new Exception("Can't create an employee");
-                }
             }
-            catch (Exception e)
+            catch
             {
-                throw new Exception(e.Message);
+                throw;
             }
         }
 
@@ -87,7 +84,7 @@ namespace Dtos.Repository.Implementation
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw;
             }
         }
 
@@ -104,9 +101,12 @@ namespace Dtos.Repository.Implementation
                 {
                     context.Remove(found);
                     int result = context.SaveChanges();
-                    if (result > 0)
+                    if (result <= 0)
                     {
-                        EmployeeDto dto = new()
+                        throw new Exception("Unable to delete employee");
+                    }
+
+                    EmployeeDto dto = new()
                         {
                             Id = found.Id,
                             Name = found.Name,
@@ -118,18 +118,12 @@ namespace Dtos.Repository.Implementation
                             DateOfJoining = found.DateOfJoining,
                             DepartmentId = found.DepartmentId
                         };
-
                         return dto;
-                    }
-                    else
-                    {
-                        throw new Exception("Can't delete the employee");
-                    }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                throw new Exception(e.Message);
+                throw;
             }
             
         }
@@ -155,9 +149,11 @@ namespace Dtos.Repository.Implementation
                     found.DepartmentId = data.DepartmentId;
 
                     int result = context.SaveChanges();
-                    if (result > 0)
+                    if (result <= 0)
                     {
-                        EmployeeDto dto = new()
+                        throw new Exception("Unable to update employee");
+                    }
+                    EmployeeDto dto = new()
                         {
                             Id = found.Id,
                             Name = found.Name,
@@ -175,18 +171,11 @@ namespace Dtos.Repository.Implementation
                         : null
                         };
                         return dto;
-                    }
-                    else
-                    {
-                        throw new Exception("can't update the employee");
-                    }
                 }
-            
             }
             catch (Exception e)
             {
-
-                throw new Exception(e.Message);
+                throw;
             }
         }
 
@@ -217,80 +206,94 @@ namespace Dtos.Repository.Implementation
 
                 return employee;
             }
-            catch(Exception e)
+            catch
             {
-                throw new Exception(e.Message);
+                throw;
             }
         }
 
-        public IEnumerable<EmployeeDto> SearchEmployee(string? searchText)
-        {
-            IQueryable<Employee> query = context.Employees;
+        //public IEnumerable<EmployeeDto> SearchEmployee(string? searchText)
+        //{
+        //    try
+        //    {
+        //        IQueryable<Employee> query = context.Employees;
 
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                query = query.Where(e => e.Id.ToString().Contains(searchText) ||
-                e.Name.ToLower().ToString().Contains(searchText));
-            }
+        //        if (!string.IsNullOrWhiteSpace(searchText))
+        //        {
+        //            query = query.Where(e => e.Id.ToString().Contains(searchText) ||
+        //            e.Name.ToLower().ToString().Contains(searchText));
+        //        }
 
-            var employees = query.Select(e => new EmployeeDto
-             {
-                 Id = e.Id,
-                 Name = e.Name,
-                 EmailId = e.EmailId,
-                 Mobile = e.Mobile
-             }).ToList();
+        //        var employees = query.Select(e => new EmployeeDto
+        //        {
+        //            Id = e.Id,
+        //            Name = e.Name,
+        //            EmailId = e.EmailId,
+        //            Mobile = e.Mobile
+        //        }).ToList();
 
-            return employees;
-        }
+        //        return employees;
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //}
 
         public PagenationDto<EmployeeDto> GetEmployees(string? searchText,int pageNumber,int pageSize)
         {
-            IQueryable<Employee> query =
+            try
+            {
+                IQueryable<Employee> query =
                 context.Employees;
 
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                query = query.Where(e =>
-                    e.Id.ToString().Contains(searchText)
-                    ||
-                    e.Name.ToLower().Contains(
-                        searchText.ToLower()));
-            }
-
-            var totalRecords = query.Count();
-
-            var employees = query
-                .OrderBy(e => e.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(e => new EmployeeDto()
+                if (!string.IsNullOrWhiteSpace(searchText))
                 {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Gender = e.Gender,
-                    DateOfBirth = e.DateOfBirth,
-                    EmailId = e.EmailId,
-                    Mobile = e.Mobile,
-                    Salary = e.Salary,
-                    DateOfJoining = e.DateOfJoining,
-                    DepartmentId = e.DepartmentId,
+                    query = query.Where(e =>
+                        e.Id.ToString().Contains(searchText)
+                        ||
+                        e.Name.ToLower().Contains(
+                            searchText.ToLower()));
+                }
 
-                    DepartmentName =
-                        e.Department != null
-                            ? e.Department.DepartmentName
-                            : null
-                })
-                .ToList();
+                var totalRecords = query.Count();
 
-            return new PagenationDto<EmployeeDto>
+                var employees = query
+                    .OrderBy(e => e.Id)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(e => new EmployeeDto()
+                    {
+                        Id = e.Id,
+                        Name = e.Name,
+                        Gender = e.Gender,
+                        DateOfBirth = e.DateOfBirth,
+                        EmailId = e.EmailId,
+                        Mobile = e.Mobile,
+                        Salary = e.Salary,
+                        DateOfJoining = e.DateOfJoining,
+                        DepartmentId = e.DepartmentId,
+
+                        DepartmentName =
+                            e.Department != null
+                                ? e.Department.DepartmentName
+                                : null
+                    })
+                    .ToList();
+
+                return new PagenationDto<EmployeeDto>
+                {
+                    Data = employees,
+                    TotalRecords = totalRecords,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    SearchText = searchText
+                };
+            }
+            catch
             {
-                Data = employees,
-                TotalRecords = totalRecords,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                SearchText = searchText
-            };
+                throw;
+            }
         }
 
         public ICollection<DepartmentDto> GetDepartments()
@@ -308,9 +311,9 @@ namespace Dtos.Repository.Implementation
 
                 return departments;
             }
-            catch (Exception e)
+            catch
             {
-                throw new Exception(e.Message);
+                throw;
             }
         }
     }

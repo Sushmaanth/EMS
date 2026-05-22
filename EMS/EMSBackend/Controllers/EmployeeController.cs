@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EMSBackend.Controllers
 {
@@ -33,143 +34,88 @@ namespace EMSBackend.Controllers
         [HttpGet]
         public IActionResult ViewEmployees()
         {
-            try
-            {
-                var result = repository.View();
+           var result = repository.View();
 
-                if (!result.Any())
-                {
-                    return Problem("No Data found");
-                }
-                else
-                {
-                    return Ok(result);
-                }
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+           if (!result.Any())
+           {
+              return NotFound("No Data found");
+           }
+           else
+           {
+              return Ok(result);
+           }
         }
 
         [Route("add")]
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto dto)
         {
-            try
-            {
-                var errors = await validator.Validate(dto);
-                if (errors.Any())
-                {
-                    return BadRequest(errors);
-                }
-                var created = repository.Create(dto);
-                return CreatedAtAction(nameof(CreateEmployee), created);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+            //use fluent api - refer validators
+            var created = repository.Create(dto);
+            return CreatedAtAction(nameof(CreateEmployee), created);
         }
 
         [Route("delete/{id}")]
         [HttpDelete]
         public IActionResult DeleteEmployee([FromRoute] int id)
         {
-            try
-            {
-                var deleted = repository.Delete(id);
-                return Ok(deleted);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+           var deleted = repository.Delete(id);
+           if (deleted ==null)
+           {
+              return NotFound("Employee not found");
+           }
+           return Ok(deleted);
         }
 
         [Route("update/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] EmployeeDto dto)
         {
-            try
-            {
-                var errors = await validator.Validate(dto);
-                if (errors.Any())
-                {
-                    return BadRequest(errors);
-                }
-                var updated = repository.Update(id, dto);
-                return Ok(updated);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+           var updated = repository.Update(id, dto);
+           if (updated == null)
+           {
+              return NotFound("Employee not found");
+           }
+           return Ok(updated);
         }
 
         [Route("employee/{id}")]
         [HttpGet]
         public IActionResult GetEmployeebyId([FromRoute] int id)
         {
-            try
-            {
+            
                 var found = repository.GetById(id);
-                return Ok(found);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+                if (found == null)
+                {
+                    return NotFound("Employee not found");
+                }
+            return Ok(found);
         }
 
-        [Route("employee/search")]
-        [HttpGet]
-        public IActionResult SearchEmployee([FromQuery] string? searchText)
-        {
-            try
-            {
-                var found = employeeRepository.SearchEmployee(searchText);
+        //[Route("employee/search")]
+        //[HttpGet]
+        //public IActionResult SearchEmployee([FromQuery] string? searchText)
+        //{
+        //        var found = employeeRepository.SearchEmployee(searchText);
                 
-                return Ok(found);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
-        }
+        //        return Ok(found);
+        //}
 
         [HttpGet]
         [Route("employees")]
         public IActionResult GetEmployees([FromQuery] string? searchText,[FromQuery]int pageNumber = 1, [FromQuery]int pageSize = 5)
         {
-            try
-            {
                 var result = employeeRepository.GetEmployees(searchText,pageNumber, pageSize);
 
                 return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
         }
 
         [Route("department/all")]
         [HttpGet]
         public IActionResult GetDepartments()
         {
-            try
-            {
-                var departments =
-                    repository.GetDepartments();
-
-                return Ok(departments);
-            }
-            catch (Exception e)
-            {
-                return Problem(
-                    $"Exception: {e.Message}");
-            }
+           var departments = repository.GetDepartments();
+            return Ok(departments);
         }
     }
 }

@@ -21,27 +21,37 @@ namespace EMSAuthApi.Services
             _tokenService = tokenService;
             _emailService = emailService;
         }
-        public LoginResponseDTO LoginEmployee(LoginDto dto)
+        public ServiceResponseDto<LoginResponseDTO> LoginEmployee(LoginDto dto)
         {
-            try
-            {
                 var user = _appcontext.Users.Include(u => u.Role)
                   .FirstOrDefault(u => u.EmailId == dto.Email);
 
                 if (user == null)
                 {
-                    throw new Exception("Invalid Email");
+                    return new ServiceResponseDto<LoginResponseDTO>
+                    {
+                        Success = false,
+                        Message = "Invalid email"
+                    };
                 }
 
                 bool isValidPassword = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) == PasswordVerificationResult.Success;
 
                 if (!isValidPassword)
                 {
-                    throw new Exception("Invalid Password");
+                    return new ServiceResponseDto<LoginResponseDTO>
+                    {
+                        Success = false,
+                        Message = "Invalid password"
+                    };
                 }
                 if (!user.IsActive)
                 {
-                    throw new Exception("User account inactive");
+                    return new ServiceResponseDto<LoginResponseDTO>
+                    {
+                        Success = false,
+                        Message = "User account inactive"
+                    };
                 }
 
                 string token = _tokenService.GenerateToken(user);
@@ -52,22 +62,21 @@ namespace EMSAuthApi.Services
 
                 user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(2);
 
-                _appcontext.SaveChanges();
-                return new LoginResponseDTO
+                return new ServiceResponseDto<LoginResponseDTO>
                 {
-                    Token = token,
-                    EmailId = user.EmailId,
-                    Role = user.Role.RoleName,
-                    RefreshToken = refreshToken
+                    Success = true,
+
+                    Data = new LoginResponseDTO
+                    {
+                        Token = token,
+                        EmailId = user.EmailId,
+                        Role = user.Role.RoleName,
+                        RefreshToken = refreshToken
+                    }
                 };
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
         }
 
-        public LoginResponseDTO RefreshToken(RefreshTokenDTO dto)
+        public ServiceResponseDto<LoginResponseDTO> RefreshToken(RefreshTokenDTO dto)
         {
             var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
 
@@ -78,20 +87,31 @@ namespace EMSAuthApi.Services
                 .FirstOrDefault(u =>
                 u.EmailId == email);
 
-
             if (user == null)
             {
-                throw new Exception("User not found");
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "User not found"
+                };
             }
 
             if (user.RefreshToken != dto.RefreshToken)
             {
-                throw new Exception("Invalid refresh token");
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "Invalid refresh token"
+                };
             }
 
             if (user.RefreshTokenExpiryTime <= DateTime.Now)
             {
-                throw new Exception("Refresh token expired");
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "Refresh token expired"
+                };
             }
 
             string newAccessToken = _tokenService.GenerateToken(user);
@@ -104,15 +124,19 @@ namespace EMSAuthApi.Services
 
             _appcontext.SaveChanges();
 
-            return new LoginResponseDTO
+            return new ServiceResponseDto<LoginResponseDTO>
             {
-                Token = newAccessToken,
+                Success = true,
+                Data = new LoginResponseDTO
+                {
+                    Token = newAccessToken,
 
-                RefreshToken = newRefreshToken,
+                    RefreshToken = newRefreshToken,
 
-                EmailId = user.EmailId,
+                    EmailId = user.EmailId,
 
-                Role = user.Role.RoleName
+                    Role = user.Role.RoleName
+                }
             };
         }
 

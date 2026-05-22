@@ -18,6 +18,16 @@ namespace EMSAuthApi.Services
 
         public string GenerateToken(User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            if (user.Role == null)
+            {
+                throw new Exception("User role not found");
+            }
+
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),

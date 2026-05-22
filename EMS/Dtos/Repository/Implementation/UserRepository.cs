@@ -24,7 +24,11 @@ namespace Dtos.Repository.Implementation
 
                 if (employeeExists == null)
                 {
-                    throw new Exception("Employee email not found");
+                    return new ActivateAccountResponseDTO
+                    {
+                        Success = false,
+                        Message = "Employee email not found"
+                    };
                 }
 
                 var employeeRole = context.Role
@@ -32,7 +36,7 @@ namespace Dtos.Repository.Implementation
 
                 if (employeeRole == null)
                 {
-                    throw new Exception("Employee role not found");
+                    throw new Exception("Role configuration missing");
                 }
 
                 var userExists = context.Users
@@ -40,7 +44,11 @@ namespace Dtos.Repository.Implementation
 
                 if (userExists)
                 {
-                    throw new Exception("Account already activated");
+                    return new ActivateAccountResponseDTO
+                    {
+                        Success = false,
+                        Message = "Account already activated"
+                    };
                 }
 
                 User user = new()
@@ -56,18 +64,12 @@ namespace Dtos.Repository.Implementation
                 context.Add(user);
                 int result = context.SaveChanges();
 
-                if (result >0)
-                {
                     return new ActivateAccountResponseDTO
                     {
+                        Success = true,
                         EmailId = user.EmailId,
                         Message = "Account activated successfully"
                     };
-                }
-                else
-                {
-                    throw new Exception("User creation is failed");
-                }
             }
             catch
             {

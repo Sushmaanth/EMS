@@ -69,22 +69,6 @@
   },
   {
     "ContainingType": "EMSBackend.Controllers.EmployeeController",
-    "Method": "SearchEmployee",
-    "RelativePath": "api/Employee/employee/search",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "searchText",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "EMSBackend.Controllers.EmployeeController",
     "Method": "GetEmployees",
     "RelativePath": "api/Employee/employees",
     "HttpMethod": "GET",
