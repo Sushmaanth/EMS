@@ -27,6 +27,12 @@
     const sessionExpired =
         document.getElementById("sessionExpired");
 
+    const oTPSentSuccessMessage =
+        document.getElementById("oTPSentSuccessMessage");
+
+    const passwordSuccessResetMessage =
+        document.getElementById("passwordSuccessResetMessage");
+
     let debounceTimer;
 
     function loadEmployees(searchValue) {
@@ -107,6 +113,26 @@
             icon: 'success',
             title: 'Success',
             text: employeeDeletedSuccessullyMessage.value,
+            confirmButtonColor: '#3085d6'
+        });
+    }
+
+    if (oTPSentSuccessMessage) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: oTPSentSuccessMessage.value,
+            confirmButtonColor: '#3085d6'
+        });
+    }
+
+    if (passwordSuccessResetMessage) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: passwordSuccessResetMessage.value,
             confirmButtonColor: '#3085d6'
         });
     }

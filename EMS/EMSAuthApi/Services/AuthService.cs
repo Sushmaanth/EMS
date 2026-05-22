@@ -172,76 +172,73 @@ namespace EMSAuthApi.Services
 
             if (user != null)
             {
-                string resetToken = Guid.NewGuid().ToString();
+                Random random = new Random();
 
-                user.PasswordResetToken = resetToken;
+                string otp = random.Next(100000, 999999).ToString();
 
-                user.ResetTokenExpiry =
-                    DateTime.Now.AddMinutes(2);
+                user.PasswordResetOtp = otp;
+
+                user.PasswordResetOtpExpiry = DateTime.Now.AddMinutes(2);
 
                 _appcontext.SaveChanges();
 
-                string resetLink = $"https://localhost:7193/Auth/ResetPassword?token={resetToken}";
-
                 string body = $@"
-                            <div style='font-family:Arial,sans-serif; background-color:#f4f6f8; padding:30px;'>
-                                <div style='max-width:500px; margin:auto; background:#ffffff; padding:30px; border-radius:10px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.1);'>
-                                    <h2 style='color:#2563eb; margin-bottom:10px;'>
-                                        Password Reset Request
-                                    </h2>
-                                    <p style='color:#555; font-size:15px; line-height:1.5;'>
-                                        We received a request to reset your password.<br/>
-                                        Click the button below to continue.
-                                    </p>
-                                    <a href='{{resetLink}}'
-                                       style='display:inline-block;
-                                              margin-top:20px;
-                                              padding:12px 25px;
-                                              background:#2563eb;
-                                              color:#fff;
-                                              text-decoration:none;
-                                              border-radius:6px;
-                                              font-weight:bold;'>
-                                        Reset Password
-                                    </a>
-                                    <p style='margin-top:25px; font-size:12px; color:#888;'>
-                                        This link will expire in 2 minutes for security reasons.
-                                    </p>
-                                    <hr style='margin:25px 0; border:none; border-top:1px solid #eee;' />
-                                    <p style='font-size:11px; color:#aaa;'>
-                                        If you did not request this, you can safely ignore this email.
-                                    </p>
-                                </div>
+                            <div style='font-family:Arial;padding:20px;'>
+                                <h2>Password Reset OTP</h2>
+                                <p>
+                                    Use the OTP below to reset your password:
+                                </p>
+                                <h1 style='letter-spacing:5px;
+                                           color:#2563eb;'>
+                                    {otp}
+                                </h1>
+                                <p>
+                                    OTP expires in 2 minutes.
+                                </p>
                             </div>";
 
                 await _emailService.SendEmailAsync(
                     user.EmailId,
-                    "Reset Password",
+                    "Reset Password OTP",
                     body);
             }
-            return "If the email exists, a reset link has been sent";
+            return "If the email address exists, an OTP has been sent";
         }
 
         public async Task<string> ResetPasswordAsync(ResetPasswordDto dto)
         {
-            var user = _appcontext.Users.FirstOrDefault(u => u.PasswordResetToken == dto.Token);
+            var user = _appcontext.Users.FirstOrDefault(u => u.EmailId == dto.Email);
 
-            if(user == null)
+            if (user == null)
             {
-                return "Invalid token";
-            }
-            if (user.ResetTokenExpiry< DateTime.Now)
-            {
-                return "Token Expired";
+                return "Invalid User";
             }
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
+            if (user.PasswordResetOtp != dto.Otp)
+            {
+                user.OtpFailedAttempts++;
+                if (user.OtpFailedAttempts >=5)
+                {
+                    user.PasswordResetOtp = null;
+                    user.PasswordResetOtpExpiry = null;
+                    _appcontext.SaveChanges();
+                    return "Too many invalid attempts. Please request new OTP.";
+                }
+                _appcontext.SaveChanges();
+                return "Invalid Otp";
+            }
+            if (user.PasswordResetOtpExpiry < DateTime.Now)
+            {
+                return "Otp Expired";
+            }
+            
+                user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
 
-            user.PasswordResetToken = null;
-            user.ResetTokenExpiry = null;
+                user.PasswordResetOtp = null;
+                user.PasswordResetOtpExpiry = null;
 
-            _appcontext.SaveChanges();
-
+                _appcontext.SaveChanges();
+            
             return "Password reset successfully";
         }
     }

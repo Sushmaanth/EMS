@@ -149,14 +149,64 @@ namespace EMSFrontend.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string token)
+        public IActionResult ForgotPassword()
         {
-            var model = new ResetPasswordDto
-            {
-                Token = token
-            };
+            return View();
+        }
 
-            return View(model);
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await authRequest.SendForgotPasswordAsync(model);
+
+            TempData["OTPSentSuccessMessage"] = result;
+            return RedirectToAction("ResetPassword");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await authRequest.SendResetPasswordAsync(model);
+
+            if (result == "Invalid Otp")
+            {
+                ModelState.AddModelError("Otp", result);
+                return View(model);
+            }
+            if (result == "Otp Expired")
+            {
+                ModelState.AddModelError("Otp", result);
+                return View(model);
+            }
+            if (result == "Too many invalid attempts. Please request new OTP.")
+            {
+                ModelState.AddModelError("Otp", result);
+                return View(model);
+            }
+            if (result == "Invalid User")
+            {
+                ModelState.AddModelError("Email", result);
+                return View(model);
+            }
+
+
+            TempData["PasswordSuccessResetMessage"] = result;
+            return RedirectToAction("Login");
         }
 
         public IActionResult Logout()

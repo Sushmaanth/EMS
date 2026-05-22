@@ -24,8 +24,10 @@ namespace Entities
 
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
-        public string? PasswordResetToken { get; set; }
+        public string? PasswordResetOtp { get; set; }
 
-        public DateTime? ResetTokenExpiry { get; set; }
+        public DateTime? PasswordResetOtpExpiry { get; set; }
+
+        public int OtpFailedAttempts { get; set; }
     }
 }

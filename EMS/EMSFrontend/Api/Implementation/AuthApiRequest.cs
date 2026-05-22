@@ -1,6 +1,7 @@
 ﻿using Dtos;
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace EMSFrontend.Api.Implementation
 {
@@ -92,6 +93,46 @@ namespace EMSFrontend.Api.Implementation
                 throw new Exception(e.Message);
             }
            
+        }
+
+        public async Task<string> SendForgotPasswordAsync(ForgotPasswordViewModel model)
+        {
+            try
+            {
+                var response = await client.PostAsJsonAsync("forgot-password", model);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+
+                    throw new Exception(error);
+                }
+
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public async Task<string> SendResetPasswordAsync(ResetPasswordViewModel model)
+        {
+            try
+            {
+                var response = await client.PostAsJsonAsync("reset-password", model);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+
+                    throw new Exception(error);
+                }
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

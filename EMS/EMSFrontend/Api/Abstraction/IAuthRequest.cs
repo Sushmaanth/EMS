@@ -12,6 +12,8 @@ namespace EMSFrontend.Api.Abstraction
         Task ActivateAccountAsync(AccountActivationViewModel model);
         Task<LoginResponseViewModel> MicrosoftLoginAsync(string email);
 
-        
+        Task<string> SendForgotPasswordAsync(ForgotPasswordViewModel model);
+
+        Task<string> SendResetPasswordAsync(ResetPasswordViewModel model);
     }
 }
