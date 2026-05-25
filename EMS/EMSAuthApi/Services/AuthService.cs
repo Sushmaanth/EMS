@@ -14,7 +14,7 @@ namespace EMSAuthApi.Services
         private readonly TokenService _tokenService;
         private readonly EmailService _emailService;
 
-        public AuthService(AppDbContext context, IPasswordHasher<User> passwordHasher,TokenService tokenService, EmailService emailService)
+        public AuthService(AppDbContext context, IPasswordHasher<User> passwordHasher, TokenService tokenService, EmailService emailService)
         {
             _appcontext = context;
             _passwordHasher = passwordHasher;
@@ -23,6 +23,8 @@ namespace EMSAuthApi.Services
         }
         public ServiceResponseDto<LoginResponseDTO> LoginEmployee(LoginDto dto)
         {
+            try
+            {
                 var user = _appcontext.Users.Include(u => u.Role)
                   .FirstOrDefault(u => u.EmailId == dto.Email);
 
@@ -62,6 +64,8 @@ namespace EMSAuthApi.Services
 
                 user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(2);
 
+                _appcontext.SaveChanges();
+
                 return new ServiceResponseDto<LoginResponseDTO>
                 {
                     Success = true,
@@ -74,73 +78,87 @@ namespace EMSAuthApi.Services
                         RefreshToken = refreshToken
                     }
                 };
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public ServiceResponseDto<LoginResponseDTO> RefreshToken(RefreshTokenDTO dto)
         {
-            var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
-
-            string email = principal.FindFirst(ClaimTypes.Email)?.Value;
-
-            var user = _appcontext.Users
-                .Include(u => u.Role)
-                .FirstOrDefault(u =>
-                u.EmailId == email);
-
-            if (user == null)
+            try
             {
-                return new ServiceResponseDto<LoginResponseDTO>
+                var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
+
+                string email = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+                var user = _appcontext.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefault(u =>
+                    u.EmailId == email);
+
+                if (user == null)
                 {
-                    Success = false,
-                    Message = "User not found"
-                };
-            }
-
-            if (user.RefreshToken != dto.RefreshToken)
-            {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "Invalid refresh token"
-                };
-            }
-
-            if (user.RefreshTokenExpiryTime <= DateTime.Now)
-            {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "Refresh token expired"
-                };
-            }
-
-            string newAccessToken = _tokenService.GenerateToken(user);
-
-            string newRefreshToken = _tokenService.GenerateRefreshToken();
-
-            user.RefreshToken = newRefreshToken;
-
-            user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(1);
-
-            _appcontext.SaveChanges();
-
-            return new ServiceResponseDto<LoginResponseDTO>
-            {
-                Success = true,
-                Data = new LoginResponseDTO
-                {
-                    Token = newAccessToken,
-
-                    RefreshToken = newRefreshToken,
-
-                    EmailId = user.EmailId,
-
-                    Role = user.Role.RoleName
+                    return new ServiceResponseDto<LoginResponseDTO>
+                    {
+                        Success = false,
+                        Message = "User not found"
+                    };
                 }
-            };
+
+                if (user.RefreshToken != dto.RefreshToken)
+                {
+                    return new ServiceResponseDto<LoginResponseDTO>
+                    {
+                        Success = false,
+                        Message = "Invalid refresh token"
+                    };
+                }
+
+                if (user.RefreshTokenExpiryTime <= DateTime.Now)
+                {
+                    return new ServiceResponseDto<LoginResponseDTO>
+                    {
+                        Success = false,
+                        Message = "Refresh token expired"
+                    };
+                }
+
+                string newAccessToken = _tokenService.GenerateToken(user);
+
+                string newRefreshToken = _tokenService.GenerateRefreshToken();
+
+                user.RefreshToken = newRefreshToken;
+
+                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(1);
+
+                _appcontext.SaveChanges();
+
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = true,
+                    Data = new LoginResponseDTO
+                    {
+                        Token = newAccessToken,
+
+                        RefreshToken = newRefreshToken,
+
+                        EmailId = user.EmailId,
+
+                        Role = user.Role.RoleName
+                    }
+                };
+            }
+            catch
+            {
+
+                throw;
+            }
+
         }
 
-        internal object MicrosoftLogin(string email)
+        public ServiceResponseDto<LoginResponseDTO> MicrosoftLogin(string email)
         {
             try
             {
@@ -151,14 +169,12 @@ namespace EMSAuthApi.Services
 
                 if (user == null)
                 {
-                    throw new Exception(
-                        "User not registered in EMS");
+                    throw new Exception("User not registered in EMS");
                 }
 
                 if (!user.IsActive)
                 {
-                    throw new Exception(
-                        "User account inactive");
+                    throw new Exception("User account inactive");
                 }
 
                 string token = _tokenService.GenerateToken(user);
@@ -167,46 +183,51 @@ namespace EMSAuthApi.Services
 
                 user.RefreshToken = refreshToken;
 
-                user.RefreshTokenExpiryTime =DateTime.Now.AddMinutes(30);
+                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(30);
 
                 _appcontext.SaveChanges();
 
-                return new LoginResponseDTO
+                return new ServiceResponseDto<LoginResponseDTO>
                 {
-                    Token = token,
+                    Success = true,
+                    Message = "Login successful",
 
-                    RefreshToken = refreshToken,
-
-                    EmailId = user.EmailId,
-
-                    Role = user.Role.RoleName
+                    Data = new LoginResponseDTO
+                    {
+                        Token = token,
+                        RefreshToken = refreshToken,
+                        EmailId = user.EmailId,
+                        Role = user.Role.RoleName
+                    }
                 };
             }
 
-            catch (Exception e)
+            catch
             {
-                throw new Exception($"Exception: {e.Message}");
+                throw;
             }
         }
 
-        public async Task<string> ForgotPasswordAsync(ForgotPasswordDto dto)
+        public async Task<ServiceResponseDto<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
-            var user = _appcontext.Users
+            try
+            {
+                var user = _appcontext.Users
                 .FirstOrDefault(u => u.EmailId == dto.Email);
 
-            if (user != null)
-            {
-                Random random = new Random();
+                if (user != null)
+                {
+                    Random random = new Random();
 
-                string otp = random.Next(100000, 999999).ToString();
+                    string otp = random.Next(100000, 999999).ToString();
 
-                user.PasswordResetOtp = otp;
+                    user.PasswordResetOtp = otp;
 
-                user.PasswordResetOtpExpiry = DateTime.Now.AddMinutes(2);
+                    user.PasswordResetOtpExpiry = DateTime.Now.AddMinutes(2);
 
-                _appcontext.SaveChanges();
+                    _appcontext.SaveChanges();
 
-                string body = $@"
+                    string body = $@"
                             <div style='font-family:Arial;padding:20px;'>
                                 <h2>Password Reset OTP</h2>
                                 <p>
@@ -221,49 +242,95 @@ namespace EMSAuthApi.Services
                                 </p>
                             </div>";
 
-                await _emailService.SendEmailAsync(
-                    user.EmailId,
-                    "Reset Password OTP",
-                    body);
+                    await _emailService.SendEmailAsync(
+                        user.EmailId,
+                        "Reset Password OTP",
+                        body);
+                }
+                return new ServiceResponseDto<string>
+                {
+                    Success = true,
+                    Message = "If the email exists, OTP has been sent"
+                };
             }
-            return "If the email address exists, an OTP has been sent";
+            catch
+            {
+
+                throw;
+            }
+
         }
 
-        public async Task<string> ResetPasswordAsync(ResetPasswordDto dto)
+        public async Task<ServiceResponseDto<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
-            var user = _appcontext.Users.FirstOrDefault(u => u.EmailId == dto.Email);
-
-            if (user == null)
+            try
             {
-                return "Invalid User";
-            }
+                var user = _appcontext.Users.FirstOrDefault(u => u.EmailId == dto.Email);
 
-            if (user.PasswordResetOtp != dto.Otp)
-            {
-                user.OtpFailedAttempts++;
-                if (user.OtpFailedAttempts >=5)
+                if (user == null)
                 {
-                    user.PasswordResetOtp = null;
-                    user.PasswordResetOtpExpiry = null;
-                    _appcontext.SaveChanges();
-                    return "Too many invalid attempts. Please request new OTP.";
+                    return new ServiceResponseDto<string>
+                    {
+                        Success = false,
+                        Message = "Invalid user"
+                    };
                 }
-                _appcontext.SaveChanges();
-                return "Invalid Otp";
-            }
-            if (user.PasswordResetOtpExpiry < DateTime.Now)
-            {
-                return "Otp Expired";
-            }
-            
-                user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
+
+                if (user.PasswordResetOtp != dto.Otp)
+                {
+                    user.OtpFailedAttempts++;
+
+                    if (user.OtpFailedAttempts >= 5)
+                    {
+                        user.PasswordResetOtp = null;
+                        user.PasswordResetOtpExpiry = null;
+
+                        _appcontext.SaveChanges();
+
+                        return new ServiceResponseDto<string>
+                        {
+                            Success = false,
+                            Message = "Too many invalid attempts"
+                        };
+                    }
+
+                    _appcontext.SaveChanges();
+
+                    return new ServiceResponseDto<string>
+                    {
+                        Success = false,
+                        Message = "Invalid OTP"
+                    };
+                }
+
+                if (user.PasswordResetOtpExpiry < DateTime.Now)
+                {
+                    return new ServiceResponseDto<string>
+                    {
+                        Success = false,
+                        Message = "OTP expired"
+                    };
+                }
+
+                user.PasswordHash = _passwordHasher.HashPassword( user,dto.NewPassword);
 
                 user.PasswordResetOtp = null;
                 user.PasswordResetOtpExpiry = null;
+                user.OtpFailedAttempts = 0;
 
                 _appcontext.SaveChanges();
-            
-            return "Password reset successfully";
+
+                return new ServiceResponseDto<string>
+                {
+                    Success = true,
+                    Message = "Password reset successfully"
+                };
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
+

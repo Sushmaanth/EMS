@@ -38,3 +38,10 @@ JWT Generated
 Error Handeling - 
 need to show erro if the user enter invalid password or email id in t front end - Login
 If the email not exists then also show error in - Account Activation
+
+
+
+new task 25/5/26
+*Implement azure blob storage
+
+<=>Add new Feild - "employee personal docs" - emp govt ids

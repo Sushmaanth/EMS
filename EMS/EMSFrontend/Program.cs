@@ -1,6 +1,7 @@
 using Dtos.Validation;
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
+using EMSFrontend.GlobalException;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 
@@ -43,7 +44,10 @@ namespace EMSFrontend
             builder.Services.AddHttpContextAccessor();
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<GlobalExceptionFilter>();
+            });
 
             builder.Services.AddDistributedMemoryCache();
 

@@ -2,7 +2,6 @@
 using Entities;
 using Entities.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Dtos.Repository.Implementation
 {

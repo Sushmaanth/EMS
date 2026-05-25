@@ -1,4 +1,5 @@
 ﻿using EMSFrontend.Api.Abstraction;
+using EMSFrontend.Api.ApiException;
 using EMSFrontend.Models;
 using System.Net;
 using System.Net.Http.Headers;
@@ -37,7 +38,7 @@ namespace EMSFrontend.Api.Implementation
             {
                 throw new Exception(e.Message);
             }
-            
+
         }
 
         private async Task<bool> RefreshTokenJwtAsync()
@@ -79,286 +80,237 @@ namespace EMSFrontend.Api.Implementation
                 return false;
             }
         }
+
+        private async Task HandleErrorResponse(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            var error =
+                await response.Content.ReadAsStringAsync();
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedException("Session expired");
+            }
+
+            if ((int)response.StatusCode >= 500)
+            {
+                throw new Exception("Internal server error");
+            }
+
+            throw new ApiRequestException(error,
+                (int)response.StatusCode);
+        }
         public async Task<IEnumerable<EmployeeViewModel>> SendViewAllEmployeeRequestAsync()
         {
-            try
+
+            SetBearerToken();
+            var response = await client.GetAsync("all");
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
                 SetBearerToken();
-                var response = await client.GetAsync("all");
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
 
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
+                response = await client.GetAsync("all");
+            }
+            await HandleErrorResponse(response);
 
-                    response = await client.GetAsync("all");
-                }
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-                var data = await response.Content.ReadFromJsonAsync<IEnumerable<EmployeeViewModel>>();
-                return data;
-            }
-            catch
-            {
-                throw;
-            }
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<EmployeeViewModel>>>();
+            return result.Data;
+
         }
 
         public async Task<CreateEmployeeViewModel> SendCreateEmployeeRequestAsync(CreateEmployeeViewModel model)
         {
-            try
+            SetBearerToken();
+            var response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+                    throw new UnauthorizedException("Session expired");
+                }
                 SetBearerToken();
-                var response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
-
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
-                    response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
-                }
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-                return await response.Content.ReadFromJsonAsync<CreateEmployeeViewModel>();
+                response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
             }
-            catch
-            {
-                throw;
-            }
+
+            await HandleErrorResponse(response);
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<CreateEmployeeViewModel>>();
+
+            return result.Data;
         }
 
         public async Task<EmployeeViewModel> SendDeleteEmployeeRequestAsync(int id)
         {
-            try
+            SetBearerToken();
+            var response = await client.DeleteAsync($"delete/{id}");
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+                    throw new UnauthorizedException("Session expired");
+                }
                 SetBearerToken();
-                var response = await client.DeleteAsync($"delete/{id}");
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
 
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
+                response = await client.DeleteAsync($"delete/{id}");
+            }
+            await HandleErrorResponse(response);
 
-                    response = await client.DeleteAsync($"delete/{id}");
-                }
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-                return await response.Content.ReadFromJsonAsync<EmployeeViewModel>();
-            }
-            catch
-            {
-                throw;
-            }
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<EmployeeViewModel>>();
+            return result.Data;
         }
 
         public async Task<EmployeeViewModel> SendUpdateEmployeeRequestAsync(int id, EmployeeViewModel model)
         {
-            try
+            SetBearerToken();
+            var response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
                 SetBearerToken();
-                var response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}",model);
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
-
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
-
-                    response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
-                }
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-                return await response.Content.ReadFromJsonAsync<EmployeeViewModel>();
+                response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
             }
-            catch
-            {
-                throw;
-            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<EmployeeViewModel>>();
+
+            return result.Data;
         }
 
         public async Task<EmployeeViewModel> SendGetAEmployeeRequestAsync(int id)
         {
-            try
+            SetBearerToken();
+            var response = await client.GetAsync($"employee/{id}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+
+                }
                 SetBearerToken();
-                var response = await client.GetAsync($"employee/{id}");
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
-
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
-
-                    response = await client.GetAsync($"employee/{id}");
-                }
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-                return await response.Content.ReadFromJsonAsync<EmployeeViewModel>();
+                response = await client.GetAsync($"employee/{id}");
             }
-            catch
-            {
-                throw;
-            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<EmployeeViewModel>>();
+
+            return result.Data;
+
         }
 
         public async Task<IEnumerable<EmployeeViewModel>> SendSearchEmployeeRequestAsync(string searchText)
         {
-            try
+
+            var response = await client.GetAsync($"employee/search?searchText={searchText}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                var response = await client.GetAsync($"employee/search?searchText={searchText}");
-
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
                 {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
+                    accessor.HttpContext.Session.Clear();
 
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
+                    throw new UnauthorizedException("Session expired");
+                }
+                SetBearerToken();
 
-                    response = await client.GetAsync($"employee/search?searchText={searchText}");
-                }
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-                if (response.StatusCode == HttpStatusCode.NoContent)
-                {
-                    return new List<EmployeeViewModel>();
-                }
-                var data = await response.Content.ReadFromJsonAsync<IEnumerable<EmployeeViewModel>>();
-                return data ?? new List<EmployeeViewModel>();
+                response = await client.GetAsync($"employee/search?searchText={searchText}");
             }
-            catch
+
+            if (response.StatusCode == HttpStatusCode.NoContent)
             {
-                throw;
+                return new List<EmployeeViewModel>();
             }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<EmployeeViewModel>>>();
+
+            return result.Data ?? new List<EmployeeViewModel>();
         }
 
         public async Task<PaginationViewModel<EmployeeViewModel>> SendGetEmployeesAsync(string? searchText, int pageNumber, int pageSize)
         {
-            try
+
+            SetBearerToken();
+            var response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
                 SetBearerToken();
-                var response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
-
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
-
-                    response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
-                }
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-
-                var data = await response.Content.ReadFromJsonAsync<PaginationViewModel<EmployeeViewModel>>();
-
-                return data;
+                response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
             }
-            catch
-            {
-                throw;
-            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<PaginationViewModel<EmployeeViewModel>>>();
+
+            return result.Data;
+
         }
 
-        public async Task<IEnumerable<DepartmentViewmodel>>SendGetDepartmentsAsync()
+        public async Task<IEnumerable<DepartmentViewmodel>> SendGetDepartmentsAsync()
         {
-            try
+            SetBearerToken();
+            var response = await client.GetAsync("department/all");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
                 SetBearerToken();
-                var response = await client.GetAsync("department/all");
 
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    bool refreshed = await RefreshTokenJwtAsync();
-                    if (!refreshed)
-                    {
-                        accessor.HttpContext.Session.Clear();
-
-                        throw new UnauthorizedAccessException("Session expired");
-                    }
-                    SetBearerToken();
-
-                    response = await client.GetAsync("department/all");
-                }
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error =await response.Content.ReadAsStringAsync();
-
-                    throw new Exception(
-                        $"Api Error: {response.StatusCode}, Details: {error}");
-                }
-
-                var data =
-                    await response.Content
-                    .ReadFromJsonAsync<
-                        IEnumerable<DepartmentViewmodel>>();
-
-                return data;
+                response = await client.GetAsync("department/all");
             }
-            catch
-            {
-                throw;
-            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<DepartmentViewmodel>>>();
+
+            return result.Data;
         }
     }
 }
+ 

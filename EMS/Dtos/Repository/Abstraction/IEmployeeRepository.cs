@@ -1,14 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+﻿using Entities;
 
 namespace Dtos.Repository.Abstraction
 {
-    public interface IEmployeeRepository<T> where T: class
+    public interface IEmployeeRepository
     {
         //IEnumerable<EmployeeDto> SearchEmployee(string searchText);
 
-        PagenationDto<EmployeeDto> GetEmployees(string? searchText,int pageNumber, int pageSize);
+        Employee Create(Employee employee);
+
+        Employee? GetById(int id);
+
+        ICollection<Employee> View();
+
+        Employee? Update(Employee employee);
+
+        Employee? Delete(Employee employee);
+        IQueryable<Employee> GetEmployees(string? searchText);
+
+        ICollection<Department> GetDepartments();
     }
 }

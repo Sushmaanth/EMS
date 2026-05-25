@@ -1,11 +1,7 @@
-﻿using Dtos.Validation;
-using EMSFrontend.Api.Abstraction;
+﻿using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Models;
-using Entities;
-using Entities.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 
 namespace EMSFrontend.Controllers
 {
@@ -20,218 +16,117 @@ namespace EMSFrontend.Controllers
             //this.validator = validator;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index(string searchText,int pageNumber=1, int pageSize = 7)
+        private async Task LoadDepartmentsAsync(int? selectedDepartmentId = null)
         {
-            try
-            {
-                string token = HttpContext.Session.GetString("JWToken");
-                if (string.IsNullOrEmpty(token))
-                {
-                    return RedirectToAction("Login","Auth");
-                }
+            var departments =
+                await request.SendGetDepartmentsAsync();
 
-                //var employees  =  await request.SendViewAllEmployeeRequestAsync();
-                var employees = await request.SendGetEmployeesAsync(searchText,pageNumber,pageSize);
-                ViewBag.SearchText = searchText;
-                return View(employees);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
-                return RedirectToAction("Login","Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
+            ViewBag.Departments =
+                new SelectList(
+                    departments,
+                    "Id",
+                    "DepartmentName",
+                    selectedDepartmentId);
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchEmployees(string searchText, int pageNumber = 1,int pageSize = 7)
+        public async Task<IActionResult> Index(string searchText, int pageNumber = 1, int pageSize = 7)
         {
-            try
+            string token = HttpContext.Session.GetString("JWToken");
+            if (string.IsNullOrEmpty(token))
             {
-                var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
-                return PartialView("_EmployeeTable", employees);
-
-            }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
                 return RedirectToAction("Login", "Auth");
             }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
+
+            //var employees  =  await request.SendViewAllEmployeeRequestAsync();
+            var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
+            ViewBag.SearchText = searchText;
+            return View(employees);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchEmployees(string searchText, int pageNumber = 1, int pageSize = 7)
+        {
+
+            var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
+            return PartialView("_EmployeeTable", employees);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            try
+
+            var employee =
+                await request.SendGetAEmployeeRequestAsync(id);
+
+            if (employee == null)
             {
-                var employee =
-                    await request.SendGetAEmployeeRequestAsync(id);
+                TempData["ErrorMessage"] =
+                    "Employee not found";
 
-                if (employee == null)
-                {
-                    TempData["ErrorMessage"] =
-                        "Employee not found";
-
-                    return RedirectToAction("Index");
-                }
-
-                return View(employee);
+                return RedirectToAction("Index");
             }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
-                return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
 
-                return RedirectToAction(
-                    "Error",
-                    "Home");
-            }
+            return View(employee);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            try
-            {
-                var departments =
-                    await request.SendGetDepartmentsAsync();
-
-                ViewBag.Departments =
-                    new SelectList(
-                        departments,
-                        "Id",
-                        "DepartmentName");
-
-                return View();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
-                return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-
-                return RedirectToAction(
-                    "Error",
-                    "Home");
-            }
+            await LoadDepartmentsAsync();
+            return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-                
+                await LoadDepartmentsAsync();
 
-                var createEmployee = await request.SendCreateEmployeeRequestAsync(model);
-               
-                TempData["SuccessfullyCreatedEmployee"] = "Employee Added Successfully";
-                return RedirectToAction("Index", "Home");
+                return View(model);
             }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
-                return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
 
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
-            
+            var createEmployee = await request.SendCreateEmployeeRequestAsync(model);
+
+            TempData["SuccessfullyCreatedEmployee"] = "Employee Added Successfully";
+            return RedirectToAction("Index", "Home");
+
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await request.SendDeleteEmployeeRequestAsync(id);
-                TempData["DeletedEmployee"]= "Employee Deleted Successfully";
-                return RedirectToAction("Index", "Home");
-            }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
-                return RedirectToAction("Login","Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
+
+            await request.SendDeleteEmployeeRequestAsync(id);
+            TempData["DeletedEmployee"] = "Employee Deleted Successfully";
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            try
-            {
-                var employee = await request.SendGetAEmployeeRequestAsync(id);
+            var employee = await request.SendGetAEmployeeRequestAsync(id);
 
-                var departments = await request.SendGetDepartmentsAsync();
+            await LoadDepartmentsAsync(employee.DepartmentId);
 
-                ViewBag.Departments =
-            new SelectList(
-                departments,
-                "Id",
-                "DepartmentName",
-                employee.DepartmentId);
-
-                return View(employee);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] ="Your session has expired. Please login again.";
-                return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
+            return View(employee);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EmployeeViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var updateEmployee = await request.SendUpdateEmployeeRequestAsync(id, model);
-                TempData["employeeUpdateSuccessully"] = "Employee Updated Successfully";
-                return RedirectToAction("Index", "Home");
+                await LoadDepartmentsAsync(model.DepartmentId);
+
+                return View(model);
             }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] ="Your session has expired. Please login again.";
-                return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
+
+
+            var updateEmployee = await request.SendUpdateEmployeeRequestAsync(id, model);
+            TempData["employeeUpdateSuccessully"] = "Employee Updated Successfully";
+            return RedirectToAction("Index", "Home");
         }
 
         /*[HttpGet]
@@ -248,11 +143,5 @@ namespace EMSFrontend.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }*/
-
-        [HttpGet]
-        public IActionResult Error()
-        {
-            return View();
-        }
     }
 }

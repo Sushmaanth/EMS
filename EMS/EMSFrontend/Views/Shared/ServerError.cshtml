@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "_Layout1";
+    ViewBag.Title = "Server Error";
+}
+
+@{
+    Layout = "_Layout1";
+    ViewBag.Title = "Server Error";
+}
+
+<div class="server-error-container">
+    <div class="server-error-card">
+
+        <img src="~/images/500Server.png"
+             alt="Server Error"
+             class="server-error-image" />
+
+        <a asp-controller="Home" asp-action="Index"
+           class="server-error-button">
+            Back to Home
+        </a>
+    </div>
+</div>

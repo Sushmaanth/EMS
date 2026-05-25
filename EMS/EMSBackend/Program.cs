@@ -3,6 +3,10 @@ using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
 using Dtos.Validation;
+using EMSBackend.Middleware;
+using EMSBackend.Service.Abstraction;
+using EMSBackend.Service.Implementation;
+using Entities;
 using Entities.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -26,10 +30,10 @@ namespace EMSBackend
             var connStr = builder.Configuration.GetConnectionString("employeeManagementDbConStr");
 
             builder.Services.AddDbContext<AppDbContext>(opt=> opt.UseSqlServer(connStr, config=> config.MigrationsAssembly("EMSBackend")));
-            builder.Services.AddScoped<IRepository<EmployeeDto>, EmployeeRepository>();
-            builder.Services.AddScoped<IEmployeeRepository<EmployeeDto>, EmployeeRepository>();
-            builder.Services.AddScoped<EmployeeValidator>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
+            builder.Services.AddScoped<IEmployeeService,EmployeeService>();
+           
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
@@ -110,6 +114,8 @@ namespace EMSBackend
             }
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();
 

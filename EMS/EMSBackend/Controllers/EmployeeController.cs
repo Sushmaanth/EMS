@@ -1,13 +1,8 @@
 ﻿using Dtos;
-using Dtos.Repository.Abstraction;
-using Dtos.Repository.Implementation;
-using Dtos.Validation;
+using EMSBackend.Service.Abstraction;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace EMSBackend.Controllers
 {
@@ -16,80 +11,76 @@ namespace EMSBackend.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IRepository<EmployeeDto> repository;
+        private readonly IEmployeeService _employeeService;
 
-        private readonly IEmployeeRepository<EmployeeDto> employeeRepository;
-        private readonly EmployeeValidator validator;
-       
-
-        public EmployeeController(IRepository<EmployeeDto> repository, IEmployeeRepository<EmployeeDto> employeeRepository, EmployeeValidator validator)
+        public EmployeeController(IEmployeeService employeeService)
         {
-            this.repository = repository;
-            this.employeeRepository = employeeRepository;
-            this.validator = validator;
-           
+            _employeeService = employeeService;
         }
 
         [Route("all")]
         [HttpGet]
         public IActionResult ViewEmployees()
         {
-           var result = repository.View();
+            var result =_employeeService.View();
 
-           if (!result.Any())
-           {
-              return NotFound("No Data found");
-           }
-           else
-           {
-              return Ok(result);
-           }
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
+            }
+
+            return Ok(result);
         }
 
         [Route("add")]
         [HttpPost]
-        public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDto dto)
+        public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto dto)
         {
-            //use fluent api - refer validators
-            var created = repository.Create(dto);
-            return CreatedAtAction(nameof(CreateEmployee), created);
+            var result =_employeeService.Create(dto);
+
+            return CreatedAtAction(nameof(CreateEmployee),result);
         }
 
         [Route("delete/{id}")]
         [HttpDelete]
         public IActionResult DeleteEmployee([FromRoute] int id)
         {
-           var deleted = repository.Delete(id);
-           if (deleted ==null)
-           {
-              return NotFound("Employee not found");
-           }
-           return Ok(deleted);
+           var result = _employeeService.Delete(id);
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
+            }
+
+            return Ok(result);
         }
 
         [Route("update/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] EmployeeDto dto)
         {
-           var updated = repository.Update(id, dto);
-           if (updated == null)
-           {
-              return NotFound("Employee not found");
-           }
-           return Ok(updated);
+            var result =_employeeService.Update(id, dto);
+
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
+            }
+
+            return Ok(result);
         }
 
         [Route("employee/{id}")]
         [HttpGet]
         public IActionResult GetEmployeebyId([FromRoute] int id)
         {
-            
-                var found = repository.GetById(id);
-                if (found == null)
-                {
-                    return NotFound("Employee not found");
-                }
-            return Ok(found);
+
+            var result =_employeeService.GetById(id);
+
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
+            }
+
+            return Ok(result);
         }
 
         //[Route("employee/search")]
@@ -105,17 +96,20 @@ namespace EMSBackend.Controllers
         [Route("employees")]
         public IActionResult GetEmployees([FromQuery] string? searchText,[FromQuery]int pageNumber = 1, [FromQuery]int pageSize = 5)
         {
-                var result = employeeRepository.GetEmployees(searchText,pageNumber, pageSize);
+            var result = _employeeService.GetEmployees(
+                searchText,
+                pageNumber,
+                pageSize);
 
-                return Ok(result);
+            return Ok(result);
         }
 
         [Route("department/all")]
         [HttpGet]
         public IActionResult GetDepartments()
         {
-           var departments = repository.GetDepartments();
-            return Ok(departments);
+            var result = _employeeService.GetDepartments();
+            return Ok(result);
         }
     }
 }

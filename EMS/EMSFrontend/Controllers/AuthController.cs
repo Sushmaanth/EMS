@@ -28,45 +28,29 @@ namespace EMSFrontend.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            try
-            {
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
 
-                var result =await authRequest.LoginAsync(model);
+                var result = await authRequest.LoginAsync(model);
 
-                HttpContext.Session.SetString("JWToken",result.Token);
+                HttpContext.Session.SetString("JWToken", result.Token);
 
                 HttpContext.Session.SetString("RefreshToken", result.RefreshToken);
 
-                HttpContext.Session.SetString("Role",result.Role);
+                HttpContext.Session.SetString("Role", result.Role);
 
-                HttpContext.Session.SetString("EmailId",result.EmailId);
+                HttpContext.Session.SetString("EmailId", result.EmailId);
 
                 TempData["SuccessfullyUserLoggegIn"] = "Login Successfully";
 
-                if (result.Role =="Admin")
+                if (result.Role == "Admin")
                 {
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
 
-                return RedirectToAction("Dashboard","Employee");
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("Invalid Email") ||
-                         e.Message.Contains("Invalid Password"))
-                {
-                    ModelState.AddModelError("Password", "Invalid Email or Password");
-                }
-                else
-                {
-                    ModelState.AddModelError("", e.Message);
-                }
-                return View(model);
-            }
+                return RedirectToAction("Dashboard", "Employee");
         }
 
         [HttpGet]
@@ -78,8 +62,6 @@ namespace EMSFrontend.Controllers
         [HttpPost]
         public async Task<IActionResult> ActivateAccount(AccountActivationViewModel model)
         {
-            try
-            {
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -89,23 +71,6 @@ namespace EMSFrontend.Controllers
 
                 TempData["SuccessfullyAccountActivated"] = "Account Activated Successfully";
                 return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Contains("Employee email not found"))
-                {
-                    ModelState.AddModelError("EmailId", "Email not found");
-                }
-                else if (e.Message.Contains("Account already activated"))
-                {
-                    ModelState.AddModelError("EmailId","Account already activated");
-                }
-                else
-                {
-                    ModelState.AddModelError("", e.Message);
-                }
-                return View(model);
-            }
         }
 
         public IActionResult MicrosoftLogin()

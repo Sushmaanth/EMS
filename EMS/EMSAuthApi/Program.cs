@@ -2,6 +2,7 @@
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
+using EMSAuthApi.Middleware;
 using EMSAuthApi.Services;
 using Entities;
 using Entities.Data;
@@ -67,6 +68,8 @@ namespace EMSAuthApi
 
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();
 

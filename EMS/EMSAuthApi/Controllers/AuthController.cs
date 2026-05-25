@@ -1,7 +1,6 @@
 ﻿using Dtos;
 using Dtos.Repository.Abstraction;
 using EMSAuthApi.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMSAuthApi.Controllers
@@ -10,13 +9,13 @@ namespace EMSAuthApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository<ActivateAccountDTO> userRepository;
-        private readonly AuthService authService;
+        private readonly IUserRepository<ActivateAccountDTO> _userRepository;
+        private readonly AuthService _authService;
 
         public AuthController(IUserRepository<ActivateAccountDTO> userRepository,AuthService authService)
         {
-            this.authService = authService;
-            this.userRepository = userRepository;
+            _authService = authService;
+            _userRepository = userRepository;
         }
 
 
@@ -24,10 +23,10 @@ namespace EMSAuthApi.Controllers
         [HttpPost]
         public IActionResult ActivateAccount([FromBody] ActivateAccountDTO dto)
         {
-            var result = userRepository.AccountActivation(dto);
+            var result = _userRepository.AccountActivation(dto);
             if (!result.Success)
             {
-                return BadRequest(result.Message);
+                return BadRequest(result);
             }
             return CreatedAtAction(nameof(ActivateAccount), result);
         }
@@ -36,63 +35,57 @@ namespace EMSAuthApi.Controllers
         [HttpPost]
         public IActionResult Login([FromBody]LoginDto dto)
         {
-            try
-            {
-                var result = authService.LoginEmployee(dto);
+            var result = _authService.LoginEmployee(dto);
 
-                return Ok(result);
-            }
-            catch (Exception e)
+            if (!result.Success)
             {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+                return Unauthorized(result);
             }
+
+            return Ok(result);
         }
-
 
         [Route("refresh-token")]
         [HttpPost]
         public IActionResult RefreshToken(RefreshTokenDTO dto)
         {
-            try
-            {
-                var result = authService.RefreshToken(dto);
+            var result = _authService.RefreshToken(dto);
 
-                return Ok(result);
-            }
-            catch (Exception e)
+            if (!result.Success)
             {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+                return BadRequest(result);
             }
+
+            return Ok(result);
+          
         }
+
         [Route("microsoft-login")]
         [HttpPost]
         public IActionResult MicrosoftLogin([FromBody] string email)
         {
-            try
+            var result = _authService.MicrosoftLogin(email);
+
+            if (!result.Success)
             {
-                var result = authService.MicrosoftLogin(email);
-                return Ok(result);
+                return BadRequest(result);
             }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+
+            return Ok(result);
         }
 
         [Route("forgot-password")]
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
         {
-            try
-            {
-                var result = await authService.ForgotPasswordAsync(dto);
+            var result = await _authService.ForgotPasswordAsync(dto);
 
-                return Ok(result);
-            }
-            catch (Exception e)
+            if (!result.Success)
             {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
+               return BadRequest(result);
             }
+
+            return Ok(result);
         }
 
         [Route("reset-password")]
@@ -100,15 +93,12 @@ namespace EMSAuthApi.Controllers
 
         public async Task<IActionResult> ResetPassword(ResetPasswordDto dto) 
         {
-            try
-            {
-                var result = await authService.ResetPasswordAsync(dto);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return Problem($"Exception: {e.Message} and Inner Exception : {e.InnerException?.Message}");
-            }
+           var result = await _authService.ResetPasswordAsync(dto);
+           if (!result.Success)
+           {
+              return BadRequest(result);
+           }
+            return Ok(result);
         }
     }
 }

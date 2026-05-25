@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "Dtos.EmployeeDto",
+        "Type": "Dtos.CreateEmployeeDto",
         "IsRequired": true
       }
     ],

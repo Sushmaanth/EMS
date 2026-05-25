@@ -1,7 +1,7 @@
-﻿using Dtos;
-using EMSFrontend.Api.Abstraction;
+﻿using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using EMSFrontend.Api.ApiException;
+
 
 namespace EMSFrontend.Api.Implementation
 {
@@ -16,123 +16,84 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task ActivateAccountAsync(AccountActivationViewModel model)
         {
-            try
+            var response = await client.PostAsJsonAsync("activate-account", model);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await client.PostAsJsonAsync("activate-account", model);
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                throw new ApiRequestException(error.Message, (int)response.StatusCode);
             }
         }
 
         public async Task<LoginResponseViewModel> LoginAsync(LoginViewModel model)
         {
-            try
-            {
-                var response = await client.PostAsJsonAsync("login", model);
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
+            var response = await client.PostAsJsonAsync("login", model);
 
-                var data = await response.Content.ReadFromJsonAsync<LoginResponseViewModel>();
-
-                return data;
-            }
-            catch (Exception e)
+            if (!response.IsSuccessStatusCode)
             {
-                throw new Exception(e.Message);
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                throw new ApiRequestException(error.Message, (int)response.StatusCode);
             }
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<LoginResponseViewModel>>();
+
+            return result.Data;
         }
 
         public async Task<LoginResponseViewModel> RefreshTokenAsync(RefreshTokenViewModel model)
         {
-            try
+            var response = await client.PostAsJsonAsync("refresh-token", model);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await client.PostAsJsonAsync("refresh-token", model);
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Api Error: {response.StatusCode}, Details: {error}");
-                }
-
-                var data = await response.Content.ReadFromJsonAsync<LoginResponseViewModel>();
-
-                return data;
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                throw new ApiRequestException(error.Message, (int)response.StatusCode);
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<LoginResponseViewModel>>();
+
+            return result.Data;
         }
 
         public async Task<LoginResponseViewModel> MicrosoftLoginAsync(string email)
         {
-            try
+            var response = await client.PostAsJsonAsync("microsoft-login", email);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await client.PostAsJsonAsync("microsoft-login", email);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-
-                    throw new Exception(error);
-                }
-
-                return await response.Content.ReadFromJsonAsync<LoginResponseViewModel>();
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                throw new ApiRequestException(error.Message, (int)response.StatusCode);
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-           
+
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<LoginResponseViewModel>>();
+            return result.Data;
         }
 
         public async Task<string> SendForgotPasswordAsync(ForgotPasswordViewModel model)
         {
-            try
+            var response = await client.PostAsJsonAsync("forgot-password", model);
+
+            var result = await response.Content
+            .ReadFromJsonAsync<ServiceResponseViewModel<string>>();
+
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await client.PostAsJsonAsync("forgot-password", model);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-
-                    throw new Exception(error);
-                }
-
-                return await response.Content.ReadAsStringAsync();
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                throw new ApiRequestException(error.Message, (int)response.StatusCode);
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+
+            return result.Message;
         }
 
         public async Task<string> SendResetPasswordAsync(ResetPasswordViewModel model)
         {
-            try
+            var response = await client.PostAsJsonAsync("reset-password", model);
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<string>>();
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await client.PostAsJsonAsync("reset-password", model);
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
+                throw new ApiRequestException(error.Message, (int)response.StatusCode);
+            }
 
-                    throw new Exception(error);
-                }
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            return result.Message;
         }
     }
 }
