@@ -53,7 +53,24 @@ namespace EMSBackend
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                            builder.Configuration["Jwt:Key"]))
 
+                   };
 
+                   options.Events = new JwtBearerEvents
+                   {
+                       OnChallenge = async context =>
+                       {
+                           context.HandleResponse();
+
+                           context.Response.StatusCode = 401;
+
+                           context.Response.ContentType = "application/json";
+
+                           await context.Response.WriteAsJsonAsync(new
+                           {
+                               title = "Unauthorized",
+                               status = 401
+                           });
+                       }
                    };
                });
 

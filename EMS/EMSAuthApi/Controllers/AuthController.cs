@@ -1,6 +1,6 @@
 ﻿using Dtos;
 using Dtos.Repository.Abstraction;
-using EMSAuthApi.Services;
+using EMSAuthApi.Services.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMSAuthApi.Controllers
@@ -9,13 +9,11 @@ namespace EMSAuthApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository<ActivateAccountDTO> _userRepository;
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController(IUserRepository<ActivateAccountDTO> userRepository,AuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userRepository = userRepository;
         }
 
 
@@ -23,7 +21,7 @@ namespace EMSAuthApi.Controllers
         [HttpPost]
         public IActionResult ActivateAccount([FromBody] ActivateAccountDTO dto)
         {
-            var result = _userRepository.AccountActivation(dto);
+            var result = _authService.ActivateAccount(dto);
             if (!result.Success)
             {
                 return BadRequest(result);

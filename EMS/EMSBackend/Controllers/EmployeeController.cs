@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EMSBackend.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeeController : ControllerBase
@@ -72,7 +72,7 @@ namespace EMSBackend.Controllers
         [HttpGet]
         public IActionResult GetEmployeebyId([FromRoute] int id)
         {
-
+            //throw new Exception("Database failure");
             var result =_employeeService.GetById(id);
 
             if (!result.Success)

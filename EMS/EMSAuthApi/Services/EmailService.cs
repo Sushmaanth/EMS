@@ -1,11 +1,12 @@
 ﻿using EMSAuthApi.Models;
+using EMSAuthApi.Services.Abstraction;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
 namespace EMSAuthApi.Services
 {
-    public class EmailService
+    public class EmailService: IEmailService
     {
         private readonly EmailSettings settings;
 

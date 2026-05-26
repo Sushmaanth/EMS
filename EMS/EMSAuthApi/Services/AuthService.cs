@@ -1,233 +1,193 @@
 ﻿using Dtos;
+using Dtos.Repository.Abstraction;
+using EMSAuthApi.Services.Abstraction;
 using Entities;
-using Entities.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace EMSAuthApi.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
-        private readonly AppDbContext _appcontext;
-        private readonly IPasswordHasher<User> _passwordHasher;
-        private readonly TokenService _tokenService;
-        private readonly EmailService _emailService;
 
-        public AuthService(AppDbContext context, IPasswordHasher<User> passwordHasher, TokenService tokenService, EmailService emailService)
+        private readonly IAuthRepository _authrepository;
+        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
+
+        public AuthService(IAuthRepository repository, IPasswordHasher<User> passwordHasher, ITokenService tokenService, IEmailService emailService)
         {
-            _appcontext = context;
+            _authrepository = repository;
             _passwordHasher = passwordHasher;
             _tokenService = tokenService;
             _emailService = emailService;
         }
         public ServiceResponseDto<LoginResponseDTO> LoginEmployee(LoginDto dto)
         {
-            try
+
+            var user = _authrepository.GetUserByEmail(dto.Email);
+
+            if (user == null)
             {
-                var user = _appcontext.Users.Include(u => u.Role)
-                  .FirstOrDefault(u => u.EmailId == dto.Email);
-
-                if (user == null)
-                {
-                    return new ServiceResponseDto<LoginResponseDTO>
-                    {
-                        Success = false,
-                        Message = "Invalid email"
-                    };
-                }
-
-                bool isValidPassword = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) == PasswordVerificationResult.Success;
-
-                if (!isValidPassword)
-                {
-                    return new ServiceResponseDto<LoginResponseDTO>
-                    {
-                        Success = false,
-                        Message = "Invalid password"
-                    };
-                }
-                if (!user.IsActive)
-                {
-                    return new ServiceResponseDto<LoginResponseDTO>
-                    {
-                        Success = false,
-                        Message = "User account inactive"
-                    };
-                }
-
-                string token = _tokenService.GenerateToken(user);
-
-                string refreshToken = _tokenService.GenerateRefreshToken();
-
-                user.RefreshToken = refreshToken;
-
-                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(2);
-
-                _appcontext.SaveChanges();
-
                 return new ServiceResponseDto<LoginResponseDTO>
                 {
-                    Success = true,
-
-                    Data = new LoginResponseDTO
-                    {
-                        Token = token,
-                        EmailId = user.EmailId,
-                        Role = user.Role.RoleName,
-                        RefreshToken = refreshToken
-                    }
+                    Success = false,
+                    Message = "Invalid email"
                 };
             }
-            catch
+
+            bool isValidPassword = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) == PasswordVerificationResult.Success;
+
+            if (!isValidPassword)
             {
-                throw;
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "Invalid password"
+                };
             }
+            if (!user.IsActive)
+            {
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "User account inactive"
+                };
+            }
+
+            string token = _tokenService.GenerateToken(user);
+
+            string refreshToken = _tokenService.GenerateRefreshToken();
+
+            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(2));
+
+
+            return new ServiceResponseDto<LoginResponseDTO>
+            {
+                Success = true,
+
+                Data = new LoginResponseDTO
+                {
+                    Token = token,
+                    EmailId = user.EmailId,
+                    Role = user.Role.RoleName,
+                    RefreshToken = refreshToken
+                }
+            };
+
         }
 
         public ServiceResponseDto<LoginResponseDTO> RefreshToken(RefreshTokenDTO dto)
         {
-            try
+
+            var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
+
+            string email = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+            var user = _authrepository.GetUserByEmail(email);
+
+            if (user == null)
             {
-                var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
-
-                string email = principal.FindFirst(ClaimTypes.Email)?.Value;
-
-                var user = _appcontext.Users
-                    .Include(u => u.Role)
-                    .FirstOrDefault(u =>
-                    u.EmailId == email);
-
-                if (user == null)
-                {
-                    return new ServiceResponseDto<LoginResponseDTO>
-                    {
-                        Success = false,
-                        Message = "User not found"
-                    };
-                }
-
-                if (user.RefreshToken != dto.RefreshToken)
-                {
-                    return new ServiceResponseDto<LoginResponseDTO>
-                    {
-                        Success = false,
-                        Message = "Invalid refresh token"
-                    };
-                }
-
-                if (user.RefreshTokenExpiryTime <= DateTime.Now)
-                {
-                    return new ServiceResponseDto<LoginResponseDTO>
-                    {
-                        Success = false,
-                        Message = "Refresh token expired"
-                    };
-                }
-
-                string newAccessToken = _tokenService.GenerateToken(user);
-
-                string newRefreshToken = _tokenService.GenerateRefreshToken();
-
-                user.RefreshToken = newRefreshToken;
-
-                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(1);
-
-                _appcontext.SaveChanges();
-
                 return new ServiceResponseDto<LoginResponseDTO>
                 {
-                    Success = true,
-                    Data = new LoginResponseDTO
-                    {
-                        Token = newAccessToken,
-
-                        RefreshToken = newRefreshToken,
-
-                        EmailId = user.EmailId,
-
-                        Role = user.Role.RoleName
-                    }
+                    Success = false,
+                    Message = "User not found"
                 };
             }
-            catch
-            {
 
-                throw;
+            if (user.RefreshToken != dto.RefreshToken)
+            {
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "Invalid refresh token"
+                };
             }
 
+            if (user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                return new ServiceResponseDto<LoginResponseDTO>
+                {
+                    Success = false,
+                    Message = "Refresh token expired"
+                };
+            }
+
+            string newAccessToken = _tokenService.GenerateToken(user);
+
+            string newRefreshToken = _tokenService.GenerateRefreshToken();
+
+            _authrepository.UpdateRefreshToken(user, newRefreshToken, DateTime.Now.AddMinutes(1));
+
+
+            return new ServiceResponseDto<LoginResponseDTO>
+            {
+                Success = true,
+                Message = "Logged in succesfully",
+                Data = new LoginResponseDTO
+                {
+                    Token = newAccessToken,
+
+                    RefreshToken = newRefreshToken,
+
+                    EmailId = user.EmailId,
+
+                    Role = user.Role.RoleName
+                }
+            };
         }
 
         public ServiceResponseDto<LoginResponseDTO> MicrosoftLogin(string email)
         {
-            try
+
+            var user = _authrepository.GetUserByEmail(email);
+
+            if (user == null)
             {
-                var user = _appcontext.Users
-                    .Include(u => u.Role)
-                    .FirstOrDefault(u =>
-                        u.EmailId == email);
-
-                if (user == null)
-                {
-                    throw new Exception("User not registered in EMS");
-                }
-
-                if (!user.IsActive)
-                {
-                    throw new Exception("User account inactive");
-                }
-
-                string token = _tokenService.GenerateToken(user);
-
-                string refreshToken = _tokenService.GenerateRefreshToken();
-
-                user.RefreshToken = refreshToken;
-
-                user.RefreshTokenExpiryTime = DateTime.Now.AddMinutes(30);
-
-                _appcontext.SaveChanges();
-
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = true,
-                    Message = "Login successful",
-
-                    Data = new LoginResponseDTO
-                    {
-                        Token = token,
-                        RefreshToken = refreshToken,
-                        EmailId = user.EmailId,
-                        Role = user.Role.RoleName
-                    }
-                };
+                throw new Exception("User not registered in EMS");
             }
 
-            catch
+            if (!user.IsActive)
             {
-                throw;
+                throw new Exception("User account inactive");
             }
+
+            string token = _tokenService.GenerateToken(user);
+
+            string refreshToken = _tokenService.GenerateRefreshToken();
+
+            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(30));
+
+
+            return new ServiceResponseDto<LoginResponseDTO>
+            {
+                Success = true,
+                Message = "Login successful",
+
+                Data = new LoginResponseDTO
+                {
+                    Token = token,
+                    RefreshToken = refreshToken,
+                    EmailId = user.EmailId,
+                    Role = user.Role.RoleName
+                }
+            };
         }
 
         public async Task<ServiceResponseDto<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
-            try
+
+            var user = _authrepository.GetUserByEmail(dto.Email);
+
+            if (user != null)
             {
-                var user = _appcontext.Users
-                .FirstOrDefault(u => u.EmailId == dto.Email);
+                Random random = new Random();
 
-                if (user != null)
-                {
-                    Random random = new Random();
+                string otp = random.Next(100000, 999999).ToString();
 
-                    string otp = random.Next(100000, 999999).ToString();
+                _authrepository.UpdatePasswordResetOtp(user, otp, DateTime.Now.AddMinutes(2));
 
-                    user.PasswordResetOtp = otp;
-
-                    user.PasswordResetOtpExpiry = DateTime.Now.AddMinutes(2);
-
-                    _appcontext.SaveChanges();
-
-                    string body = $@"
+                string body = $@"
                             <div style='font-family:Arial;padding:20px;'>
                                 <h2>Password Reset OTP</h2>
                                 <p>
@@ -242,94 +202,88 @@ namespace EMSAuthApi.Services
                                 </p>
                             </div>";
 
-                    await _emailService.SendEmailAsync(
-                        user.EmailId,
-                        "Reset Password OTP",
-                        body);
-                }
-                return new ServiceResponseDto<string>
-                {
-                    Success = true,
-                    Message = "If the email exists, OTP has been sent"
-                };
+                await _emailService.SendEmailAsync(
+                    user.EmailId,
+                    "Reset Password OTP",
+                    body);
             }
-            catch
+            return new ServiceResponseDto<string>
             {
-
-                throw;
-            }
-
+                Success = true,
+                Message = "If the email exists, OTP has been sent"
+            };
         }
+
+    
 
         public async Task<ServiceResponseDto<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
-            try
+            var user = _authrepository.GetUserByEmail(dto.Email);
+
+            if (user == null)
             {
-                var user = _appcontext.Users.FirstOrDefault(u => u.EmailId == dto.Email);
-
-                if (user == null)
+                return new ServiceResponseDto<string>
                 {
-                    return new ServiceResponseDto<string>
-                    {
-                        Success = false,
-                        Message = "Invalid user"
-                    };
-                }
+                    Success = false,
+                    Message = "Invalid user"
+                };
+            }
 
-                if (user.PasswordResetOtp != dto.Otp)
+            if (user.PasswordResetOtp != dto.Otp)
+            {
+                _authrepository.IncrementOtpFailedAttempts(user);
+
+                if (user.OtpFailedAttempts >= 5)
                 {
-                    user.OtpFailedAttempts++;
+                    _authrepository.ClearOtp(user);
 
-                    if (user.OtpFailedAttempts >= 5)
-                    {
-                        user.PasswordResetOtp = null;
-                        user.PasswordResetOtpExpiry = null;
-
-                        _appcontext.SaveChanges();
-
-                        return new ServiceResponseDto<string>
-                        {
-                            Success = false,
-                            Message = "Too many invalid attempts"
-                        };
-                    }
-
-                    _appcontext.SaveChanges();
+                    _authrepository.Save();
 
                     return new ServiceResponseDto<string>
                     {
                         Success = false,
-                        Message = "Invalid OTP"
+                        Message = "Too many invalid attempts"
                     };
                 }
 
-                if (user.PasswordResetOtpExpiry < DateTime.Now)
-                {
-                    return new ServiceResponseDto<string>
-                    {
-                        Success = false,
-                        Message = "OTP expired"
-                    };
-                }
-
-                user.PasswordHash = _passwordHasher.HashPassword( user,dto.NewPassword);
-
-                user.PasswordResetOtp = null;
-                user.PasswordResetOtpExpiry = null;
-                user.OtpFailedAttempts = 0;
-
-                _appcontext.SaveChanges();
+                _authrepository.Save();
 
                 return new ServiceResponseDto<string>
                 {
-                    Success = true,
-                    Message = "Password reset successfully"
+                    Success = false,
+                    Message = "Invalid OTP"
                 };
             }
-            catch
+
+            if (user.PasswordResetOtpExpiry < DateTime.Now)
             {
-                throw;
+                return new ServiceResponseDto<string>
+                {
+                    Success = false,
+                    Message = "OTP expired"
+                };
             }
+
+            string hashedPassword = _passwordHasher.HashPassword(user, dto.NewPassword);
+
+            _authrepository.UpdatePassword(user, hashedPassword);
+
+            _authrepository.ClearOtp(user);
+
+            _authrepository.ResetOtpAttempts(user);
+
+            _authrepository.Save();
+
+            return new ServiceResponseDto<string>
+            {
+                Success = true,
+                Message = "Password reset successfully"
+            };
+        }
+
+        public ActivateAccountResponseDTO ActivateAccount(ActivateAccountDTO dto)
+        {
+            return _authrepository.AccountActivation(dto);
         }
     }
 }

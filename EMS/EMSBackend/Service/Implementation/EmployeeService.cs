@@ -197,6 +197,8 @@ namespace EMSBackend.Service.Implementation
         {
             try
             {
+                throw new Exception("Database failure");
+
                 var employee = _employeeRepository.GetById(id);
 
                 if (employee == null)

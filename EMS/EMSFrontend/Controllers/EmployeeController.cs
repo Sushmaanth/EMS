@@ -26,5 +26,10 @@ namespace EMSFrontend.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        public IActionResult Documents()
+        {
+            return View();
+        }
     }
 }

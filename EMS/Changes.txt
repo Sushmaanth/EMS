@@ -20,6 +20,9 @@ Passwd@1234
 sansa@gmail.com
 Passwd@123
 
+rahul@example.com
+Passwd@123
+
 EMS Flow
 ---------
 
@@ -45,3 +48,7 @@ new task 25/5/26
 *Implement azure blob storage
 
 <=>Add new Feild - "employee personal docs" - emp govt ids
+
+Task - Upload Document
+----------------------
+Validation - 50mb; except -text file and excel file rest are allowded.

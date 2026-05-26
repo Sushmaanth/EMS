@@ -4,6 +4,7 @@ using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
 using EMSAuthApi.Middleware;
 using EMSAuthApi.Services;
+using EMSAuthApi.Services.Abstraction;
 using Entities;
 using Entities.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,11 +27,11 @@ namespace EMSAuthApi
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-            builder.Services.AddScoped<TokenService>();
-            builder.Services.AddScoped<AuthService>();
-            builder.Services.AddScoped<IUserRepository<ActivateAccountDTO>,UserRepository>();
-            builder.Services.AddScoped<EmailService>();
+            builder.Services.AddScoped<ITokenService,TokenService>();
+            builder.Services.AddScoped<IAuthService,AuthService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options=>

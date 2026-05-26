@@ -1,13 +1,14 @@
-﻿using Entities;
+﻿using EMSAuthApi.Services.Abstraction;
+using Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace EMSAuthApi.Services
 {
-    public class TokenService
+    public class TokenService: ITokenService
     {
         private readonly IConfiguration configuration;
 
