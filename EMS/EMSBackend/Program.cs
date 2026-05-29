@@ -1,4 +1,5 @@
 
+using Azure.Storage.Blobs;
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
@@ -37,6 +38,9 @@ namespace EMSBackend
             builder.Services.AddScoped<IBlobService, BlobService>();
 
             builder.Configuration.AddUserSecrets<Program>();
+
+            builder.Services.AddSingleton(x =>new BlobServiceClient( builder.Configuration["AzureBlobStorage:ConnectionString"]));
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {

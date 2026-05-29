@@ -20,5 +20,15 @@ namespace EMSFrontend.Api.Abstraction
         Task<PaginationViewModel<EmployeeViewModel>> SendGetEmployeesAsync(string? searchText,int pageNumber, int pageSize);
         Task<IEnumerable<DepartmentViewmodel>>SendGetDepartmentsAsync();
 
+        Task<IEnumerable<DocumentCategoryViewModel>> SendGetDocumentCategoriesAsync();
+
+        Task<IEnumerable<DocumentTypeViewModel>>SendGetDocumentTypesByCategoryAsync(int categoryId);
+
+        Task<DeleteDocumentResponseViewModel>SendDeleteDocumentAsync(int documentId);
+
+        Task<EmployeeDocumentResponseViewModel>SendUploadDocumentAsync(EmployeeDocumentUploadViewModel model);
+        Task<EmployeeDocumentResponseViewModel>SendReplaceDocumentAsync(ReplaceDocumentViewModel model);
+
+        Task<DocumentViewResponseViewModel>SendViewDocumentAsync(int documentId);
     }
 }

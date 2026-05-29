@@ -101,8 +101,7 @@ namespace EMSFrontend.Api.Implementation
                 throw new Exception("Internal server error");
             }
 
-            throw new ApiRequestException(error,
-                (int)response.StatusCode);
+            throw new ApiRequestException(error,(int)response.StatusCode);
         }
         public async Task<IEnumerable<EmployeeViewModel>> SendViewAllEmployeeRequestAsync()
         {
@@ -308,6 +307,156 @@ namespace EMSFrontend.Api.Implementation
             await HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<DepartmentViewmodel>>>();
+
+            return result.Data;
+        }
+
+        public async Task<IEnumerable<DocumentCategoryViewModel>> SendGetDocumentCategoriesAsync()
+        {
+            SetBearerToken();
+
+            var response = await client.GetAsync("documentcategory");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                response =await client.GetAsync("documentcategory");
+            }
+
+            await HandleErrorResponse(response);
+
+            var result =await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<DocumentCategoryViewModel>>>();
+
+            return result.Data;
+        }
+
+        public async Task<IEnumerable<DocumentTypeViewModel>> SendGetDocumentTypesByCategoryAsync(int categoryId)
+        {
+            SetBearerToken();
+
+            var response = await client.GetAsync($"category/{categoryId}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed =await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                response =await client.GetAsync( $"category/{categoryId}");
+            }
+
+            await HandleErrorResponse(response);
+
+            var result =await response.Content.ReadFromJsonAsync<ServiceResponseViewModel< IEnumerable<DocumentTypeViewModel>>>();
+
+            return result.Data;
+        }
+
+        public async Task<DeleteDocumentResponseViewModel> SendDeleteDocumentAsync(int documentId)
+        {
+            SetBearerToken();
+
+            var response = await client.DeleteAsync($"delete-document/{documentId}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+                    throw new UnauthorizedException("Session expired");
+                }
+                SetBearerToken();
+
+                response = await client.DeleteAsync($"delete-document/{documentId}");
+            }
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<DeleteDocumentResponseViewModel>>();
+            return result.Data;
+        }
+
+        public async Task<EmployeeDocumentResponseViewModel> SendUploadDocumentAsync(EmployeeDocumentUploadViewModel model)
+        {
+            SetBearerToken();
+
+            MultipartFormDataContent content = new();
+
+            content.Add(new StringContent(model.EmployeeId.ToString()),"EmployeeId");
+
+            content.Add(new StringContent(model.DocumentTypeId.ToString()),"DocumentTypeId");
+
+            content.Add(new StreamContent(model.File.OpenReadStream()),"File",model.File.FileName);
+
+            var response =await client.PostAsync("upload",content);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+                    throw new UnauthorizedException("Session expired");
+                }
+                SetBearerToken();
+                response = await client.PostAsync("upload", content);
+            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync
+                <ServiceResponseViewModel
+                <EmployeeDocumentResponseViewModel>>();
+
+            return result.Data;
+        }
+
+        public async Task<EmployeeDocumentResponseViewModel> SendReplaceDocumentAsync(ReplaceDocumentViewModel model)
+        {
+            SetBearerToken();
+
+            MultipartFormDataContent content = new();
+
+            content.Add(new StringContent(model.DocumentId.ToString()),"DocumentId");
+
+            content.Add(new StreamContent(model.File.OpenReadStream()),"File", model.File.FileName);
+
+            var response = await client.PutAsync("edit-document", content);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+                    throw new UnauthorizedException("Session expired");
+                }
+                SetBearerToken();
+                response = await client.PutAsync("edit-document", content);
+            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync
+                <ServiceResponseViewModel
+                <EmployeeDocumentResponseViewModel>>();
 
             return result.Data;
         }

@@ -21,6 +21,14 @@ namespace EMSBackend.Service.Abstraction
         Task<ServiceResponseDto<EmployeeDocumentResponseDto>> UploadDocumentAsync(EmployeeDocumentUploadDto dto);
 
         ServiceResponseDto<IEnumerable<DocumentTypeResponseDto>>GetByCategory(int categoryId);
+
+        ServiceResponseDto<IEnumerable<DocumentCategoryResponseDto>>GetAll();
+
+        Task<ServiceResponseDto<DeleteDocumentResponseDto>> DeleteDocumentAsync(int documentId);
+
+        Task<ServiceResponseDto<EmployeeDocumentResponseDto>> ReplaceDocumentAsync(ReplaceDocumentDto dto);
+
+        Task<ServiceResponseDto<DocumentViewResponseDto>> GetDocumentUrlAsync(int documentId);
     }
 
 }

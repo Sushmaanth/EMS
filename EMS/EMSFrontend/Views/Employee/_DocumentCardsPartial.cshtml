@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DocumentTypeViewModel>
+
+<!-- Upload Grid -->
+<div class="row g-4">
+
+     @foreach (var document in Model)
+    {
+        <!-- Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="document-card">
+
+                <div class="card-top">
+                    <div>
+                        <h5>
+                            @document.Name
+                            @if (document.IsMandatory)
+                            {
+                                <small class="mandatory-doc-mark">*</small>
+                            }
+                        </h5>
+                    </div>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="DocumentTypeId" value="@document.Id" />
+                    <input type="file" id="file-upload" hidden accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <div class="upload-box">
+                        <div class="upload-icon">
+                            <i class="bi bi-cloud-upload"></i>
+                        </div>
+
+                        <p class="upload-title">
+                            Drop your file here
+                        </p>
+
+                        <small>
+                            Supported: All image formats, PDF, DOC, DOCX 
+                            <br/>
+                            Maximum file size: 50MB
+                        </small>
+
+                        <button type="button" class="btn btn-light mt-3 browse-btn">
+                            Browse File
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>

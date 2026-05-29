@@ -10,5 +10,15 @@ namespace Dtos.Repository.Abstraction
         DocumentType? GetById(int id);
 
         IEnumerable<DocumentType>GetByCategory(int categoryId);
+
+        IEnumerable<DocumentCategory> GetAll();
+
+        EmployeeDocument? GetEmployeeDocument(int employeeId, int documentTypeId);
+
+        public EmployeeDocument? GetDocumentById(int id);
+
+        void DeleteDocument(EmployeeDocument document);
+
+        Task SaveChangesAsync();
     }
 }

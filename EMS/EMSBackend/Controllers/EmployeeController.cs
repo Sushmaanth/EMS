@@ -23,7 +23,7 @@ namespace EMSBackend.Controllers
         [HttpGet]
         public IActionResult ViewEmployees()
         {
-            var result =_employeeService.View();
+            var result = _employeeService.View();
 
             if (!result.Success)
             {
@@ -38,9 +38,9 @@ namespace EMSBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto dto)
         {
-            var result =_employeeService.Create(dto);
+            var result = _employeeService.Create(dto);
 
-            return CreatedAtAction(nameof(CreateEmployee),result);
+            return CreatedAtAction(nameof(CreateEmployee), result);
         }
 
         [Authorize(Roles = "Admin")]
@@ -48,7 +48,7 @@ namespace EMSBackend.Controllers
         [HttpDelete]
         public IActionResult DeleteEmployee([FromRoute] int id)
         {
-           var result = _employeeService.Delete(id);
+            var result = _employeeService.Delete(id);
             if (!result.Success)
             {
                 return NotFound(result.Message);
@@ -62,7 +62,7 @@ namespace EMSBackend.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] EmployeeDto dto)
         {
-            var result =_employeeService.Update(id, dto);
+            var result = _employeeService.Update(id, dto);
 
             if (!result.Success)
             {
@@ -78,7 +78,7 @@ namespace EMSBackend.Controllers
         public IActionResult GetEmployeebyId([FromRoute] int id)
         {
             //throw new Exception("Database failure");
-            var result =_employeeService.GetById(id);
+            var result = _employeeService.GetById(id);
 
             if (!result.Success)
             {
@@ -99,7 +99,7 @@ namespace EMSBackend.Controllers
         [Authorize(Roles = "Admin")]
         [Route("employees")]
         [HttpGet]
-        public IActionResult GetEmployees([FromQuery] string? searchText,[FromQuery]int pageNumber = 1, [FromQuery]int pageSize = 5)
+        public IActionResult GetEmployees([FromQuery] string? searchText, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 5)
         {
             var result = _employeeService.GetEmployees(
                 searchText,
@@ -131,11 +131,58 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("category/{categoryId}")]
         public IActionResult GetByCategory(int categoryId)
         {
             var result = _employeeService.GetByCategory(categoryId);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpGet("documentcategory")]
+        public IActionResult GetAllCategory()
+        {
+            var result = _employeeService.GetAll();
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpDelete("delete-document/{documentId}")]
+        public async Task<IActionResult>DeleteDocument(int documentId)
+        {
+            var result =
+                await _employeeService.DeleteDocumentAsync(documentId);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPut("edit-document")]
+        public async Task<IActionResult> ReplaceDocument([FromForm] ReplaceDocumentDto dto)
+        {
+            var result = await _employeeService.ReplaceDocumentAsync(dto);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin,User")]
+        [HttpGet("view/{documentId}")]
+        public async Task<IActionResult>ViewDocument(int documentId)
+        {
+            var result = await _employeeService.GetDocumentUrlAsync(documentId);
 
             return Ok(result);
         }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model EmployeeDocumentPageViewModel
+@{
     Layout = "_Layout2";
     ViewBag.Title = "Documents";
 }
@@ -12,105 +13,18 @@
         </div>
         <!-- Category Navigation -->
         <div class="category-nav mb-4">
-            <button class="active">
-                <i class="bi bi-person-badge"></i>
-                Identity
+        @foreach (var category in Model.Categories)
+        {
+            <button type="button" 
+            class="category-btn @(category.Id == Model.Categories.First().Id ? "active" : "")"
+            data-categoryid="@category.Id">
+            <i class="@category.IconClass"></i> @category.Name
             </button>
-
-            <button>
-                <i class="bi bi-mortarboard"></i>
-                Education
-            </button>
-
-            <button>
-                <i class="bi bi-briefcase"></i>
-                Employment
-            </button>
-
-            <button>
-                <i class="bi bi-patch-check"></i>
-                Professional
-            </button>
-
-            <button>
-                <i class="bi bi-bank"></i>
-                Bank
-            </button>
-
-            <button>
-                <i class="bi bi-shield-check"></i>
-                Legal
-            </button>
+        }
         </div>
 
-        <!-- Upload Grid -->
-        <div class="row g-4">
-
-            <!-- Card -->
-            <div class="col-md-6 col-lg-4">
-                <div class="document-card">
-
-                    <div class="card-top">
-                        <div>
-                        <h5>National ID Card <small class="mandatory-doc-mark">*</small></h5>
-                        </div>
-                    </div>
-                    <form method="post" enctype="multipart/form-data">
-                        <input type="file" id="imageUpload" hidden accept="image/*, audio/*, video/*, .pdf, .doc, .docx">
-                        <div class="upload-box">
-                            <div class="upload-icon">
-                                <i class="bi bi-cloud-upload"></i>
-                            </div>
-
-                            <p class="upload-title">
-                                Drop your file here
-                            </p>
-
-                            <small>
-                                Supported: All image formats, PDF, DOC, DOCX <br>
-                                Maximum file size: 5MB
-                            </small>
-
-                            <button class="btn btn-light mt-3">
-                                Browse File
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Passport -->
-            <div class="col-md-6 col-lg-4">
-                <div class="document-card">
-
-                    <div class="card-top">
-                        <div>
-                        <h5>Passport <small class="mandatory-doc-mark">*</small></h5>
-                        </div>
-                    </div>
-                    <form method="post" enctype="multipart/form-data">
-                        <input type="file" id="imageUpload" class="file-upload" accept="image/*, audio/*, video/*, .pdf, .doc, .docx">
-                        <div class="upload-box">
-                            <div class="upload-icon">
-                                <i class="bi bi-cloud-upload"></i>
-                            </div>
-
-                            <p class="upload-title">
-                                Drag and drop file
-                            </p>
-
-                            <small>
-                                Supported: All image formats, PDF, DOC, DOCX <br>
-                                Maximum file size: 5MB
-                            </small>
-
-                            <button class="btn btn-light mt-3">
-                                Browse File
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div id="documentCardsContainer">
+            <partial name="_DocumentCardsPartial" model="Model.DocumentTypes" />
         </div>
 
         <!-- Verification -->

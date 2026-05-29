@@ -1,7 +1,6 @@
-﻿
-namespace Dtos
+﻿namespace EMSFrontend.Models
 {
-    public class EmployeeDocumentResponseDto
+    public class EmployeeDocumentResponseViewModel
     {
         public int DocumentId { get; set; }
         public string DocumentCategory { get; set; } = string.Empty;

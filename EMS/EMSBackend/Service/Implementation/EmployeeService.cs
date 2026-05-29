@@ -4,6 +4,7 @@ using Dtos.Repository.Implementation;
 using EMSBackend.Service.Abstraction;
 using Entities;
 using System.Reflection.Metadata;
+using System.Xml.Linq;
 
 namespace EMSBackend.Service.Implementation
 {
@@ -315,7 +316,19 @@ namespace EMSBackend.Service.Implementation
                 };
             }
 
-            var uploadResult = await _blobService.UploadFileAsync(dto.File);
+            var existingDocument = _documentRepository.GetEmployeeDocument(dto.EmployeeId,dto.DocumentTypeId);
+
+            if (existingDocument != null)
+            {
+                return new ServiceResponseDto<EmployeeDocumentResponseDto>
+                {
+                    Success = false,
+                    Message = "Document already uploaded. Please use Replace."
+                };
+            }
+
+            var uploadResult = await _blobService.UploadFileAsync(dto.File,
+                employee.Name, employee.Id,documentType.Name);
 
             EmployeeDocument employeeDocument = new()
             {
@@ -331,6 +344,7 @@ namespace EMSBackend.Service.Implementation
 
             EmployeeDocumentResponseDto responseDto = new()
             {
+                DocumentId = employeeDocument.Id,
                 DocumentCategory =documentType.DocumentCategory.Name,
 
                 DocumentType = documentType.Name,
@@ -377,6 +391,133 @@ namespace EMSBackend.Service.Implementation
                 Message ="Document types fetched successfully",
 
                 Data = dtos
+            };
+        }
+
+        public ServiceResponseDto<IEnumerable<DocumentCategoryResponseDto>> GetAll()
+        {
+            var categories = _documentRepository.GetAll();
+
+            var dto = categories.Select(dc =>
+            new DocumentCategoryResponseDto
+            {
+                Id = dc.Id,
+                Name =dc.Name
+            }).ToList();
+
+            return new ServiceResponseDto<IEnumerable<DocumentCategoryResponseDto>>
+            {
+                Success = true,
+                Message = "Document categories fetched successfully",
+                Data = dto
+            };
+        }
+
+        public async Task<ServiceResponseDto<DeleteDocumentResponseDto>> DeleteDocumentAsync(int documentId)
+        {
+            var document =_documentRepository.GetDocumentById(documentId);
+
+            if (document == null)
+            {
+                return new ServiceResponseDto<DeleteDocumentResponseDto>
+                {
+                    Success = false,
+                    Message = "Document not found"
+                };
+            }
+
+            await _blobService.DeleteFileAsync(document.StoredFileName);
+
+            _documentRepository.DeleteDocument(document);
+
+            await _documentRepository.SaveChangesAsync();
+
+            return new ServiceResponseDto<DeleteDocumentResponseDto>
+            {
+                Success = true,
+                Message = "Document deleted successfully",
+                Data = new DeleteDocumentResponseDto
+                {
+                    DocumentId = document.Id,
+                    DocumentType = document.DocumentType.Name,
+                    Message = "Deleted Successfully"
+                }
+            };
+        }
+
+        public async Task<ServiceResponseDto<EmployeeDocumentResponseDto>> ReplaceDocumentAsync(ReplaceDocumentDto dto)
+        {
+            var document = _documentRepository.GetDocumentById(dto.DocumentId);
+
+            if (document == null)
+            {
+                return new ServiceResponseDto<EmployeeDocumentResponseDto>
+                {
+                    Success = false,
+                    Message = "Document not found"
+                };
+            }
+
+            await _blobService.DeleteFileAsync(document.StoredFileName);
+
+            var uploadResult = await _blobService.UploadFileAsync(dto.File,
+                document.Employee.Name,document.EmployeeId,document.DocumentType.Name);
+
+            document.OriginalFileName = dto.File.FileName;
+
+            document.StoredFileName = uploadResult.storedFileName;
+
+            document.BlobUrl = uploadResult.bloburl;
+
+            document.UploadedDate = DateTime.UtcNow;
+
+            await _documentRepository.SaveChangesAsync();
+
+            return new ServiceResponseDto<EmployeeDocumentResponseDto>
+            {
+                Success = true,
+                Message = "Document replaced successfully",
+                Data = new EmployeeDocumentResponseDto
+                {
+                    DocumentId = document.Id,
+
+                    DocumentCategory = document.DocumentType.DocumentCategory.Name,
+
+                    DocumentType = document.DocumentType.Name,
+
+                    OriginalFileName = document.OriginalFileName,
+
+                    StoredFileName = document.StoredFileName,
+
+                    BlobUrl = document.BlobUrl,
+
+                    UploadedDate = document.UploadedDate
+                }
+            };
+        }
+
+        public async Task<ServiceResponseDto<DocumentViewResponseDto>> GetDocumentUrlAsync(int documentId)
+        {
+            var document = _documentRepository.GetDocumentById(documentId);
+
+            if (document == null)
+            {
+                return new ServiceResponseDto<DocumentViewResponseDto>
+                {
+                    Success = false,
+                    Message = "Document not found"
+                };
+            }
+
+            var sasUrl =_blobService.GenerateReadSasUrl(document.StoredFileName);
+
+            return new ServiceResponseDto<DocumentViewResponseDto>
+            {
+                Success = true,
+                Data = new DocumentViewResponseDto
+                {
+                    SasUrl = sasUrl
+                }
             };
         }
     }

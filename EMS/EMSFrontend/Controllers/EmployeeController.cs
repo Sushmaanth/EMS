@@ -1,9 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using EMSFrontend.Api.Abstraction;
+using EMSFrontend.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EMSFrontend.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IRequest _request;
+
+        public EmployeeController(IRequest request)
+        {
+            _request = request;
+        }
+
+        [HttpGet]
         public IActionResult Dashboard()
         {
             try
@@ -27,9 +38,55 @@ namespace EMSFrontend.Controllers
             }
         }
 
-        public IActionResult Documents()
+        [HttpGet]
+        public async Task<IActionResult> Documents()
         {
-            return View();
+            EmployeeDocumentPageViewModel model = new();
+
+            //categories
+            var categories = await _request.SendGetDocumentCategoriesAsync();
+
+            model.Categories = categories.ToList();
+
+            //get category id
+            var firstCategory = model.Categories.FirstOrDefault()?.Id ?? 0;
+
+            var documentType = await _request.SendGetDocumentTypesByCategoryAsync(firstCategory);
+
+            model.DocumentTypes = documentType.ToList();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDocumentCards(int categoryId)
+        {
+            var documents = await _request.SendGetDocumentTypesByCategoryAsync(categoryId);
+
+            return PartialView("_DocumentCardsPartial", documents);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult>UploadDocument(EmployeeDocumentUploadViewModel model)
+        {
+            var result = await _request.SendUploadDocumentAsync(model);
+            return Json(result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult>DeleteDocument(int documentId)
+        {
+            var result = await _request.SendDeleteDocumentAsync(documentId);
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult>ViewDocument(int documentId)
+        {
+            var result = await _request.SendViewDocumentAsync(documentId);
+
+            return Json(result);
         }
     }
 }
