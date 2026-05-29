@@ -59,7 +59,7 @@ namespace EMSAuthApi.Services
 
             string refreshToken = _tokenService.GenerateRefreshToken();
 
-            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(2));
+            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(30));
 
 
             return new ServiceResponseDto<LoginResponseDTO>
@@ -117,7 +117,7 @@ namespace EMSAuthApi.Services
 
             string newRefreshToken = _tokenService.GenerateRefreshToken();
 
-            _authrepository.UpdateRefreshToken(user, newRefreshToken, DateTime.Now.AddMinutes(1));
+            _authrepository.UpdateRefreshToken(user, newRefreshToken, DateTime.Now.AddMinutes(30));
 
 
             return new ServiceResponseDto<LoginResponseDTO>

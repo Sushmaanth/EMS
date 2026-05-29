@@ -9,100 +9,71 @@ using System.Text;
 
 namespace Dtos.Repository.Implementation
 {
-    public class EmployeeRepository :IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly AppDbContext context;
+        private readonly AppDbContext _context;
 
         public EmployeeRepository(AppDbContext context)
         {
-            this.context = context;
+            _context = context;
         }
         public Employee Create(Employee employee)
         {
-            try
+            _context.Employees.Add(employee);
+
+            int result = _context.SaveChanges();
+
+            if (result <= 0)
             {
-                context.Employees.Add(employee);
-
-                int result = context.SaveChanges();
-
-                if (result <= 0)
-                {
-                    throw new Exception("Unable to create employee");
-                }
-
-                return employee;
+                throw new Exception("Unable to create employee");
             }
-            catch
-            {
-                throw;
-            }
+
+            return employee;
         }
 
         public ICollection<Employee> View()
         {
-            try
-            {
-                return context.Employees.ToList();
-            }
-            catch
-            {
-                throw;
-            }
+            return _context.Employees.ToList();
         }
 
         public Employee Delete(Employee employee)
         {
-            try
+
+            _context.Employees.Remove(employee);
+
+            int result = _context.SaveChanges();
+
+            if (result <= 0)
             {
-                context.Employees.Remove(employee);
-
-                int result = context.SaveChanges();
-
-                if (result <= 0)
-                {
-                    throw new Exception("Unable to delete employee");
-                }
-
-                return employee;
+                throw new Exception("Unable to delete employee");
             }
-            catch
-            {
-                throw;
-            }
-            
+
+            return employee;
+
+
         }
 
         public Employee Update(Employee employee)
         {
-            try
+
+            _context.Employees.Update(employee);
+
+            int result = _context.SaveChanges();
+
+            if (result <= 0)
             {
-                context.Employees.Update(employee);
-
-                int result = context.SaveChanges();
-
-                if (result <= 0)
-                {
-                    throw new Exception("Unable to update employee");
-                }
-
-                return employee;
+                throw new Exception("Unable to update employee");
             }
-            catch
-            {
-                throw;
-            }
+
+            return employee;
+
         }
 
         public Employee? GetById(int id)
         {
-            try
-            {
-                return context.Employees.FirstOrDefault(e => e.Id == id);
-            }
-            catch
-            {
-                throw;
-            }
+
+            return _context.Employees.FirstOrDefault(e => e.Id == id);
+
         }
 
         //public IEnumerable<EmployeeDto> SearchEmployee(string? searchText)
@@ -135,38 +106,34 @@ namespace Dtos.Repository.Implementation
 
         public IQueryable<Employee> GetEmployees(string? searchText)
         {
-            try
-            {
-                IQueryable<Employee> query =
-                     context.Employees;
 
-                if (!string.IsNullOrWhiteSpace(searchText))
-                {
-                    query = query.Where(e =>
-                        e.Id.ToString().Contains(searchText)
-                        ||
-                        e.Name.ToLower().Contains(searchText.ToLower()));
-                }
+            IQueryable<Employee> query =
+                 _context.Employees;
 
-                return query;
-            }
-            catch
+            if (!string.IsNullOrWhiteSpace(searchText))
             {
-                throw;
+                query = query.Where(e =>
+                    e.Id.ToString().Contains(searchText)
+                    ||
+                    e.Name.ToLower().Contains(searchText.ToLower()));
             }
+
+            return query;
+
         }
 
         public ICollection<Department> GetDepartments()
         {
-            try
-            {
-                return context.Departments.ToList();
 
-            }
-            catch
-            {
-                throw;
-            }
+            return _context.Departments.ToList();
+
+
+        }
+
+        public async Task AddDocumentAsync(EmployeeDocument document)
+        {
+            await _context.EmployeeDocuments.AddAsync(document);
+            await _context.SaveChangesAsync();
         }
     }
 }

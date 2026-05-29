@@ -21,5 +21,7 @@
         public Department Department { get; set; }
 
         public User? User { get; set; }
+
+        public ICollection<EmployeeDocument> EmployeeDocuments { get; set; }
     }
 }

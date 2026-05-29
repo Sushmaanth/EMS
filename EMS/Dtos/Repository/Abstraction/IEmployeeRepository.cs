@@ -18,5 +18,7 @@ namespace Dtos.Repository.Abstraction
         IQueryable<Employee> GetEmployees(string? searchText);
 
         ICollection<Department> GetDepartments();
+
+        Task AddDocumentAsync(EmployeeDocument document);
     }
 }

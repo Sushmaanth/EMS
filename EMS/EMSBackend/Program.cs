@@ -31,9 +31,12 @@ namespace EMSBackend
 
             builder.Services.AddDbContext<AppDbContext>(opt=> opt.UseSqlServer(connStr, config=> config.MigrationsAssembly("EMSBackend")));
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
+            builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();
-           
+
+            builder.Services.AddScoped<IBlobService, BlobService>();
+
+            builder.Configuration.AddUserSecrets<Program>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {

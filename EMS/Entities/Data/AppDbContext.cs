@@ -1,8 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Entities.Data
 {
@@ -16,6 +13,11 @@ namespace Entities.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Role { get; set; }
+        public DbSet<EmployeeDocument> EmployeeDocuments { get; set; }
+
+        public DbSet<DocumentCategory> DocumentCategories { get; set; }
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +29,11 @@ namespace Entities.Data
 
             var roleBuilder = modelBuilder.Entity<Role>();
 
+            var employeeDocumentBuilder = modelBuilder.Entity<EmployeeDocument>();
+
+            var documentCategoryBuilder = modelBuilder.Entity<DocumentCategory>();
+
+            var documentTypeBuilder = modelBuilder.Entity<DocumentType>();
 
             //[Employee Table]
 
@@ -128,7 +135,116 @@ namespace Entities.Data
             //role Name
             roleBuilder.Property<string>(r=> r.RoleName)
                .HasColumnType("varchar(20)");
-           
+
+            //[Employee Documents]
+            //pk
+            employeeDocumentBuilder.ToTable("EmployeeDocument").HasKey(e => e.Id);
+
+            //id
+            employeeDocumentBuilder.Property<int>(ed => ed.Id)
+               .ValueGeneratedOnAdd()
+               .UseIdentityColumn(1, 1);
+
+            //OG file name
+            employeeDocumentBuilder.Property<string>(ed => ed.OriginalFileName)
+                .IsRequired()
+                .HasColumnType("varchar(500)");
+
+            //Stored File name
+            employeeDocumentBuilder.Property<string>(ed => ed.StoredFileName)
+                .IsRequired()
+                .HasColumnType("varchar(500)");
+
+            //blob url
+            employeeDocumentBuilder.Property<string>(ed => ed.BlobUrl)
+                .IsRequired()
+                .HasColumnType("varchar(max)");
+
+            //document uploaded time
+            employeeDocumentBuilder.Property<DateTime>(ed => ed.UploadedDate)
+                .HasColumnType("DATETIME2");
+
+            //fk
+            employeeDocumentBuilder.HasOne(ed => ed.Employee)
+               .WithMany(e => e.EmployeeDocuments)
+               .HasForeignKey(ed => ed.EmployeeId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            //fk doc category
+            employeeDocumentBuilder.HasOne(ed => ed.DocumentType)
+                .WithMany(dc => dc.EmployeeDocuments)
+                .HasForeignKey(ed => ed.DocumentTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            employeeDocumentBuilder
+                .HasIndex(ed => ed.StoredFileName)
+                .IsUnique();
+
+            employeeDocumentBuilder
+                .HasIndex(ed => new
+                {
+                    ed.EmployeeId,
+                    ed.DocumentTypeId
+                })
+                .IsUnique();
+
+            //[Document Category]
+            //pk
+            documentCategoryBuilder.ToTable("DocumentCategory").HasKey(dc => dc.Id);
+
+            //id
+            documentCategoryBuilder.Property<int>(dc => dc.Id)
+               .ValueGeneratedOnAdd()
+               .UseIdentityColumn(1, 1);
+
+            //doc name
+            documentCategoryBuilder.Property<string>(dc => dc.Name)
+                .IsRequired()
+               .HasColumnType("varchar(100)");
+
+            //uniq doc category name
+            documentCategoryBuilder
+                .HasIndex(dc => dc.Name)
+                .IsUnique();
+
+            //[Document Type]
+            documentTypeBuilder
+                .ToTable("DocumentType")
+                .HasKey(dt => dt.Id);
+
+            //id
+            documentTypeBuilder
+                .Property(dt => dt.Id)
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn(1, 1);
+
+            // Document Type Name
+            documentTypeBuilder
+                .Property(dt => dt.Name)
+                .IsRequired()
+                .HasColumnType("varchar(100)");
+
+            //IsMandatory
+            documentTypeBuilder
+                .Property(dt => dt.IsMandatory)
+                .IsRequired();
+
+            // FK -> DocumentCategory
+            documentTypeBuilder
+                .HasOne(dt => dt.DocumentCategory)
+                .WithMany(dc => dc.DocumentTypes)
+                .HasForeignKey(dt => dt.DocumentCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Prevent duplicate document names inside same category
+            documentTypeBuilder
+                .HasIndex(dt => new
+                {
+                    dt.Name,
+                    dt.DocumentCategoryId
+                })
+                .IsUnique();
+
         }
     }
 }

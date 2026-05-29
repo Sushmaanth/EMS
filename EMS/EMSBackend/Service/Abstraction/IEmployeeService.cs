@@ -17,5 +17,10 @@ namespace EMSBackend.Service.Abstraction
         ServiceResponseDto<PagenationDto<EmployeeDto>>GetEmployees(string? searchText,int pageNumber,int pageSize);
 
         ServiceResponseDto<ICollection<DepartmentDto>>GetDepartments();
+
+        Task<ServiceResponseDto<EmployeeDocumentResponseDto>> UploadDocumentAsync(EmployeeDocumentUploadDto dto);
+
+        ServiceResponseDto<IEnumerable<DocumentTypeResponseDto>>GetByCategory(int categoryId);
     }
+
 }

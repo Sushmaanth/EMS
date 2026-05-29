@@ -39,6 +39,54 @@ namespace EMSBackend.Migrations
                     b.ToTable("Department", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.DocumentCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("DocumentCategory", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.DocumentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DocumentCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentCategoryId");
+
+                    b.HasIndex("Name", "DocumentCategoryId")
+                        .IsUnique();
+
+                    b.ToTable("DocumentType", (string)null);
+                });
+
             modelBuilder.Entity("Entities.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -82,6 +130,48 @@ namespace EMSBackend.Migrations
                         .IsUnique();
 
                     b.ToTable("Employee", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.EmployeeDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BlobUrl")
+                        .IsRequired()
+                        .HasColumnType("varchar(max)");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("StoredFileName")
+                        .IsRequired()
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("UploadedDate")
+                        .HasColumnType("DATETIME2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("StoredFileName")
+                        .IsUnique();
+
+                    b.HasIndex("EmployeeId", "DocumentTypeId")
+                        .IsUnique();
+
+                    b.ToTable("EmployeeDocument", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Role", b =>
@@ -154,6 +244,17 @@ namespace EMSBackend.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.DocumentType", b =>
+                {
+                    b.HasOne("Entities.DocumentCategory", "DocumentCategory")
+                        .WithMany("DocumentTypes")
+                        .HasForeignKey("DocumentCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DocumentCategory");
+                });
+
             modelBuilder.Entity("Entities.Employee", b =>
                 {
                     b.HasOne("Entities.Department", "Department")
@@ -161,6 +262,25 @@ namespace EMSBackend.Migrations
                         .HasForeignKey("DepartmentId");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Entities.EmployeeDocument", b =>
+                {
+                    b.HasOne("Entities.DocumentType", "DocumentType")
+                        .WithMany("EmployeeDocuments")
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Employee", "Employee")
+                        .WithMany("EmployeeDocuments")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("Entities.User", b =>
@@ -187,8 +307,20 @@ namespace EMSBackend.Migrations
                     b.Navigation("Employees");
                 });
 
+            modelBuilder.Entity("Entities.DocumentCategory", b =>
+                {
+                    b.Navigation("DocumentTypes");
+                });
+
+            modelBuilder.Entity("Entities.DocumentType", b =>
+                {
+                    b.Navigation("EmployeeDocuments");
+                });
+
             modelBuilder.Entity("Entities.Employee", b =>
                 {
+                    b.Navigation("EmployeeDocuments");
+
                     b.Navigation("User");
                 });
 
