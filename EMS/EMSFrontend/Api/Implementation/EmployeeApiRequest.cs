@@ -460,6 +460,35 @@ namespace EMSFrontend.Api.Implementation
 
             return result.Data;
         }
+
+        public async Task<DocumentViewResponseViewModel> SendViewDocumentAsync(int documentId)
+        {
+            SetBearerToken();
+
+            var response = await client.GetAsync($"view/{documentId}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                response = await client.GetAsync($"view/{documentId}");
+            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<DocumentViewResponseViewModel>>();
+
+            return result.Data;
+        }
     }
 }
  

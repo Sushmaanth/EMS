@@ -118,9 +118,13 @@ body {
     margin-top: 20px;
     border: 2px dashed #d4d4d8;
     border-radius: 14px;
-    padding: 32px 20px;
+    padding: 20px;
     text-align: center;
     cursor: pointer;
+    min-height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .upload-icon {
@@ -165,4 +169,100 @@ body {
 
 .file-upload{
     display:none;
+}
+
+/*Document Upload*/
+.document-preview-wrapper {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.document-preview-image,
+.document-preview-pdf {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.document-preview-pdf {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 180px;
+}
+
+.document-preview-pdf i {
+    font-size: 90px;
+    color: #dc3545;
+}
+
+.document-name {
+    margin-top: auto;
+    text-align: center;
+    font-weight: 600;
+}
+
+.document-actions {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, -10px);
+    display: flex;
+    gap: 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.document-actions .btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: all .25s ease;
+}
+
+.btn-view {
+    background: linear-gradient( 135deg, #8b5cf6, #6d28d9 );
+    color: white;
+}
+
+.btn-edit {
+    background: linear-gradient( 135deg, #60a5fa, #2563eb );
+    color: white;
+}
+
+.btn-delete {
+    background: linear-gradient( 135deg, #fb7185, #e11d48 );
+    color: white;
+}
+
+.document-preview-wrapper:hover .document-actions {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.document-actions .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }

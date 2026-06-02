@@ -9,5 +9,7 @@
             public string EmailId { get; set; }
 
             public string Role { get; set; }
+
+            public int EmployeeId { get; set; }
     }
 }

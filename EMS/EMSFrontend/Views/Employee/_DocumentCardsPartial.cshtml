@@ -21,8 +21,9 @@
                     </div>
                 </div>
                 <form method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="DocumentTypeId" value="@document.Id" />
-                    <input type="file" id="file-upload" hidden accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                    <input type="hidden" name="EmployeeId" class="employee-id" value="@ViewBag.EmployeeId" />
+                    <input type="hidden" name="DocumentTypeId" class="document-type-id"  value="@document.Id" />
+                    <input type="file" name="File" class="file-upload" hidden accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                     <div class="upload-box">
                         <div class="upload-icon">
                             <i class="bi bi-cloud-upload"></i>
@@ -41,6 +42,15 @@
                         <button type="button" class="btn btn-light mt-3 browse-btn">
                             Browse File
                         </button>
+                    </div>
+                    <div class="upload-progress mt-3 d-none upload-progress-container">
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar upload-progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar"
+                                 style="width:0%; background-color: #6d28d9;">
+                                0%
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

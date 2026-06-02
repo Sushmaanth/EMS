@@ -15,11 +15,21 @@ namespace EMSFrontend
 
             string baseUrl = builder.Configuration["RequestUrls:EmployeeRequestUrl"]!;
 
-            builder.Services.AddHttpClient<IRequest, EmployeeApiRequest>(config => config.BaseAddress = new Uri(baseUrl));
+            builder.Services.AddHttpClient<IRequest, EmployeeApiRequest>()
+                .ConfigureHttpClient((sp, client) =>
+                {
+                    client.BaseAddress = new Uri(baseUrl);
+                    client.Timeout = TimeSpan.FromMinutes(5);
+                });
 
             string authUrl = builder.Configuration["RequestUrls:AuthRequestUrl"]!;
 
-            builder.Services.AddHttpClient<IAuthRequest, AuthApiRequest>(config => config.BaseAddress = new Uri(authUrl));
+            builder.Services.AddHttpClient<IAuthRequest, AuthApiRequest>()
+                .ConfigureHttpClient((sp, client) =>
+                {
+                    client.BaseAddress = new Uri(authUrl);
+                    client.Timeout = TimeSpan.FromMinutes(5);
+                });
 
             //Microsoft OAuth
             builder.Services.AddAuthentication(options =>

@@ -43,6 +43,8 @@ namespace EMSFrontend.Controllers
 
                 HttpContext.Session.SetString("EmailId", result.EmailId);
 
+                HttpContext.Session.SetInt32("EmployeeId", result.EmployeeId);
+
                 TempData["SuccessfullyUserLoggegIn"] = "Login Successfully";
 
                 if (result.Role == "Admin")
@@ -104,6 +106,8 @@ namespace EMSFrontend.Controllers
             HttpContext.Session.SetString("Role",loginResult.Role);
 
             HttpContext.Session.SetString("Email",loginResult.EmailId);
+
+            HttpContext.Session.SetInt32("EmployeeId",loginResult.EmployeeId);
 
             if (loginResult.Role == "User")
             {

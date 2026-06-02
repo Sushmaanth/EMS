@@ -69,6 +69,8 @@ namespace EMSFrontend.Controllers
         [HttpPost]
         public async Task<IActionResult>UploadDocument(EmployeeDocumentUploadViewModel model)
         {
+            model.EmployeeId = HttpContext.Session.GetInt32("EmployeeId")?? 0;
+
             var result = await _request.SendUploadDocumentAsync(model);
             return Json(result);
         }

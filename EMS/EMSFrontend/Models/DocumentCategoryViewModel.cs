@@ -9,7 +9,7 @@
         public string IconClass =>
         Name switch
         {
-            "Identity" => "bi bi-person-badge",
+            "ID Proof" => "bi bi-person-badge",
             "Education" => "bi bi-mortarboard",
             "Employment" => "bi bi-briefcase",
             "Professional" => "bi bi-patch-check",

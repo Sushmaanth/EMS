@@ -29,7 +29,11 @@ namespace EMSBackend.Service.Implementation
 
             string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
 
-            string storedFileName =$"Sushmaanth/{employeeName}/{employeeId}/{documentName}/{uniqueFileName}";
+            string safeDocumentName = string.Concat(documentName.Split(Path.GetInvalidFileNameChars()));
+
+            safeDocumentName = safeDocumentName.Replace(" ", "_");
+
+            string storedFileName =$"Sushmaanth/{employeeName}/{employeeId}/{safeDocumentName}/{uniqueFileName}";
 
             BlobClient blobClient = blobContainer.GetBlobClient(storedFileName);
 

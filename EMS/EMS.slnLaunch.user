@@ -4,11 +4,15 @@
     "Projects": [
       {
         "Path": "EMSBackend\\EMSBackend.csproj",
-        "Action": "Start"
+        "Action": "StartWithoutDebugging"
       },
       {
         "Path": "EMSFrontend\\EMSFrontend.csproj",
-        "Action": "Start"
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "EMSAuthApi\\EMSAuthApi.csproj",
+        "Action": "StartWithoutDebugging"
       }
     ]
   }
