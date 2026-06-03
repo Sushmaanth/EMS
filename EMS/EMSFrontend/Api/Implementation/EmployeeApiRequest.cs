@@ -340,11 +340,11 @@ namespace EMSFrontend.Api.Implementation
             return result.Data;
         }
 
-        public async Task<IEnumerable<DocumentTypeViewModel>> SendGetDocumentTypesByCategoryAsync(int categoryId)
+        public async Task<IEnumerable<DocumentTypeViewModel>> SendGetDocumentTypesByCategoryAsync(int categoryId, int employeeId)
         {
             SetBearerToken();
 
-            var response = await client.GetAsync($"category/{categoryId}");
+            var response = await client.GetAsync($"category/{categoryId}/employee/{employeeId}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -359,7 +359,7 @@ namespace EMSFrontend.Api.Implementation
 
                 SetBearerToken();
 
-                response =await client.GetAsync( $"category/{categoryId}");
+                response =await client.GetAsync($"category/{categoryId}/employee/{employeeId}");
             }
 
             await HandleErrorResponse(response);

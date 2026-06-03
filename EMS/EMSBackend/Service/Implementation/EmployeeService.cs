@@ -520,6 +520,34 @@ namespace EMSBackend.Service.Implementation
                 }
             };
         }
+
+        public async Task<ServiceResponseDto<ICollection<DocumentTypeDto>>> GetDocumentTypesByCategoryAsync(int categoryId, int employeeId)
+        {
+            var documentTypes = await _documentRepository.GetDocumentTypesByCategoryAsync(categoryId, employeeId);
+
+            var result = documentTypes.Select(dt =>
+            {
+                var employeeDocuments = dt.EmployeeDocuments.FirstOrDefault();
+
+                return new DocumentTypeDto
+                {
+                    Id = dt.Id,
+                    Name = dt.Name,
+                    IsMandatory = dt.IsMandatory,
+                    DocumentId = employeeDocuments?.Id,
+                    FileName = employeeDocuments?.OriginalFileName,
+                    BlobUrl = employeeDocuments?.BlobUrl,
+                    IsUploaded = employeeDocuments != null
+                };
+            }).ToList();
+
+            return new ServiceResponseDto<ICollection<DocumentTypeDto>>
+            {
+                Success = true,
+                Message = "Document types fetched successfull",
+                Data = result
+            };
+        }
     }
 }
 

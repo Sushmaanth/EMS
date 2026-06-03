@@ -186,5 +186,21 @@ namespace EMSBackend.Controllers
 
             return Ok(result);
         }
+
+        [Authorize(Roles ="User")]
+        [HttpGet("category/{categoryId}/employee/{employeeId}")]
+        public async Task<IActionResult> GetDocumentTypesByCategory(int categoryId,int employeeId)
+        {
+            var result = await _employeeService.GetDocumentTypesByCategoryAsync(
+                categoryId,
+                employeeId);
+
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

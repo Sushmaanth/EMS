@@ -24,25 +24,88 @@
                     <input type="hidden" name="EmployeeId" class="employee-id" value="@ViewBag.EmployeeId" />
                     <input type="hidden" name="DocumentTypeId" class="document-type-id"  value="@document.Id" />
                     <input type="file" name="File" class="file-upload" hidden accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                    <div class="upload-box">
-                        <div class="upload-icon">
-                            <i class="bi bi-cloud-upload"></i>
+                    @if (document.IsUploaded)
+                    {
+                        <div class="upload-box">
+                            <div class="document-preview-wrapper">
+                                <div class="document-actions">
+                                    <a asp-action="ViewDocument"
+                                       asp-controller="Employee"
+                                       asp-route-documentId="@document.DocumentId"
+                                       target="_blank"
+                                       class="btn btn-light btn-sm btn-view">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-light btn-sm btn-edit"
+                                            data-documentid="@document.DocumentId">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-light btn-sm btn-delete"
+                                            data-documentid="@document.DocumentId">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+
+                                </div>
+
+                                @{
+                                    var extension = System.IO.Path
+                                        .GetExtension(document.FileName)
+                                        ?.ToLower();
+                                }
+
+                                @if (extension == ".pdf")
+                                {
+                                    <div class="document-preview-pdf">
+                                        <i class="bi bi-file-earmark-pdf-fill"></i>
+                                    </div>
+                                }
+                                else if (extension == ".doc" || extension == ".docx")
+                                {
+                                    <div class="document-preview-pdf">
+                                        <i class="bi bi-file-earmark-word-fill"></i>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <img src="@document.BlobUrl"
+                                         class="document-preview-image"
+                                         alt="@document.FileName" />
+                                }
+
+                                <div class="document-name">
+                                    @document.FileName
+                                </div>
+                            </div>
                         </div>
+                    }
+                    else
+                    {
+                        <div class="upload-box">
 
-                        <p class="upload-title">
-                            Drop your file here
-                        </p>
+                            <div class="upload-icon">
+                                <i class="bi bi-cloud-upload"></i>
+                            </div>
 
-                        <small>
-                            Supported: All image formats, PDF, DOC, DOCX 
-                            <br/>
-                            Maximum file size: 50MB
-                        </small>
+                            <p class="upload-title">
+                                Drop your file here
+                            </p>
 
-                        <button type="button" class="btn btn-light mt-3 browse-btn">
-                            Browse File
-                        </button>
-                    </div>
+                            <small>
+                                Supported: All image formats, PDF, DOC, DOCX
+                                <br />
+                                Maximum file size: 50MB
+                            </small>
+
+                            <button type="button" class="btn btn-light mt-3 browse-btn">
+                                Browse File
+                            </button>
+
+                        </div>
+                    }
                     <div class="upload-progress mt-3 d-none upload-progress-container">
                         <div class="progress" style="height: 6px;">
                             <div class="progress-bar upload-progress-bar progress-bar-striped progress-bar-animated"

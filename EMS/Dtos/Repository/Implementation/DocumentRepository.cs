@@ -63,5 +63,14 @@ namespace Dtos.Repository.Implementation
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ICollection<DocumentType>> GetDocumentTypesByCategoryAsync(int categoryId, int employeeId)
+        {
+            return await _context.DocumentTypes.Include(
+                dt => dt.EmployeeDocuments.Where(
+                    ed => ed.EmployeeId == employeeId))
+                .Where(dt => dt.DocumentCategoryId == categoryId)
+                .ToListAsync();
+        }
     }
 }

@@ -45,7 +45,9 @@ namespace EMSFrontend.Controllers
 
                 HttpContext.Session.SetInt32("EmployeeId", result.EmployeeId);
 
-                TempData["SuccessfullyUserLoggegIn"] = "Login Successfully";
+                HttpContext.Session.SetString("EmployeeName",result.EmployeeName);
+
+            TempData["SuccessfullyUserLoggegIn"] = "Login Successfully";
 
                 if (result.Role == "Admin")
                 {

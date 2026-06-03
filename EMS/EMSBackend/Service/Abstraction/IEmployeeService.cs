@@ -29,6 +29,8 @@ namespace EMSBackend.Service.Abstraction
         Task<ServiceResponseDto<EmployeeDocumentResponseDto>> ReplaceDocumentAsync(ReplaceDocumentDto dto);
 
         Task<ServiceResponseDto<DocumentViewResponseDto>> GetDocumentUrlAsync(int documentId);
+
+        Task<ServiceResponseDto<ICollection<DocumentTypeDto>>>GetDocumentTypesByCategoryAsync(int categoryId, int employeeId);
     }
 
 }

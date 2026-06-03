@@ -48,10 +48,12 @@ namespace EMSFrontend.Controllers
 
             model.Categories = categories.ToList();
 
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+
             //get category id
             var firstCategory = model.Categories.FirstOrDefault()?.Id ?? 0;
 
-            var documentType = await _request.SendGetDocumentTypesByCategoryAsync(firstCategory);
+            var documentType = await _request.SendGetDocumentTypesByCategoryAsync(firstCategory,employeeId);
 
             model.DocumentTypes = documentType.ToList();
 
@@ -61,7 +63,8 @@ namespace EMSFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDocumentCards(int categoryId)
         {
-            var documents = await _request.SendGetDocumentTypesByCategoryAsync(categoryId);
+            var employeeId = HttpContext.Session.GetInt32("EmployeeId") ?? 0;
+            var documents = await _request.SendGetDocumentTypesByCategoryAsync(categoryId, employeeId);
 
             return PartialView("_DocumentCardsPartial", documents);
         }
@@ -87,6 +90,17 @@ namespace EMSFrontend.Controllers
         public async Task<IActionResult>ViewDocument(int documentId)
         {
             var result = await _request.SendViewDocumentAsync(documentId);
+            
+            Console.WriteLine(result.SasUrl);
+
+            return Redirect(result.SasUrl);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> ReplaceDocument([FromForm] ReplaceDocumentViewModel model)
+        {
+            var result =
+                await _request.SendReplaceDocumentAsync(model);
 
             return Json(result);
         }

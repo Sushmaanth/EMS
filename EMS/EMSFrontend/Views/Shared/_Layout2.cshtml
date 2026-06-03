@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var name = Context.Session.GetString("EmployeeName");
+    var email = Context.Session.GetString("EmailId");
+
+    var initials = "?";
+
+    if (!string.IsNullOrEmpty(email))
+    {
+        initials = email.Substring(0, 1).ToUpper();
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,45 +23,144 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Employee" asp-action="Dashboard">EMS App</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                EMS App
+            </div>
+            <nav class="sidebar-menu">
+
+                <a asp-controller="Employee"
+                   asp-action="Dashboard"
+                   class="sidebar-link @(currentAction == "Dashboard" ? "active" : "")">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a asp-controller="Employee"
+                   asp-action="Documents"
+                   class="sidebar-link @(currentAction == "Documents" ? "active" : "")">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>Documents</span>
+                </a>
+
+            </nav>
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    @initials
+                </div>
+
+                <div class="user-details">
+                    <div class="user-name">
+                        @name
+                    </div>
+
+                    <div class="user-email">
+                        @email
+                    </div>
+                </div>
+
+                <a asp-controller="Auth"
+                   asp-action="Logout"
+                   class="logout-link">
+
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </div>
+    </aside>
+        <div class="mobile-header d-md-none">
+
+            <button class="btn mobile-menu-btn"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#mobileSidebar">
+
+                <i class="bi bi-list"></i>
+
+            </button>
+
+            <span class="mobile-title">
+                EMS App
+            </span>
+
+        </div>
+
+        <div class="offcanvas offcanvas-start"
+             tabindex="-1"
+             id="mobileSidebar">
+
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">
+                    EMS App
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="offcanvas">
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Dashboard">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Documents"><img src="~/images/documentIcon.png" class="doc-header-icon"/> Documents</a>
-                        </li>
-                        <li class="nav-item ms-auto">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
-                        </li>
-                    </ul>
+            </div>
+
+            <div class="offcanvas-body">
+                <div class="offcanvas-body">
+                    <nav class="sidebar-menu">
+
+                        <a asp-controller="Employee"
+                           asp-action="Dashboard"
+                           class="sidebar-link @(currentAction == "Dashboard" ? "active" : "")">
+
+                            <i class="bi bi-grid"></i>
+                            Dashboard
+
+                        </a>
+
+                        <a asp-controller="Employee"
+                           asp-action="Documents"
+                           class="sidebar-link @(currentAction == "Documents" ? "active" : "")">
+
+                            <i class="bi bi-file-earmark-text"></i>
+                            Documents
+
+                        </a>
+
+                    </nav>
+                    <div class="sidebar-user">
+
+                        <div class="user-avatar">
+                            @initials
+                        </div>
+
+                        <div class="user-name">
+                            @name
+                        </div>
+
+                        <div class="user-email">
+                            @email
+                        </div>
+
+                        <a asp-controller="Auth"
+                           asp-action="Logout"
+                           class="logout-link">
+
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+
+                        </a>
+
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - EMS App - <a asp-area="" asp-controller="Home" asp-action="Index">Employee</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site1.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <main class="content">
+        @RenderBody()
+    </main>
+
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site1.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

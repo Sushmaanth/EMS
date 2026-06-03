@@ -22,7 +22,7 @@ namespace EMSFrontend.Api.Abstraction
 
         Task<IEnumerable<DocumentCategoryViewModel>> SendGetDocumentCategoriesAsync();
 
-        Task<IEnumerable<DocumentTypeViewModel>>SendGetDocumentTypesByCategoryAsync(int categoryId);
+        Task<IEnumerable<DocumentTypeViewModel>>SendGetDocumentTypesByCategoryAsync(int categoryId, int employeeId);
 
         Task<DeleteDocumentResponseViewModel>SendDeleteDocumentAsync(int documentId);
 

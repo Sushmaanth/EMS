@@ -20,5 +20,8 @@ namespace Dtos.Repository.Abstraction
         void DeleteDocument(EmployeeDocument document);
 
         Task SaveChangesAsync();
+
+        Task<ICollection<DocumentType>> GetDocumentTypesByCategoryAsync(int categoryId, int employeeId);
+
     }
 }

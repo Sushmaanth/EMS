@@ -3,43 +3,167 @@
   "WorkspaceRootPath": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\wwwroot\\js\\site1.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\wwwroot\\js\\site1.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsauthapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|solutionrelative:emsauthapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\wwwroot\\css\\employee.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\wwwroot\\css\\employee.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsauthapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|solutionrelative:emsauthapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\employee\\documents.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\employee\\documents.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\repository\\implementation\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\implementation\\authrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\employee\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\employee\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\api\\implementation\\authapirequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\api\\implementation\\authapirequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\employee\\_documentcardspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\employee\\_documentcardspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/G7CR/EMSDb/True/SqlTable/dbo.EmployeeDocument.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+      "AbsoluteMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsauthapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|solutionrelative:emsauthapi\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\entities\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|solutionrelative:entities\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\shared\\_layout2.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\shared\\_layout2.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\loginresponseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\loginresponseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\loginresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\loginresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\wwwroot\\css\\employee.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\wwwroot\\css\\employee.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\employeeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\employeeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Changes.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|solutionrelative:Changes.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\employee\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\employee\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\employee\\_documentcardspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\employee\\_documentcardspartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\views\\employee\\documents.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\views\\employee\\documents.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsbackend\\service\\abstraction\\iemployeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|solutionrelative:emsbackend\\service\\abstraction\\iemployeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\api\\implementation\\employeeapirequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\api\\implementation\\employeeapirequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\wwwroot\\js\\site1.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\wwwroot\\js\\site1.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsbackend\\service\\implementation\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|solutionrelative:emsbackend\\service\\implementation\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\replacedocumentviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\replacedocumentviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\documenttypeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\documenttypeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\api\\abstraction\\irequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\api\\abstraction\\irequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/G7CR/EMSDb/True/SqlTable/dbo.EmployeeDocument.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsbackend\\service\\implementation\\blobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|solutionrelative:emsbackend\\service\\implementation\\blobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsbackend\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{269C68E0-767F-CDDB-DED5-0CF0E5AEB418}|EMSBackend\\EMSBackend.csproj|solutionrelative:emsbackend\\controllers\\employeecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Changes.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{089100B1-113F-4E66-888A-E83F3999EAFD}|Solution Items{089100B1-113F-4E66-888A-E83F3999EAFD}|solutionrelative:Changes.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\repository\\implementation\\documentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\implementation\\documentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\entities\\documenttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|solutionrelative:entities\\documenttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\repository\\implementation\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\implementation\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\repository\\abstraction\\idocumentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\abstraction\\idocumentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\repository\\abstraction\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\repository\\abstraction\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\dtos\\documenttypedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F088159-FE53-1417-AD52-55A97CB2FBB6}|Dtos\\Dtos.csproj|solutionrelative:dtos\\documenttypedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\employeedocumentpageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\employeedocumentpageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\entities\\employeedocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|solutionrelative:entities\\employeedocument.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{95DE3BD9-A587-35A9-17E0-3C34D2A57441}|Entities\\Entities.csproj|solutionrelative:entities\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\employeedocumentresponseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\employeedocumentresponseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsfrontend\\models\\employeedocumentuploadviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1042ABA-8A86-B990-4FD5-9DCE7FEFDB3A}|EMSFrontend\\EMSFrontend.csproj|solutionrelative:emsfrontend\\models\\employeedocumentuploadviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5A26E663-1A5F-4AF9-BC14-0FF0D15B79FC}|EMSAuthApi\\EMSAuthApi.csproj|c:\\users\\sushmaanth r\\documents\\github\\ems\\ems\\emsauthapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -53,42 +177,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 524,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Dashboard.cshtml",
-              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
-              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
-              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
-              "RelativeToolTip": "EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:59:01.104Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "dbo.EmployeeDocument [Data]",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/G7CR/EMSDb/True/SqlTable/dbo.EmployeeDocument.sql",
-              "ToolTip": "dbo.EmployeeDocument [Data]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2026-06-01T12:55:01.814Z",
+              "Title": "TokenService.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Services\\TokenService.cs",
+              "RelativeDocumentMoniker": "EMSAuthApi\\Services\\TokenService.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Services\\TokenService.cs",
+              "RelativeToolTip": "EMSAuthApi\\Services\\TokenService.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAkwCMAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:11:06.643Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "EmployeeApiRequest.cs",
-              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
-              "RelativeDocumentMoniker": "EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
-              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
-              "RelativeToolTip": "EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
-              "ViewState": "AgIAADgBAAAAAAAAAAAiwBIAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 13,
+              "Title": "EmployeeViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\EmployeeViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\EmployeeViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T12:50:16.096Z",
+              "WhenOpened": "2026-06-02T11:55:40.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Employee.css",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\wwwroot\\css\\Employee.css",
+              "RelativeDocumentMoniker": "EMSFrontend\\wwwroot\\css\\Employee.css",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\wwwroot\\css\\Employee.css",
+              "RelativeToolTip": "EMSFrontend\\wwwroot\\css\\Employee.css",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAcwIEAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-06-01T12:26:56.936Z",
               "EditorCaption": ""
             },
             {
@@ -99,79 +226,219 @@
               "RelativeDocumentMoniker": "EMSFrontend\\Controllers\\EmployeeController.cs",
               "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Controllers\\EmployeeController.cs",
               "RelativeToolTip": "EMSFrontend\\Controllers\\EmployeeController.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAYwCsAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA9wA0AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-01T12:45:18.402Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "EmployeeController.cs",
-              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Controllers\\EmployeeController.cs",
-              "RelativeDocumentMoniker": "EMSBackend\\Controllers\\EmployeeController.cs",
-              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Controllers\\EmployeeController.cs",
-              "RelativeToolTip": "EMSBackend\\Controllers\\EmployeeController.cs",
-              "ViewState": "AgIAAHkAAAAAAAAAAADwv4QAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T12:44:55.878Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "_DocumentCardsPartial.cshtml",
-              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
-              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
-              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
-              "RelativeToolTip": "EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
-              "ViewState": "AgIAABsAAAAAAAAAAAAcwCgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:33:35.332Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Documents.cshtml",
-              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Documents.cshtml",
-              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Employee\\Documents.cshtml",
-              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Documents.cshtml",
-              "RelativeToolTip": "EMSFrontend\\Views\\Employee\\Documents.cshtml",
-              "ViewState": "AgIAAAsAAAAAAAAAAADwvxwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-01T12:33:17.606Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "Changes.txt",
               "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Changes.txt",
               "RelativeDocumentMoniker": "Changes.txt",
               "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Changes.txt",
               "RelativeToolTip": "Changes.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
               "WhenOpened": "2026-06-01T12:27:38.184Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 16,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Employee\\Dashboard.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-01T12:59:01.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-02T11:00:31.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "_DocumentCardsPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Employee\\_DocumentCardsPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-01T12:33:35.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Documents.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Documents.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Employee\\Documents.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Employee\\Documents.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Employee\\Documents.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-01T12:33:17.606Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "EmployeeApiRequest.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "RelativeToolTip": "EMSFrontend\\Api\\Implementation\\EmployeeApiRequest.cs",
+              "ViewState": "AgIAAKMBAAAAAAAAAAAwwK4BAABVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-01T12:50:16.096Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
               "Title": "site1.js",
               "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\wwwroot\\js\\site1.js",
               "RelativeDocumentMoniker": "EMSFrontend\\wwwroot\\js\\site1.js",
               "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\wwwroot\\js\\site1.js",
               "RelativeToolTip": "EMSFrontend\\wwwroot\\js\\site1.js",
-              "ViewState": "AgIAAJMAAAAAAAAAAAAAAKQAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAIQBAAAAAAAAAAAAAJABAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2026-06-01T12:15:14.829Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 23,
+              "Title": "EmployeeService.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Service\\Implementation\\EmployeeService.cs",
+              "RelativeDocumentMoniker": "EMSBackend\\Service\\Implementation\\EmployeeService.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Service\\Implementation\\EmployeeService.cs",
+              "RelativeToolTip": "EMSBackend\\Service\\Implementation\\EmployeeService.cs",
+              "ViewState": "AgIAALsBAAAAAAAAAAAkwO8BAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-01T12:45:18.438Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "ReplaceDocumentViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\ReplaceDocumentViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\ReplaceDocumentViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\ReplaceDocumentViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\ReplaceDocumentViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T10:21:18.03Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "IRequest.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "RelativeToolTip": "EMSFrontend\\Api\\Abstraction\\IRequest.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAkwB0AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T06:08:57.584Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "dbo.EmployeeDocument [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/G7CR/EMSDb/True/SqlTable/dbo.EmployeeDocument.sql",
+              "ToolTip": "dbo.EmployeeDocument [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-06-01T12:55:01.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "BlobService.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Service\\Implementation\\BlobService.cs",
+              "RelativeDocumentMoniker": "EMSBackend\\Service\\Implementation\\BlobService.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Service\\Implementation\\BlobService.cs",
+              "RelativeToolTip": "EMSBackend\\Service\\Implementation\\BlobService.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAoAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T06:51:09.457Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "EmployeeController.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Controllers\\EmployeeController.cs",
+              "RelativeDocumentMoniker": "EMSBackend\\Controllers\\EmployeeController.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Controllers\\EmployeeController.cs",
+              "RelativeToolTip": "EMSBackend\\Controllers\\EmployeeController.cs",
+              "ViewState": "AgIAAKgAAAAAAAAAAIA8wLwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-01T12:44:55.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "EmployeeDocumentPageViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeDocumentPageViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\EmployeeDocumentPageViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeDocumentPageViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\EmployeeDocumentPageViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:26:20.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "EmployeeDocumentUploadViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeDocumentUploadViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\EmployeeDocumentUploadViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeDocumentUploadViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\EmployeeDocumentUploadViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:25:22.588Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "EmployeeDocumentResponseViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeDocumentResponseViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\EmployeeDocumentResponseViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\EmployeeDocumentResponseViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\EmployeeDocumentResponseViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:23:52.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Program.cs",
               "RelativeDocumentMoniker": "EMSAuthApi\\Program.cs",
@@ -186,19 +453,279 @@
         },
         {
           "DockedWidth": 524,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Employee.css",
-              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\wwwroot\\css\\Employee.css",
-              "RelativeDocumentMoniker": "EMSFrontend\\wwwroot\\css\\Employee.css",
-              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\wwwroot\\css\\Employee.css",
-              "RelativeToolTip": "EMSFrontend\\wwwroot\\css\\Employee.css",
-              "ViewState": "AgIAANQAAAAAAAAAAADwv/IAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-06-01T12:26:56.936Z",
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "EMSAuthApi\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "EMSAuthApi\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwCMAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:04:38.678Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "EMSAuthApi\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSAuthApi\\Services\\AuthService.cs",
+              "RelativeToolTip": "EMSAuthApi\\Services\\AuthService.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAvwEMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T12:58:09.392Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Implementation\\AuthRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Implementation\\AuthRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Implementation\\AuthRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Implementation\\AuthRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAvwBcAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:03:12.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuthApiRequest.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Implementation\\AuthApiRequest.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Api\\Implementation\\AuthApiRequest.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Api\\Implementation\\AuthApiRequest.cs",
+              "RelativeToolTip": "EMSFrontend\\Api\\Implementation\\AuthApiRequest.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAEwBoAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:12:10.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "EMSFrontend\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAqwCMAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T10:59:02.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_Layout2.cshtml",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Shared\\_Layout2.cshtml",
+              "RelativeDocumentMoniker": "EMSFrontend\\Views\\Shared\\_Layout2.cshtml",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Views\\Shared\\_Layout2.cshtml",
+              "RelativeToolTip": "EMSFrontend\\Views\\Shared\\_Layout2.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAADIAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-02T11:24:29.499Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Employee.cs",
+              "RelativeDocumentMoniker": "Entities\\Employee.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Employee.cs",
+              "RelativeToolTip": "Entities\\Employee.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAA1wBYAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T11:17:38.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "LoginResponseViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\LoginResponseViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\LoginResponseViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\LoginResponseViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\LoginResponseViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:05:32.635Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoginResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\LoginResponseDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\LoginResponseDto.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\LoginResponseDto.cs",
+              "RelativeToolTip": "Dtos\\LoginResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:00:47.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\LoginDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\LoginDto.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\LoginDto.cs",
+              "RelativeToolTip": "Dtos\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T13:01:06.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "EMSFrontend\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAgwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T10:58:28.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "IEmployeeService.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Service\\Abstraction\\IEmployeeService.cs",
+              "RelativeDocumentMoniker": "EMSBackend\\Service\\Abstraction\\IEmployeeService.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSBackend\\Service\\Abstraction\\IEmployeeService.cs",
+              "RelativeToolTip": "EMSBackend\\Service\\Abstraction\\IEmployeeService.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAMwBgAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:48:14.735Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "DocumentTypeViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\DocumentTypeViewModel.cs",
+              "RelativeDocumentMoniker": "EMSFrontend\\Models\\DocumentTypeViewModel.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\EMSFrontend\\Models\\DocumentTypeViewModel.cs",
+              "RelativeToolTip": "EMSFrontend\\Models\\DocumentTypeViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:27:33.635Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "DocumentRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Implementation\\DocumentRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Implementation\\DocumentRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Implementation\\DocumentRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Implementation\\DocumentRepository.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAswEkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:50:17.938Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "DocumentType.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\DocumentType.cs",
+              "RelativeDocumentMoniker": "Entities\\DocumentType.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\DocumentType.cs",
+              "RelativeToolTip": "Entities\\DocumentType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:34:33.383Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "IDocumentRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Abstraction\\IDocumentRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Abstraction\\IDocumentRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Abstraction\\IDocumentRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Abstraction\\IDocumentRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:49:52.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "EmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Implementation\\EmployeeRepository.cs",
+              "ViewState": "AgIAAHkAAAAAAAAAAAAswIkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:35:39.249Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "IEmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "RelativeDocumentMoniker": "Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "RelativeToolTip": "Dtos\\Repository\\Abstraction\\IEmployeeRepository.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAYwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:33:29.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "DocumentTypeDto.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\DocumentTypeDto.cs",
+              "RelativeDocumentMoniker": "Dtos\\DocumentTypeDto.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Dtos\\DocumentTypeDto.cs",
+              "RelativeToolTip": "Dtos\\DocumentTypeDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:46:43.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "EmployeeDocument.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\EmployeeDocument.cs",
+              "RelativeDocumentMoniker": "Entities\\EmployeeDocument.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\EmployeeDocument.cs",
+              "RelativeToolTip": "Entities\\EmployeeDocument.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:35:00.534Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Role.cs",
+              "RelativeDocumentMoniker": "Entities\\Role.cs",
+              "ToolTip": "C:\\Users\\SUSHMAANTH R\\Documents\\GitHub\\EMS\\EMS\\Entities\\Role.cs",
+              "RelativeToolTip": "Entities\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-02T05:34:58.658Z",
               "EditorCaption": ""
             }
           ]

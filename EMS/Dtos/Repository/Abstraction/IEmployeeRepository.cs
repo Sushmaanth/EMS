@@ -20,5 +20,7 @@ namespace Dtos.Repository.Abstraction
         ICollection<Department> GetDepartments();
 
         Task AddDocumentAsync(EmployeeDocument document);
+
+
     }
 }

@@ -1,205 +1,413 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿(() => {
 
-    //ajax document category
-    const documentCategoryButtons =
-        document.querySelectorAll(".category-btn");
+    document.addEventListener("DOMContentLoaded", function () {
 
-    const successfullyUserLoggegIn =
-        document.getElementById("successfullyUserLoggegIn");
-
-    documentCategoryButtons.forEach(documentCategoryButton => {
-
-        documentCategoryButton.addEventListener("click", async () => {
-
-            const categoryId =
-                documentCategoryButton.getAttribute("data-categoryid");
-
-            console.log(categoryId);
-
-            documentCategoryButtons.forEach(button =>
-                button.classList.remove("active"));
-
-            documentCategoryButton.classList.add("active");
-
-            const response =
-                await fetch(`/Employee/GetDocumentCards?categoryId=${categoryId}`);
-
-            const html =
-                await response.text();
-
-            document.getElementById("documentCardsContainer")
-                .innerHTML = html;
-        });
+        initializeCategoryButtons();
+        initializeUploadEvents();
+        initializeDeleteEvents();
+        initializeEditEvents();
+        showLoginSuccessMessage();
 
     });
 
-    //upload document event for container and browse button
-    document.addEventListener("click", function (e) {
-        const uploadBox = e.target.closest(".upload-box");
+    function initializeCategoryButtons() {
 
-        if (uploadBox == null) {
-            return;
-        }
+        const documentCategoryButtons =
+            document.querySelectorAll(".category-btn");
 
-        const fileInput = uploadBox.closest("form").parentElement.querySelector(".file-upload");
-        if (fileInput) {
-            fileInput.click();
-        }
-    });
+        documentCategoryButtons.forEach(button => {
 
-    
+            button.addEventListener("click", async () => {
 
-    //file selected event auto upload
-    document.addEventListener("change", function (e) {
+                try {
 
-        if (e.target.classList.contains("file-upload")) {
+                    const categoryId =
+                        button.getAttribute("data-categoryid");
 
-            uploadDocument(e.target);
-        }
-    });
+                    documentCategoryButtons.forEach(btn =>
+                        btn.classList.remove("active"));
 
-    //after login success message
+                    button.classList.add("active");
 
-    if (successfullyUserLoggegIn) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: successfullyUserLoggegIn.value,
-            confirmButtonColor: '#3085d6'
+                    await reloadCurrentCategory(categoryId);
+                }
+                catch (error) {
+
+                    console.error(error);
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: "Unable to load documents"
+                    });
+                }
+            });
         });
     }
 
-});
+    //upload btn
+    function initializeUploadEvents() {
 
-//upload document
-async function uploadDocument(fileInput) {
+        document.addEventListener("click", function (e) {
 
-    const form = fileInput.closest("form");
+            if (
+                e.target.closest(".btn-view") ||
+                e.target.closest(".btn-edit") ||
+                e.target.closest(".btn-delete")
+            ) {
+                return;
+            }
 
-    const documentTypeId = form.querySelector("[name='DocumentTypeId']").value;
+            const uploadBox =
+                e.target.closest(".upload-box");
 
-    const employeeId = form.querySelector("[name='EmployeeId']").value;
+            if (!uploadBox) {
+                return;
+            }
 
-    const file = fileInput.files[0];
+            const fileInput =
+                uploadBox.closest("form")
+                    .querySelector(".file-upload");
 
-    if (!file) {
-        return;
+            fileInput?.click();
+        });
+
+        //on change upload
+        document.addEventListener("change", function (e) {
+
+            if (!e.target.classList.contains("file-upload")) {
+                return;
+            }
+
+            const fileInput = e.target;
+
+            if (fileInput.dataset.mode === "replace") {
+
+                const documentId =
+                    fileInput.closest(".document-card")
+                        .querySelector(".btn-edit")
+                        .dataset.documentid;
+
+                replaceDocument(documentId, fileInput.files[0]);
+
+                delete fileInput.dataset.mode;
+
+                return;
+            }
+
+            uploadDocument(fileInput);
+        });
     }
 
-    const progressContainer = form.querySelector(".upload-progress-container");
+        //delete btn
+        function initializeDeleteEvents() {
 
-    const progressBar = form.querySelector(".upload-progress-bar");
+            document.addEventListener("click", async function (e) {
 
-    progressContainer.classList.remove("d-none");
+                const deleteButton =
+                    e.target.closest(".btn-delete");
 
-    const formData = new FormData();
+                if (!deleteButton) {
+                    return;
+                }
 
-    formData.append("EmployeeId", employeeId);
+                const documentId =
+                    deleteButton.dataset.documentid;
 
-    formData.append("DocumentTypeId", documentTypeId);
+                await deleteDocument(documentId);
 
-    formData.append("File", file);
-
-    const xhr = new XMLHttpRequest();
-
-    xhr.open("POST", "/Employee/UploadDocument", true);
-
-    //progress bar
-    xhr.upload.addEventListener("progress", function (e) {
-
-        if (e.lengthComputable) {
-
-            const percent =
-                Math.round((e.loaded / e.total) * 100);
-
-            progressBar.style.width = percent + "%";
-
-            progressBar.innerText = percent + "%";
+            });
         }
-    });
 
-    xhr.onload = function () {
+        //edit
+        function initializeEditEvents() {
 
-        console.log("Status:", xhr.status);
-        console.log("Response:", xhr.responseText);
+            document.addEventListener("click", function (e) {
 
-        if (xhr.status === 200) {
+                const editButton =
+                    e.target.closest(".btn-edit");
 
-            const result = JSON.parse(xhr.responseText);
-            const uploadBox = form.querySelector(".upload-box");
-            const extension = file.name.split('.').pop().toLowerCase();
+                if (!editButton) {
+                    return;
+                }
 
-            let previewHtml = "";
+                const card =
+                    editButton.closest(".document-card");
 
-            if (["jpg", "jpeg", "png", "svg"].includes(extension)) {
+                const fileInput =
+                    card.querySelector(".file-upload");
 
-                const imageUrl = URL.createObjectURL(file);
+                if (!fileInput) {
+                    return;
+                }
 
-                previewHtml = `<img src="${imageUrl}" class="document-preview-image">`;
+                fileInput.dataset.mode = "replace";
 
+                fileInput.click();
+            });
+        }
+        function showLoginSuccessMessage() {
+
+            const successMessage =
+                document.getElementById("successfullyUserLoggegIn");
+
+            if (!successMessage) {
+                return;
             }
-            else if (extension === "pdf") {
-
-                previewHtml = `
-                <div class="document-preview-pdf">
-                    <i class="bi bi-file-earmark-pdf-fill"></i>
-                </div>`;
-            }
-            else {
-                previewHtml = `
-                <div class="document-preview-pdf">
-                    <i class="bi bi-file-earmark-word-fil"></i>
-                </div>`;
-            }
-
-            uploadBox.innerHTML = `
-            <div class="document-preview-wrapper">
-
-                <div class="document-actions">
-                    <button class="btn btn-light btn-sm btn-view">
-                        <i class="bi bi-eye"></i>
-                    </button>
-
-                    <button class="btn btn-light btn-sm btn-edit">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-
-                    <button class="btn btn-light btn-sm btn-delete">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </div>
-                ${previewHtml}
-                <div class="document-name">
-                    ${file.name}
-                </div>
-            </div>`;
 
             Swal.fire({
                 icon: "success",
-                title: "Uploaded",
-                text: "Uploaded Successfully"
+                title: "Success",
+                text: successMessage.value,
+                confirmButtonColor: "#3085d6"
             });
+        }
 
-            progressBar.classList.add("bg-success");
+        //upload request
+        async function uploadDocument(fileInput) {
+
+            try {
+
+                const form =
+                    fileInput.closest("form");
+
+                const documentTypeId =
+                    form.querySelector("[name='DocumentTypeId']").value;
+
+                const employeeId =
+                    form.querySelector("[name='EmployeeId']").value;
+
+                const file =
+                    fileInput.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+                const progressContainer =
+                    form.querySelector(".upload-progress-container");
+
+                const progressBar =
+                    form.querySelector(".upload-progress-bar");
+
+                progressContainer.classList.remove("d-none");
+
+                const formData = new FormData();
+
+                formData.append("EmployeeId", employeeId);
+                formData.append("DocumentTypeId", documentTypeId);
+                formData.append("File", file);
+
+                const xhr = new XMLHttpRequest();
+
+                xhr.open("POST", "/Employee/UploadDocument", true);
+
+                xhr.upload.addEventListener("progress", function (e) {
+
+                    if (e.lengthComputable) {
+
+                        const percent =
+                            Math.round((e.loaded / e.total) * 100);
+
+                        progressBar.style.width = percent + "%";
+                        progressBar.innerText = percent + "%";
+                    }
+                });
+
+                xhr.onload = async function () {
+
+                    try {
+                        const result = JSON.parse(xhr.responseText);
+
+                        if (xhr.status === 200) {
+
+                            progressBar.classList.add("bg-success");
+
+                            await reloadActiveCategory();
+
+                            Swal.fire({
+                                icon: "success",
+                                title: result.documentType,
+                                text: "Uploaded Successfully"
+                            });
+                        }
+                        else {
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Upload Failed"
+                            });
+                        }
+                    }
+                    catch (error) {
+
+                        console.error(error);
+                    }
+                };
+
+                xhr.onerror = function () {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Upload Failed"
+                    });
+                };
+
+                xhr.send(formData);
+            }
+            catch (error) {
+
+                console.error(error);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Something went wrong"
+                });
+            }
+        }
+
+        async function reloadActiveCategory() {
+
+            const activeCategory =
+                document.querySelector(".category-btn.active");
+
+            if (!activeCategory) {
+                return;
+            }
+
+            const categoryId = activeCategory.getAttribute("data-categoryid");
+
+            await reloadCurrentCategory(categoryId);
+        }
+
+        async function reloadCurrentCategory(categoryId) {
+            try {
+
+                const response =
+                    await fetch(`/Employee/GetDocumentCards?categoryId=${categoryId}`);
+
+                const html =
+                    await response.text();
+
+                document.getElementById("documentCardsContainer")
+                    .innerHTML = html;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function deleteDocument(documentId) {
+
+            try {
+
+                const confirmation = await Swal.fire({
+                    title: "Delete Document?",
+                    text: "This action cannot be undone.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Cancel"
+                });
+
+                if (!confirmation.isConfirmed) {
+                    return;
+                }
+
+                const response =
+                    await fetch(`/Employee/DeleteDocument?documentId=${documentId}`, {
+                        method: "DELETE"
+                    });
+
+                const result =
+                    await response.json();
+
+                console.log(result);
+
+                if (response.ok) {
+
+                    await reloadActiveCategory();
+
+                    Swal.fire({
+                        icon: "success",
+                        title: result.documentType,
+                        text: result.message
+                    });
+                }
+                else {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Delete Failed",
+                        text: result.message
+                    });
+                }
+            }
+            catch (error) {
+
+                console.error(error);
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Unable to delete document"
+                });
+            }
+        }
+
+    async function replaceDocument(documentId, file) {
+
+        try {
+
+            if (!file) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("DocumentId", documentId);
+            formData.append("File", file);
+
+            const response =
+                await fetch("/Employee/ReplaceDocument", {
+                    method: "PUT",
+                    body: formData
+                });
+
+            const result =
+                await response.json();
 
             console.log(result);
+
+            if (response.ok) {
+
+                await reloadActiveCategory();
+
+                Swal.fire({
+                    icon: "success",
+                    title: result.documentType,
+                    text: result.message
+                });
+            }
+            else {
+
+                Swal.fire({
+                    icon: "error",
+                    title: "Replace Failed",
+                    text: result.message
+                });
+            }
         }
-        else {
+        catch (error) {
+
+            console.error(error);
 
             Swal.fire({
                 icon: "error",
-                title: "Upload Failed"
+                title: "Error",
+                text: "Unable to replace document"
             });
         }
-    };
+    }
 
-    xhr.onerror = function () {
-
-        Swal.fire({
-            icon: "error",
-            title: "Upload Failed"
-        });
-    };
-
-    xhr.send(formData);
-}
+})();

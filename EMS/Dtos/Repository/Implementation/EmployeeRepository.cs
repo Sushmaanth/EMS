@@ -1,6 +1,7 @@
 ﻿using Dtos.Repository.Abstraction;
 using Entities;
 using Entities.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;

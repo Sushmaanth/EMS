@@ -2,7 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using EMSBackend.Service.Abstraction;
-using Entities;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace EMSBackend.Service.Implementation
 {
@@ -39,11 +39,18 @@ namespace EMSBackend.Service.Implementation
 
             using(var stream = file.OpenReadStream())
             {
+                var provider = new FileExtensionContentTypeProvider();
+
+                if (!provider.TryGetContentType(file.FileName, out string? contentType))
+                {
+                    contentType = "application/octet-stream";
+                }
+
                 await blobClient.UploadAsync(stream, new BlobUploadOptions
                 {
                     HttpHeaders = new BlobHttpHeaders
                     {
-                        ContentType = file.ContentType
+                        ContentType = contentType
                     }
                 });
             }

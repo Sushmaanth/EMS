@@ -72,7 +72,8 @@ namespace EMSAuthApi.Services
                     EmailId = user.EmailId,
                     Role = user.Role.RoleName,
                     RefreshToken = refreshToken,
-                    EmployeeId = user.EmployeeId
+                    EmployeeId = user.EmployeeId,
+                    EmployeeName = user.Employee.Name
                 }
             };
 
@@ -135,7 +136,9 @@ namespace EMSAuthApi.Services
 
                     Role = user.Role.RoleName,
 
-                    EmployeeId = user.EmployeeId
+                    EmployeeId = user.EmployeeId,
+
+                    EmployeeName = user.Employee.Name
                 }
             };
         }

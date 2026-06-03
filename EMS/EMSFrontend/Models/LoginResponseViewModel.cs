@@ -2,14 +2,16 @@
 {
     public class LoginResponseViewModel
     {
-            public string Token { get; set; }
+        public string Token { get; set; }
 
-            public string RefreshToken { get; set; }
+        public string RefreshToken { get; set; }
 
-            public string EmailId { get; set; }
+        public string EmailId { get; set; }
 
-            public string Role { get; set; }
+        public string Role { get; set; }
 
-            public int EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
+
+        public string EmployeeName { get; set; }
     }
 }

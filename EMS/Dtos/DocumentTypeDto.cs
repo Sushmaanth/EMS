@@ -1,6 +1,6 @@
-﻿namespace EMSFrontend.Models
+﻿namespace Dtos
 {
-    public class DocumentTypeViewModel
+    public class DocumentTypeDto
     {
         public int Id { get; set; }
 
@@ -14,6 +14,6 @@
 
         public string? BlobUrl { get; set; }
 
-        public bool IsUploaded => DocumentId.HasValue;
+        public bool IsUploaded { get; set; }
     }
 }

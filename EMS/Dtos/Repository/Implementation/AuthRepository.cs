@@ -21,7 +21,7 @@ namespace Dtos.Repository.Implementation
         }
         public User? GetUserByEmail(string email)
         {
-            return _context.Users.Include(u => u.Role).FirstOrDefault(u => u.EmailId == email);
+            return _context.Users.Include(u => u.Employee).Include(u => u.Role).FirstOrDefault(u => u.EmailId == email);
         }
 
         public void Save()
