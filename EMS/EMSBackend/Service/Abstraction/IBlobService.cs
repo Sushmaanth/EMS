@@ -1,4 +1,6 @@
-﻿namespace EMSBackend.Service.Abstraction
+﻿using Dtos;
+
+namespace EMSBackend.Service.Abstraction
 {
     public interface IBlobService
     {
@@ -9,5 +11,6 @@
         Task DeleteFileAsync(string fileName);
 
         string GenerateReadSasUrl(string fileName);
+
     }
 }

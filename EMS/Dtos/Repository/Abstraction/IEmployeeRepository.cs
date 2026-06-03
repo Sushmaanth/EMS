@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Dtos.Repository.Model;
+using Entities;
 
 namespace Dtos.Repository.Abstraction
 {
@@ -21,6 +22,6 @@ namespace Dtos.Repository.Abstraction
 
         Task AddDocumentAsync(EmployeeDocument document);
 
-
+        EmployeeDashboardData GetDashboardData(int employeeId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Dtos.Repository.Abstraction;
+using Dtos.Repository.Model;
 using Entities;
 using Entities.Data;
 using Microsoft.EntityFrameworkCore;
@@ -136,5 +137,27 @@ namespace Dtos.Repository.Implementation
             await _context.EmployeeDocuments.AddAsync(document);
             await _context.SaveChangesAsync();
         }
+
+        public EmployeeDashboardData GetDashboardData(int employeeId)
+        {
+            var employee = _context.Employees
+                            .Include(e => e.Department)
+                            .FirstOrDefault(e => e.Id == employeeId);
+
+            var mandatoryDocumentType = _context.DocumentTypes
+                                            .Where(d => d.IsMandatory)
+                                            .ToList();
+
+            var uploadedDocuments = _context.EmployeeDocuments
+                                    .Where(d => d.EmployeeId == employeeId)
+                                    .ToList();
+            
+            return new EmployeeDashboardData
+            {
+                Employee = employee,
+                MandatoryDocumentTypes = mandatoryDocumentType,
+                UploadedDocuments = uploadedDocuments
+            };
+        }   
     }
 }

@@ -180,7 +180,35 @@
                 const file =
                     fileInput.files[0];
 
+                const allowedExtensions =
+                    [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
+
+                const extension =
+                    "." + file.name.split(".").pop().toLowerCase();
+
+                if (!allowedExtensions.includes(extension)) {
+
+                    Swal.fire({
+                        icon: "error",
+                        title: "Invalid File",
+                        text: "Only PDF, DOC, DOCX, JPG, JPEG and PNG files are allowed."
+                    });
+
+                    return;
+                }
+
                 if (!file) {
+                    return;
+                }
+
+                if (file.size > 50 * 1024 * 1024) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "File Too Large",
+                        text: "Maximum file size allowed is 50 MB."
+                    });
+
+                    fileInput.value = "";
                     return;
                 }
 

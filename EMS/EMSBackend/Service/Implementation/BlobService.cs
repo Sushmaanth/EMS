@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
+using Dtos;
 using EMSBackend.Service.Abstraction;
 using Microsoft.AspNetCore.StaticFiles;
 

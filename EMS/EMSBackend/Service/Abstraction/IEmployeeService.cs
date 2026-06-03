@@ -4,7 +4,7 @@ namespace EMSBackend.Service.Abstraction
 {
     public interface IEmployeeService
     {
-        ServiceResponseDto<CreateEmployeeDto>Create(CreateEmployeeDto dto);
+        Task<ServiceResponseDto<CreateEmployeeDto>> Create(CreateEmployeeDto dto);
 
         ServiceResponseDto<ICollection<EmployeeDto>>View();
 
@@ -31,6 +31,10 @@ namespace EMSBackend.Service.Abstraction
         Task<ServiceResponseDto<DocumentViewResponseDto>> GetDocumentUrlAsync(int documentId);
 
         Task<ServiceResponseDto<ICollection<DocumentTypeDto>>>GetDocumentTypesByCategoryAsync(int categoryId, int employeeId);
+
+        ServiceResponseDto<DashboardDto> GetEmployeeDashboard(int employeeId);
+
+        ServiceResponseDto<EmployeeDocumentResponseDto>? ValidateFile(IFormFile file);
     }
 
 }

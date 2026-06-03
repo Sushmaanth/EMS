@@ -15,27 +15,18 @@ namespace EMSFrontend.Controllers
         }
 
         [HttpGet]
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            try
+            int? employeeId = HttpContext.Session.GetInt32("EmployeeId");
+
+            if (employeeId == null)
             {
-                string token = HttpContext.Session.GetString("JWToken");
-                if (string.IsNullOrEmpty(token))
-                {
-                    return RedirectToAction("Login", "Auth");
-                }
-                return View();
+                return RedirectToAction("Login","Auth");
             }
-            catch (UnauthorizedAccessException)
-            {
-                TempData["SessionExpired"] = "Your session has expired. Please login again.";
-                return RedirectToAction("Login", "Auth");
-            }
-            catch (Exception e)
-            {
-                TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
-            }
+
+            var dashboard = await _request.GetDashboardAsync(employeeId.Value);
+
+            return View(dashboard);
         }
 
         [HttpGet]

@@ -1,21 +1,19 @@
-﻿using Entities.Data;
+﻿using Dtos.Validation.Abstraction;
+using Entities.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Dtos.Validation
+namespace Dtos.Validation.Implementation
 {
-    public class EmployeeValidator
+    public class EmployeeValidation: IEmployeeValidation
     {
         private readonly AppDbContext context;
 
-        public EmployeeValidator(AppDbContext context)
+        public EmployeeValidation(AppDbContext context)
         {
             this.context = context;
         }
 
-        public async Task<Dictionary<string, List<string>>> Validate(EmployeeDto dto)
+        public async Task<Dictionary<string, List<string>>> Validate(CreateEmployeeDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 

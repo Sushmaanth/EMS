@@ -489,6 +489,52 @@ namespace EMSFrontend.Api.Implementation
 
             return result.Data;
         }
+
+        public async Task<DashboardViewModel> GetDashboardAsync(int employeeId)
+        {
+            SetBearerToken();
+
+            var response = await client.GetAsync($"dashboard/{employeeId}");
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                response = await client.GetAsync($"dashboard/{employeeId}");
+            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<
+                        ServiceResponseViewModel<DashboardViewModel>>();
+
+            return result.Data;
+        }
+
+        //remote validation
+        public async Task<bool> CheckEmailExistsAsync(string email)
+        {
+            var response =
+                await client.GetAsync($"validation/email?email={email}");
+
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
+
+        public async Task<bool> CheckMobileExistsAsync(long mobile)
+        {
+            var response =
+                await client.GetAsync($"validation/mobile?mobile={mobile}");
+
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
     }
 }
  

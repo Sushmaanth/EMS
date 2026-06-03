@@ -5,16 +5,32 @@
 @media (max-width: 767px) {
 
     .sidebar {
-        display: none;
+        display: none !important;
     }
-
     .content {
         width: 100%;
         padding: 16px;
     }
 
     .mobile-header {
-        display: flex;
+        display: flex !important;
+    }
+}
+
+@media (max-width: 992px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -64,7 +80,7 @@ body {
     overflow-x: auto;
 }
 
-.sidebar-menu {
+.offcanvas .sidebar-menu {
     padding: 16px;
 }
 
@@ -168,6 +184,158 @@ body {
 
 .mobile-menu-btn {
     border: none;
+}
+
+.offcanvas {
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    border-right: none;
+    max-width: 240px !important;
+}
+
+.offcanvas-header {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+}
+
+.offcanvas-title {
+    color: white;
+    font-weight: 700;
+}
+
+.offcanvas .btn-close {
+    filter: invert(1);
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+/*Dashnoard Page*/
+.dashboard-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.welcome-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px rgba(0,0,0,.04);
+}
+
+.welcome-card h2 {
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.welcome-card p {
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.welcome-card small {
+    color: #64748b;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    transition: .25s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #6d28d9;
+}
+
+.stat-card span {
+    color: #64748b;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 20px rgba(0,0,0,.03);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.custom-progress {
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.custom-progress .progress-bar {
+    background: linear-gradient(
+        90deg,
+        #8b5cf6,
+        #6d28d9
+    );
+}
+
+.progress-text {
+    margin-top: 14px;
+    color: #64748b;
+    font-size: .95rem;
+}
+
+.required-documents {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.required-document {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.required-document i {
+    font-size: 1.1rem;
 }
 
 /*Document page*/

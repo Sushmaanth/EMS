@@ -15,6 +15,18 @@ namespace EMSFrontend.GlobalException
                 if (apiRequestException.StatusCode == 401)
                 {
                     context.ModelState.AddModelError("Password", "Invalid Email or Password");
+
+                    context.Result = new ViewResult
+                    {
+                        ViewName = context.RouteData.Values["action"]?.ToString(),
+
+                        ViewData = new ViewDataDictionary(
+                                   new EmptyModelMetadataProvider(),
+                                   context.ModelState)
+                    };
+
+                    context.ExceptionHandled = true;
+                    return;
                 }
 
                 else if (apiRequestException.StatusCode == 400)
@@ -47,28 +59,41 @@ namespace EMSFrontend.GlobalException
                              };
 
                     context.ExceptionHandled = true;
-                }
-
-                if (context.Exception is UnauthorizedException)
-                {
-                    context.Result =
-                        new RedirectToActionResult(
-                            "Login",
-                            "Auth",
-                            null);
-
-                    context.ExceptionHandled = true;
-
                     return;
                 }
+            }
 
-                context.Result = new ViewResult
-                {
-                    ViewName = "~/Views/Shared/ServerError.cshtml"
-                };
+            if (context.Exception is UnauthorizedException)
+            {
+                context.HttpContext.Session.Clear();
+
+                var tempDataFactory =
+                    context.HttpContext.RequestServices
+                    .GetService<ITempDataDictionaryFactory>();
+
+                var tempData =
+                    tempDataFactory?.GetTempData(context.HttpContext);
+
+                tempData["SessionExpired"] =
+                    "Your session has expired. Please login again.";
+
+                context.Result =
+                    new RedirectToActionResult(
+                        "Login",
+                        "Auth",
+                        null);
 
                 context.ExceptionHandled = true;
+                return;
             }
+
+
+            context.Result = new ViewResult
+            {
+                ViewName = "~/Views/Shared/ServerError.cshtml"
+            };
+
+            context.ExceptionHandled = true;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
+using Dtos.Validation.Abstraction;
+using Dtos.Validation.Implementation;
 using EMSBackend.Service.Abstraction;
 using Entities;
 using System.Reflection.Metadata;
@@ -14,15 +16,17 @@ namespace EMSBackend.Service.Implementation
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IBlobService _blobService;
         private readonly IDocumentRepository _documentRepository;
+        private readonly IEmployeeValidation _employeeValidation;
 
-        public EmployeeService(IEmployeeRepository repository,IBlobService blobService,IDocumentRepository documentRepository)
+        public EmployeeService(IEmployeeRepository repository,IBlobService blobService,IDocumentRepository documentRepository, IEmployeeValidation employeeValidation)
         {
             _employeeRepository = repository;
             _blobService = blobService;
             _documentRepository = documentRepository;
+            _employeeValidation = employeeValidation;
         }
 
-        public ServiceResponseDto<CreateEmployeeDto> Create(CreateEmployeeDto dto)
+        public async Task<ServiceResponseDto<CreateEmployeeDto>>Create(CreateEmployeeDto dto)
         {
             Employee employee = new()
             {
@@ -35,6 +39,19 @@ namespace EMSBackend.Service.Implementation
                 DateOfJoining = dto.DateOfJoining,
                 DepartmentId = dto.DepartmentId
             };
+
+
+            var errors = await _employeeValidation.Validate(dto);
+
+            if (errors.Any())
+            {
+                return new ServiceResponseDto<CreateEmployeeDto>
+                {
+                    Success = false,
+                    Message = "Create Employee Validation",
+                    Errors = errors
+                };
+            }
 
             var createdEmployee = _employeeRepository.Create(employee);
 
@@ -327,6 +344,13 @@ namespace EMSBackend.Service.Implementation
                 };
             }
 
+            var validationResult = ValidateFile(dto.File);
+
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
             var uploadResult = await _blobService.UploadFileAsync(dto.File,
                 employee.Name, employee.Id,documentType.Name);
 
@@ -547,6 +571,113 @@ namespace EMSBackend.Service.Implementation
                 Message = "Document types fetched successfull",
                 Data = result
             };
+        }
+
+        public ServiceResponseDto<DashboardDto> GetEmployeeDashboard(int employeeId)
+        {
+            var data = _employeeRepository.GetDashboardData(employeeId);
+
+            if (data.Employee == null)
+            {
+                return new ServiceResponseDto<DashboardDto>
+                {
+                    Success = false,
+                    Message = "Employee not found"
+                };
+            }
+
+            var uploadedDocumentTypeIds = data.UploadedDocuments
+                                          .Select(d => d.DocumentTypeId)
+                                          .ToHashSet();
+
+            var requiredDocuments = data.MandatoryDocumentTypes
+                                        .Select(d => new DocumentStatusDto
+                                        {
+                                            DocumentName = d.Name,
+                                            IsUploaded = uploadedDocumentTypeIds.Contains(d.Id)
+                                        }).ToList();
+
+            int totalMandatoryDocuments = data.MandatoryDocumentTypes.Count;
+
+            int uploadedDocuments = requiredDocuments.Count(d => d.IsUploaded);
+
+            int missingDocuments = totalMandatoryDocuments - uploadedDocuments;
+
+            decimal completionPercentage = totalMandatoryDocuments == 0
+                        ? 100 : (uploadedDocuments * 100m) / totalMandatoryDocuments;
+
+            DashboardDto dashboardDto = new()
+            {
+                EmployeeName = data.Employee.Name,
+
+                DepartmentName = data.Employee.Department?.DepartmentName ?? "Department not assigned",
+
+                DateOfJoining = data.Employee.DateOfJoining,
+
+                TotalMandatoryDocuments = totalMandatoryDocuments,
+
+                UploadedDocuments = uploadedDocuments,
+
+                MissingDocuments = missingDocuments,
+
+                CompletionPercentage = completionPercentage,
+
+                RequiredDocuments = requiredDocuments
+            };
+
+            return new ServiceResponseDto<DashboardDto>
+            {
+                Success = true,
+                Message = "Dashboard fetched successfully",
+                Data = dashboardDto
+            };
+        }
+
+        public ServiceResponseDto<EmployeeDocumentResponseDto>? ValidateFile(IFormFile file)
+        {
+            const long maxFileSize = 50 * 1024 * 1024; // 50 MB
+
+            if (file == null || file.Length == 0)
+            {
+                return new ServiceResponseDto<EmployeeDocumentResponseDto>
+                {
+                    Success = false,
+                    Message = "Please select a file"
+                };
+            }
+
+            if (file.Length > maxFileSize)
+            {
+                return new ServiceResponseDto<EmployeeDocumentResponseDto>
+                {
+                    Success = false,
+                    Message = "File size cannot exceed 50 MB"
+                };
+            }
+
+            string[] allowedExtensions =
+            {
+            ".pdf",
+            ".doc",
+            ".docx",
+            ".jpg",
+            ".jpeg",
+            ".png"
+            };
+
+            string extension =
+                Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            if (!allowedExtensions.Contains(extension))
+            {
+                return new ServiceResponseDto<EmployeeDocumentResponseDto>
+                {
+                    Success = false,
+                    Message = "Only PDF, DOC, DOCX, JPG, JPEG and PNG files are allowed"
+                };
+            }
+
+            return null;
         }
     }
 }

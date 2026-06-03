@@ -68,63 +68,56 @@ namespace Dtos.Repository.Implementation
 
         public ActivateAccountResponseDTO AccountActivation(ActivateAccountDTO data)
         {
-            try
+            var employeeExists = _context.Employees.FirstOrDefault(e => e.EmailId == data.EmailId);
+
+            if (employeeExists == null)
             {
-                var employeeExists = _context.Employees.FirstOrDefault(e => e.EmailId == data.EmailId);
-
-                if (employeeExists == null)
-                {
-                    return new ActivateAccountResponseDTO
-                    {
-                        Success = false,
-                        Message = "Employee email not found"
-                    };
-                }
-
-                var employeeRole = _context.Role
-                    .FirstOrDefault(e => e.RoleName == "User");
-
-                if (employeeRole == null)
-                {
-                    throw new Exception("Role configuration missing");
-                }
-
-                var userExists = _context.Users
-                .Any(u => u.EmailId == data.EmailId);
-
-                if (userExists)
-                {
-                    return new ActivateAccountResponseDTO
-                    {
-                        Success = false,
-                        Message = "Account already activated"
-                    };
-                }
-
-                User user = new()
-                {
-                    EmailId = data.EmailId,
-                    IsActive = true,
-                    EmployeeId = employeeExists.Id,
-                    RoleId = employeeRole.Id = 2
-                };
-
-                user.PasswordHash = _passwordHasher.HashPassword(user, data.Password);
-
-                _context.Add(user);
-                int result = _context.SaveChanges();
-
                 return new ActivateAccountResponseDTO
                 {
-                    Success = true,
-                    EmailId = user.EmailId,
-                    Message = "Account activated successfully"
+                    Success = false,
+                    Message = "Employee email not found"
                 };
             }
-            catch
+
+            var employeeRole = _context.Role
+                .FirstOrDefault(e => e.RoleName == "User");
+
+            if (employeeRole == null)
             {
-                throw;
+                throw new Exception("Role configuration missing");
             }
+
+            var userExists = _context.Users
+            .Any(u => u.EmailId == data.EmailId);
+
+            if (userExists)
+            {
+                return new ActivateAccountResponseDTO
+                {
+                    Success = false,
+                    Message = "Account already activated"
+                };
+            }
+
+            User user = new()
+            {
+                EmailId = data.EmailId,
+                IsActive = true,
+                EmployeeId = employeeExists.Id,
+                RoleId = employeeRole.Id = 2
+            };
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, data.Password);
+
+            _context.Add(user);
+            int result = _context.SaveChanges();
+
+            return new ActivateAccountResponseDTO
+            {
+                Success = true,
+                EmailId = user.EmailId,
+                Message = "Account activated successfully"
+            };
         }
     }
 }

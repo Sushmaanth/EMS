@@ -32,7 +32,7 @@ namespace EMSAuthApi.Services
                 return new ServiceResponseDto<LoginResponseDTO>
                 {
                     Success = false,
-                    Message = "Invalid email"
+                    Message = "Invalid Email or Password"
                 };
             }
 
@@ -43,7 +43,7 @@ namespace EMSAuthApi.Services
                 return new ServiceResponseDto<LoginResponseDTO>
                 {
                     Success = false,
-                    Message = "Invalid password"
+                    Message = "Invalid Email or Password"
                 };
             }
             if (!user.IsActive)

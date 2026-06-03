@@ -11,5 +11,7 @@ namespace Dtos
         public string Message { get; set; }
 
         public T? Data { get; set; }
+
+        public Dictionary<string, List<string>> Errors { get; set; }
     }
 }

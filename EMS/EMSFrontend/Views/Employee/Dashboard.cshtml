@@ -2,7 +2,103 @@
     Layout = "_Layout2";
     ViewBag.Title = "Dashboard";
 }
-<h1>Employee Page</h1>
+@model DashboardViewModel
+<div class="dashboard-page">
+
+    <div class="welcome-card">
+        <h2>
+            Welcome Back 👋
+        </h2>
+
+        <p>
+            @Model.EmployeeName
+        </p>
+
+        <small>
+            • @Model.DepartmentName • Joined @Model.DateOfJoining.ToString("dd MMM yyyy")
+        </small>
+    </div>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <h3>@Model.TotalMandatoryDocuments</h3>
+            <span>Total Documents</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>@Model.UploadedDocuments</h3>
+            <span>Uploaded</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>@Model.MissingDocuments</h3>
+            <span>Missing</span>
+        </div>
+
+        <div class="stat-card">
+            <h3>@Model.CompletionPercentage.ToString("0")%</h3>
+            <span>Completion</span>
+        </div>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <div class="card-header">
+                <h5>Document Completion</h5>
+                <span>@Model.CompletionPercentage.ToString("0")%</span>
+            </div>
+
+            <div class="progress custom-progress">
+                <div class="progress-bar"
+                     role="progressbar"
+                     style="width:@Model.CompletionPercentage%">
+                </div>
+            </div>
+
+            <div class="progress-text">
+                @Model.UploadedDocuments of
+                @Model.TotalMandatoryDocuments mandatory documents uploaded
+            </div>
+
+        </div>
+
+        <div class="dashboard-card">
+
+            <div class="card-header">
+                <h5>Required Documents</h5>
+            </div>
+
+            <div class="required-documents">
+
+                @foreach (var doc in Model.RequiredDocuments)
+                {
+                    <div class="required-document">
+
+                        @if (doc.IsUploaded)
+                        {
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-exclamation-circle-fill text-warning"></i>
+                        }
+
+                        <span>@doc.DocumentName</span>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 @if (TempData["SuccessfullyUserLoggegIn"] != null)
 {

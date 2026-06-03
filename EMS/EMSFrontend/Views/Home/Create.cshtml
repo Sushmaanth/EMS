@@ -139,7 +139,8 @@
 
                         <input asp-for="DateOfJoining"
                                type="date"
-                               class="form-control" />
+                               class="form-control" 
+                               max="@DateTime.Today.ToString("yyyy-MM-dd")" />
 
                         <span asp-validation-for="DateOfJoining"
                               class="text-danger">

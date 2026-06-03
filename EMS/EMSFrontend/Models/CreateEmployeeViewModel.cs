@@ -1,4 +1,5 @@
 ﻿using Dtos.Validation;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace EMSFrontend.Models
@@ -19,10 +20,12 @@ namespace EMSFrontend.Models
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid Email Id")]
         [StringLength(255, ErrorMessage = "Email Id cannot exceed more than 255 characters")]
+        [Remote(action: "CheckEmail",controller: "Validation",ErrorMessage = "Email already exists")]
         public string EmailId { get; set; }
 
         [Required(ErrorMessage = "Mobile number is required")]
         [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Invalid mobile number")]
+        [Remote(action: "CheckMobile",controller: "Validation",ErrorMessage = "Mobile already exists")]
         public long Mobile { get; set; }
 
         [Required(ErrorMessage = "Salary is required")]

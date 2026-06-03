@@ -38,8 +38,11 @@ namespace EMSBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDto dto)
         {
-            var result = _employeeService.Create(dto);
-
+            var result = await _employeeService.Create(dto);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
             return CreatedAtAction(nameof(CreateEmployee), result);
         }
 
@@ -119,6 +122,8 @@ namespace EMSBackend.Controllers
         }
 
         [Authorize(Roles = "User")]
+        [RequestSizeLimit(62914560)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 62914560)]
         [Route("upload")]
         [HttpPost]
         public async Task<IActionResult> Upload([FromForm] EmployeeDocumentUploadDto dto)
@@ -198,6 +203,20 @@ namespace EMSBackend.Controllers
             if (!result.Success)
             {
                 return NotFound(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("dashboard/{employeeId}")]
+        public IActionResult GetDashboard(int employeeId)
+        {
+            var result = _employeeService.GetEmployeeDashboard(employeeId);
+
+            if (!result.Success)
+            {
+                return NotFound(result.Message);
             }
 
             return Ok(result);

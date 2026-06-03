@@ -4,6 +4,8 @@ using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
 using Dtos.Validation;
+using Dtos.Validation.Abstraction;
+using Dtos.Validation.Implementation;
 using EMSBackend.Middleware;
 using EMSBackend.Service.Abstraction;
 using EMSBackend.Service.Implementation;
@@ -34,7 +36,7 @@ namespace EMSBackend
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();
-
+            builder.Services.AddScoped<IEmployeeValidation, EmployeeValidation>();
             builder.Services.AddScoped<IBlobService, BlobService>();
 
             builder.Configuration.AddUserSecrets<Program>();
