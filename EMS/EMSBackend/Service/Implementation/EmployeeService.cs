@@ -1,12 +1,12 @@
-﻿using Dtos;
+﻿using ClosedXML.Excel;
+using Dtos;
 using Dtos.Repository.Abstraction;
-using Dtos.Repository.Implementation;
 using Dtos.Validation.Abstraction;
-using Dtos.Validation.Implementation;
 using EMSBackend.Service.Abstraction;
 using Entities;
-using System.Reflection.Metadata;
-using System.Xml.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
+
 
 namespace EMSBackend.Service.Implementation
 {
@@ -58,6 +58,7 @@ namespace EMSBackend.Service.Implementation
             CreateEmployeeDto responseDto = new()
             {
                 Id = createdEmployee.Id,
+                EmployeeCode = createdEmployee.EmployeeCode,
                 Name = createdEmployee.Name,
                 Gender = createdEmployee.Gender,
                 DateOfBirth = createdEmployee.DateOfBirth,
@@ -86,6 +87,7 @@ namespace EMSBackend.Service.Implementation
                .Select(e => new EmployeeDto
                {
                    Id = e.Id,
+                   EmployeeCode = e.EmployeeCode,
                    Name = e.Name,
                    Gender = e.Gender,
                    DateOfBirth = e.DateOfBirth,
@@ -138,6 +140,7 @@ namespace EMSBackend.Service.Implementation
             EmployeeDto employeeDto = new()
             {
                 Id = updatedEmployee.Id,
+                EmployeeCode = updatedEmployee.EmployeeCode,
                 Name = updatedEmployee.Name,
                 Gender = updatedEmployee.Gender,
                 DateOfBirth = updatedEmployee.DateOfBirth,
@@ -176,6 +179,7 @@ namespace EMSBackend.Service.Implementation
             EmployeeDto dto = new()
             {
                 Id = deletedEmployee.Id,
+                EmployeeCode = deletedEmployee.EmployeeCode,
                 Name = deletedEmployee.Name,
                 Gender = deletedEmployee.Gender,
                 DateOfBirth = deletedEmployee.DateOfBirth,
@@ -211,6 +215,7 @@ namespace EMSBackend.Service.Implementation
             EmployeeDto dto = new()
             {
                 Id = employee.Id,
+                EmployeeCode = employee.EmployeeCode,
                 Name = employee.Name,
                 Gender = employee.Gender,
                 DateOfBirth = employee.DateOfBirth,
@@ -248,6 +253,7 @@ namespace EMSBackend.Service.Implementation
                 .Select(e => new EmployeeDto
                 {
                     Id = e.Id,
+                    EmployeeCode =e.EmployeeCode,
                     Name = e.Name,
                     Gender = e.Gender,
                     DateOfBirth = e.DateOfBirth,
@@ -678,6 +684,389 @@ namespace EMSBackend.Service.Implementation
             }
 
             return null;
+        }
+
+        public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>> UploadEmployeesAsync(IFormFile file)
+        {
+            var response = new ServiceResponseDto<EmployeeUploadExcelResponseDto>();
+
+            //empty file upload
+            if (file == null || file.Length == 0)
+            {
+                response.Success = false;
+                response.Message = "Please select a valid file.";
+
+                return response;
+            }
+
+            //File Extension Validation
+            var allowedExtensions = new[] { ".xlsx" };
+
+            var extension = Path.GetExtension(file.FileName);
+
+            if (!allowedExtensions.Contains(
+                    extension,
+                    StringComparer.OrdinalIgnoreCase))
+            {
+                response.Success = false;
+                response.Message = "Only .xlsx files are allowed.";
+
+                return response;
+            }
+
+            var employeesToInsert = new List<Employee>();
+            var validationErrors = new Dictionary<string, List<string>>();
+
+            using var stream = new MemoryStream();
+
+            await file.CopyToAsync(stream);
+
+            using var workbook = new XLWorkbook(stream);
+
+            var worksheet = workbook.Worksheet(1);
+
+            var rows = worksheet.RowsUsed().Skip(1).ToList();
+
+            //no data in the excel
+            if (!rows.Any())
+            {
+                response.Success = false;
+                response.Message = "Excel file does not contain any records.";
+
+                return response;
+            }
+
+            // Maximum 100 Records
+            if (rows.Count > 100)
+            {
+                response.Success = false;
+                response.Message =
+                    "Maximum 100 employee records can be uploaded at a time.";
+
+                return response;
+            }
+
+            //load department
+            var departments = _employeeRepository.GetDepartments();
+
+            var departmentDictionary = departments.ToDictionary(
+                d => d.DepartmentName.Trim(),
+                d => d.Id,
+                StringComparer.OrdinalIgnoreCase);
+
+            // Collect values from Excel with uploaded code removes the duplicate
+
+            var uploadedCodes = rows
+                .Select(r => r.Cell(1).GetString().Trim())
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            var uploadedEmails = rows
+               .Select(r => r.Cell(5).GetString().Trim())
+               .Where(x => !string.IsNullOrWhiteSpace(x))
+               .Distinct(StringComparer.OrdinalIgnoreCase)
+               .ToList();
+
+            var uploadedMobiles = rows
+                .Select(r => r.Cell(6).GetString().Trim())
+                .Where(x => long.TryParse(x, out _))
+                .Select(long.Parse)
+                .Distinct()
+                .ToList();
+
+            //compare the excel uploaded data and dataase for duplicate
+
+            var existingEmployeeCodes =
+               (await _employeeRepository
+                   .GetExistingEmployeeCodesAsync(uploadedCodes))
+               .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            var existingEmails =
+                (await _employeeRepository
+                    .GetExistingEmailsAsync(uploadedEmails))
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            var existingMobiles =
+                (await _employeeRepository
+                    .GetExistingMobilesAsync(uploadedMobiles))
+                .ToHashSet();
+
+            // Duplicate tracking inside uploaded file
+
+            var uploadedEmployeeCodes =
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var uploadedEmailSet =
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var uploadedMobileSet =
+                new HashSet<long>();
+
+            var allowedGenders = new[]
+               {
+                    "Male",
+                    "Female",
+                    "Other"
+                };
+
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            int rowNumber = 2;
+
+            foreach (var row in rows)
+            {
+                var rowErrors = new List<string>();
+
+                string employeeCode = row.Cell(1).GetString().Trim();
+                string name = row.Cell(2).GetString().Trim();
+                string gender = row.Cell(3).GetString().Trim();
+                string emailId = row.Cell(5).GetString().Trim();
+                string mobileText = row.Cell(6).GetString().Trim();
+                string departmentName = row.Cell(9).GetString().Trim();
+
+                // Mandatory validations
+
+                if (string.IsNullOrWhiteSpace(employeeCode))
+                    rowErrors.Add("Employee Code is required.");
+
+                if (string.IsNullOrWhiteSpace(name))
+                    rowErrors.Add("Employee Name is required.");
+
+                if (string.IsNullOrWhiteSpace(gender))
+                    rowErrors.Add("Gender is required.");
+
+                if (string.IsNullOrWhiteSpace(emailId))
+                    rowErrors.Add("Email Id is required.");
+
+                if (string.IsNullOrWhiteSpace(mobileText))
+                    rowErrors.Add("Mobile Number is required.");
+
+                if (string.IsNullOrWhiteSpace(departmentName))
+                    rowErrors.Add("Department is required.");
+
+                //dupliate values in the excel data validation employee code
+
+                if (!string.IsNullOrWhiteSpace(employeeCode))
+                {
+                    if (!uploadedEmployeeCodes.Add(employeeCode))
+                    {
+                        rowErrors.Add(
+                            "Duplicate Employee Code found in uploaded file.");
+                    }
+                }
+
+
+                //compare the sheet and DB duplicate employee code
+                if (!string.IsNullOrWhiteSpace(employeeCode) &&
+                    existingEmployeeCodes.Contains(employeeCode))
+                {
+                    rowErrors.Add(
+                        "Employee Code already exists.");
+                }
+
+                //invalid email
+                if (!string.IsNullOrWhiteSpace(emailId))
+                {
+                    if (!new EmailAddressAttribute().IsValid(emailId))
+                    {
+                        rowErrors.Add("Invalid Email Id.");
+                    }
+                }
+
+                // Email Duplicate in File
+
+                if (!string.IsNullOrWhiteSpace(emailId))
+                {
+                    if (!uploadedEmailSet.Add(emailId))
+                    {
+                        rowErrors.Add(
+                            "Duplicate Email Id found in uploaded file.");
+                    }
+                }
+
+                // Email Duplicate in DB
+
+                if (!string.IsNullOrWhiteSpace(emailId) &&
+                    existingEmails.Contains(emailId))
+                {
+                    rowErrors.Add(
+                        "Email Id already exists.");
+                }
+
+                // Department Exists
+
+                if (!string.IsNullOrWhiteSpace(departmentName) &&
+                    !departmentDictionary.ContainsKey(departmentName))
+                {
+                    rowErrors.Add("Department does not exist.");
+                }
+
+                // Gender Validation
+
+                if (!string.IsNullOrWhiteSpace(gender) &&
+                    !allowedGenders.Contains(
+                        gender,
+                        StringComparer.OrdinalIgnoreCase))
+                {
+                    rowErrors.Add("Invalid Gender.");
+                }
+
+                // Mobile Validation
+
+                long mobile = 0;
+
+                if (!Regex.IsMatch(
+                        mobileText,
+                        @"^[6-9]\d{9}$"))
+                {
+                    rowErrors.Add("Invalid Mobile Number.");
+                }
+                else
+                {
+                    mobile = long.Parse(mobileText);
+
+                    if (!uploadedMobileSet.Add(mobile))
+                    {
+                        rowErrors.Add(
+                            "Duplicate Mobile Number found in uploaded file.");
+                    }
+
+                    if (existingMobiles.Contains(mobile))
+                    {
+                        rowErrors.Add(
+                            "Mobile Number already exists.");
+                    }
+                }
+
+                // Salary Validation
+
+                decimal salary = 0;
+
+                if (!decimal.TryParse(
+                        row.Cell(7).GetString(),
+                        out salary))
+                {
+                    rowErrors.Add("Invalid Salary.");
+                }
+                else if (salary <= 0)
+                {
+                    rowErrors.Add(
+                        "Salary must be greater than zero.");
+                }
+
+                // Date Of Birth Validation
+
+                DateOnly dateOfBirth;
+
+                if (!DateOnly.TryParse(
+                        row.Cell(4).GetString(),
+                        out dateOfBirth))
+                {
+                    rowErrors.Add("Invalid Date Of Birth.");
+                }
+                else
+                {
+                    if (dateOfBirth > today)
+                    {
+                        rowErrors.Add(
+                            "Date Of Birth cannot be a future date.");
+                    }
+
+                    int age = today.Year - dateOfBirth.Year;
+
+                    if (dateOfBirth > today.AddYears(-age))
+                    {
+                        age--;
+                    }
+
+                    if (age < 18)
+                    {
+                        rowErrors.Add(
+                            "Employee must be at least 18 years old.");
+                    }
+                }
+
+                // Date Of Joining Validation
+
+                DateOnly dateOfJoining;
+
+                if (!DateOnly.TryParse(
+                        row.Cell(8).GetString(),
+                        out dateOfJoining))
+                {
+                    rowErrors.Add("Invalid Date Of Joining.");
+                }
+                else
+                {
+                    if (dateOfJoining > today)
+                    {
+                        rowErrors.Add(
+                            "Date Of Joining cannot be a future date.");
+                    }
+
+                    if (dateOfBirth != default &&
+                        dateOfJoining <= dateOfBirth)
+                    {
+                        rowErrors.Add(
+                            "Date Of Joining must be after Date Of Birth.");
+                    }
+                }
+
+                if (rowErrors.Any())
+                {
+                    validationErrors.Add(
+                        $"Row {rowNumber}",
+                        rowErrors);
+
+                    rowNumber++;
+                    continue;
+                }
+
+                employeesToInsert.Add(
+                    new Employee
+                    {
+                        EmployeeCode = employeeCode,
+                        Name = name,
+                        Gender = gender,
+                        DateOfBirth = dateOfBirth,
+                        EmailId = emailId,
+                        Mobile = mobile,
+                        Salary = salary,
+                        DateOfJoining = dateOfJoining,
+                        DepartmentId = departmentDictionary[departmentName]
+                    });
+
+                rowNumber++;
+            }
+
+            if (employeesToInsert.Any())
+            {
+                await _employeeRepository
+                    .BulkInsertAsync(employeesToInsert);
+            }
+
+            response.Success = validationErrors.Count == 0;
+
+            response.Message = validationErrors.Count == 0
+                ? "Employees uploaded successfully."
+                : "Upload completed with validation errors.";
+
+            response.Data = new EmployeeUploadExcelResponseDto
+            {
+                TotalRecords = rows.Count,
+                SuccessRecords = employeesToInsert.Count,
+                FailedRecords = validationErrors.Count
+            };
+
+            response.Errors = validationErrors;
+
+            return response;
+        }
+
+        public Task<ServiceResponseDto<byte[]>> DownloadTemplateAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

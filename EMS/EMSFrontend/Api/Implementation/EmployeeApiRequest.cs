@@ -3,6 +3,7 @@ using EMSFrontend.Api.ApiException;
 using EMSFrontend.Models;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 namespace EMSFrontend.Api.Implementation
 {
     public class EmployeeApiRequest : IRequest
@@ -517,23 +518,6 @@ namespace EMSFrontend.Api.Implementation
                         ServiceResponseViewModel<DashboardViewModel>>();
 
             return result.Data;
-        }
-
-        //remote validation
-        public async Task<bool> CheckEmailExistsAsync(string email)
-        {
-            var response =
-                await client.GetAsync($"validation/email?email={email}");
-
-            return await response.Content.ReadFromJsonAsync<bool>();
-        }
-
-        public async Task<bool> CheckMobileExistsAsync(long mobile)
-        {
-            var response =
-                await client.GetAsync($"validation/mobile?mobile={mobile}");
-
-            return await response.Content.ReadFromJsonAsync<bool>();
         }
     }
 }

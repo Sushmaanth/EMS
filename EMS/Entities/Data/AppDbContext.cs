@@ -45,6 +45,13 @@ namespace Entities.Data
                 .ValueGeneratedOnAdd()
                 .UseIdentityColumn(1, 1);
 
+            //Employee Code
+            employeeBuilder.Property(e => e.EmployeeCode)
+                           .HasColumnType("varchar(20)");
+
+            employeeBuilder.HasIndex(e => e.EmployeeCode)
+                .IsUnique();
+
             //Name - 100 char
             employeeBuilder.Property<string>(e => e.Name)
                 .HasColumnType("varchar(200)");

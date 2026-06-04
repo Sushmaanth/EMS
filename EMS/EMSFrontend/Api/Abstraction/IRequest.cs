@@ -32,9 +32,5 @@ namespace EMSFrontend.Api.Abstraction
         Task<DocumentViewResponseViewModel>SendViewDocumentAsync(int documentId);
 
         Task<DashboardViewModel> GetDashboardAsync(int employeeId);
-
-        //Remote Validation
-        Task<bool> CheckEmailExistsAsync(string email);
-        Task<bool> CheckMobileExistsAsync(long mobile);
     }
 }

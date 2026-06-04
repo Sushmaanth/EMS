@@ -7,6 +7,8 @@ namespace Dtos
     {
         public int Id { get; set; }
 
+        public string EmployeeCode { get; set; }
+
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be 2–100 characters")]
         [RegularExpression(@"^[a-zA-Z\s\.,-]+$", ErrorMessage = "Invalid name format")]

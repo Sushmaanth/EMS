@@ -22,6 +22,14 @@ namespace EMSFrontend
                     client.Timeout = TimeSpan.FromMinutes(5);
                 });
 
+            string validationUrl = builder.Configuration["RequestUrls:ValidationRequestUrl"]!;
+            builder.Services.AddHttpClient<IValidationRequest, ValidationApiRequest>()
+                .ConfigureHttpClient((sp, client) =>
+                {
+                    client.BaseAddress =
+                        new Uri(builder.Configuration["RequestUrls:ValidationRequestUrl"]!);
+                });
+
             string authUrl = builder.Configuration["RequestUrls:AuthRequestUrl"]!;
 
             builder.Services.AddHttpClient<IAuthRequest, AuthApiRequest>()

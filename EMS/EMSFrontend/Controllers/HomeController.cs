@@ -7,19 +7,19 @@ namespace EMSFrontend.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRequest request;
+        private readonly IRequest _request;
         //private readonly EmployeeValidator validator;
 
         public HomeController(IRequest request)
         {
-            this.request = request;
+            this._request = request;
             //this.validator = validator;
         }
 
         private async Task LoadDepartmentsAsync(int? selectedDepartmentId = null)
         {
             var departments =
-                await request.SendGetDepartmentsAsync();
+                await _request.SendGetDepartmentsAsync();
 
             ViewBag.Departments =
                 new SelectList(
@@ -39,7 +39,7 @@ namespace EMSFrontend.Controllers
             }
 
             //var employees  =  await request.SendViewAllEmployeeRequestAsync();
-            var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
+            var employees = await _request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
             ViewBag.SearchText = searchText;
             return View(employees);
         }
@@ -48,7 +48,7 @@ namespace EMSFrontend.Controllers
         public async Task<IActionResult> SearchEmployees(string searchText, int pageNumber = 1, int pageSize = 7)
         {
 
-            var employees = await request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
+            var employees = await _request.SendGetEmployeesAsync(searchText, pageNumber, pageSize);
             return PartialView("_EmployeeTable", employees);
         }
 
@@ -57,7 +57,7 @@ namespace EMSFrontend.Controllers
         {
 
             var employee =
-                await request.SendGetAEmployeeRequestAsync(id);
+                await _request.SendGetAEmployeeRequestAsync(id);
 
             if (employee == null)
             {
@@ -87,7 +87,7 @@ namespace EMSFrontend.Controllers
                 return View(model);
             }
 
-            var createEmployee = await request.SendCreateEmployeeRequestAsync(model);
+            var createEmployee = await _request.SendCreateEmployeeRequestAsync(model);
 
             TempData["SuccessfullyCreatedEmployee"] = "Employee Added Successfully";
             return RedirectToAction("Index", "Home");
@@ -98,7 +98,7 @@ namespace EMSFrontend.Controllers
         public async Task<IActionResult> Delete(int id)
         {
 
-            await request.SendDeleteEmployeeRequestAsync(id);
+            await _request.SendDeleteEmployeeRequestAsync(id);
             TempData["DeletedEmployee"] = "Employee Deleted Successfully";
             return RedirectToAction("Index", "Home");
         }
@@ -106,7 +106,7 @@ namespace EMSFrontend.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var employee = await request.SendGetAEmployeeRequestAsync(id);
+            var employee = await _request.SendGetAEmployeeRequestAsync(id);
 
             await LoadDepartmentsAsync(employee.DepartmentId);
 
@@ -124,7 +124,7 @@ namespace EMSFrontend.Controllers
             }
 
 
-            var updateEmployee = await request.SendUpdateEmployeeRequestAsync(id, model);
+            var updateEmployee = await _request.SendUpdateEmployeeRequestAsync(id, model);
             TempData["employeeUpdateSuccessully"] = "Employee Updated Successfully";
             return RedirectToAction("Index", "Home");
         }

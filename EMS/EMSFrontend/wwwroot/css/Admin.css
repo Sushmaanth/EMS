@@ -195,6 +195,7 @@ body {
     padding: 0;
 }
 
+/*Admin Index*/
 
 .header-container h1 {
     font-weight: 700;
@@ -211,9 +212,19 @@ body {
   text-align: start;
 }
 
-.action-cell{
+.table-responsive {
+    overflow-x: auto;
+}
+
+.employee-table {
+    min-width: 900px;
+}
+
+.action-cell {
     display: flex;
     gap: 4px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .search-btn:hover {

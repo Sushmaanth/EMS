@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EMSAuthApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+533f4103a4b12862b0b46531a63dfbd897c8e97f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e7e4120d0ab8a5f2b28e6f1b29daf1160718e22")]
 [assembly: System.Reflection.AssemblyProductAttribute("EMSAuthApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EMSAuthApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

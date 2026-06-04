@@ -35,6 +35,10 @@ namespace EMSBackend.Service.Abstraction
         ServiceResponseDto<DashboardDto> GetEmployeeDashboard(int employeeId);
 
         ServiceResponseDto<EmployeeDocumentResponseDto>? ValidateFile(IFormFile file);
+
+        Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file);
+
+        Task<ServiceResponseDto<byte[]>>DownloadTemplateAsync();
     }
 
 }

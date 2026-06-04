@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace EMSFrontend.Models
+﻿
+namespace Dtos
 {
-    public class EmployeeViewModel
+    public class EmployeeExcelUploadDto
     {
-        public int Id { get; set; }
-
         public string EmployeeCode { get; set; }
+
         public string Name { get; set; }
 
         public string Gender { get; set; }
@@ -18,11 +16,9 @@ namespace EMSFrontend.Models
         public long Mobile { get; set; }
 
         public decimal Salary { get; set; }
+
         public DateOnly DateOfJoining { get; set; }
 
-        public int? DepartmentId { get; set; }
-
-        public string? DepartmentName { get; set; }
-
+        public string DepartmentName { get; set; }
     }
 }

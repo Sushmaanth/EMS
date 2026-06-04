@@ -30,7 +30,17 @@
                 <input asp-for="Id" type="hidden" />
 
                 <div class="row">
+                    <div class="col-md-6 mb-3">
 
+                        <label asp-for="EmployeeCode"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="EmployeeCode"
+                               class="form-control"
+                               readonly />
+
+                    </div>  
                   
                     <div class="col-md-6 mb-3">
 
@@ -67,6 +77,10 @@
 
                             <option value="Female">
                                 Female
+                            </option>
+
+                            <option value="Other">
+                                Other
                             </option>
 
                         </select>

@@ -23,5 +23,13 @@ namespace Dtos.Repository.Abstraction
         Task AddDocumentAsync(EmployeeDocument document);
 
         EmployeeDashboardData GetDashboardData(int employeeId);
+
+        Task<List<string>> GetExistingEmployeeCodesAsync(List<string> employeeCodes);
+
+        Task BulkInsertAsync(List<Employee> employees);
+
+        Task<List<string>> GetExistingEmailsAsync(List<string> emails);
+
+        Task<List<long>> GetExistingMobilesAsync(List<long> mobiles);
     }
 }

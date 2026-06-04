@@ -6,18 +6,18 @@ namespace EMSFrontend.Controllers
 {
     public class ValidationController : Controller
     {
-        private readonly IRequest _request;
+        private readonly IValidationRequest _validationrequest;
 
-        public ValidationController(IRequest request)
+        public ValidationController(IValidationRequest request)
         {
-            _request = request;
+            _validationrequest = request;
         }
 
         [AcceptVerbs("GET", "POST")]
         public async Task<IActionResult> CheckEmail(string emailId)
         {
             bool valid =
-                await _request.CheckEmailExistsAsync(emailId);
+                await _validationrequest.CheckEmailExistsAsync(emailId);
 
             return valid
                 ? Json(true)
@@ -28,7 +28,7 @@ namespace EMSFrontend.Controllers
         public async Task<IActionResult> CheckMobile(long mobile)
         {
             bool valid =
-                await _request.CheckMobileExistsAsync(mobile);
+                await _validationrequest.CheckMobileExistsAsync(mobile);
 
             return valid
                 ? Json(true)

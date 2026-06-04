@@ -115,7 +115,7 @@ namespace Dtos.Repository.Implementation
             if (!string.IsNullOrWhiteSpace(searchText))
             {
                 query = query.Where(e =>
-                    e.Id.ToString().Contains(searchText)
+                    e.EmployeeCode.ToString().Contains(searchText)
                     ||
                     e.Name.ToLower().Contains(searchText.ToLower()));
             }
@@ -158,6 +158,34 @@ namespace Dtos.Repository.Implementation
                 MandatoryDocumentTypes = mandatoryDocumentType,
                 UploadedDocuments = uploadedDocuments
             };
-        }   
+        }
+
+        public async Task<List<string>> GetExistingEmployeeCodesAsync(List<string> employeeCodes)
+        {
+            return await _context.Employees.Where(e => employeeCodes.Contains(e.EmployeeCode)).Select(e => e.EmployeeCode).ToListAsync();
+        }
+
+        public async Task<List<string>> GetExistingEmailsAsync(List<string> emails)
+        {
+            return await _context.Employees
+                .Where(e => emails.Contains(e.EmailId))
+                .Select(e => e.EmailId)
+                .ToListAsync();
+        }
+
+        public async Task<List<long>> GetExistingMobilesAsync(List<long> mobiles)
+        {
+            return await _context.Employees
+                .Where(e => mobiles.Contains(e.Mobile))
+                .Select(e => e.Mobile)
+                .ToListAsync();
+        }
+
+        public async Task BulkInsertAsync(List<Employee> employees)
+        {
+            await _context.Employees.AddRangeAsync(employees);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
