@@ -65,6 +65,14 @@
                     Employee
                 </a>
 
+                <a asp-controller="Home"
+                   asp-action="BulkUpload"
+                   class="sidebar-link @(currentAction == "BulkUpload" ? "active" : "")">
+
+                    <i class="bi bi-file-earmark-arrow-up"></i>
+                    Bulk Upload
+                </a>
+
             </nav>
             <div class="sidebar-user">
 
@@ -109,6 +117,13 @@
                     Employee
                 </a>
 
+                <a asp-controller="Home"
+                   asp-action="BulkUpload"
+                   class="sidebar-link @(currentAction == "BulkUpload" ? "active" : "")">
+
+                    <i class="bi bi-file-earmark-arrow-up"></i>
+                    Bulk Upload
+                </a>
             </nav>
             <div class="sidebar-user">
                 <div class="user-avatar">

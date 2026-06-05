@@ -15,5 +15,18 @@
         "Action": "StartWithoutDebugging"
       }
     ]
+  },
+  {
+    "Name": "New Profile (1)",
+    "Projects": [
+      {
+        "Path": "EMSAuthApi\\EMSAuthApi.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "EMSBackend\\EMSBackend.csproj",
+        "Action": "StartWithoutDebugging"
+      }
+    ]
   }
 ]

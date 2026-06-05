@@ -1,0 +1,138 @@
+﻿@model EmployeeBulkUploadViewModel
+<div class="card shadow-sm">
+
+    <div class="card-header">
+        Employee Bulk Upload
+    </div>
+
+    <div class="card-body">
+
+        <a asp-action="DownloadTemplate"
+           class="btn btn-success">
+            Download Template
+        </a>
+
+        <hr />
+
+        <form asp-action="BulkUpload"
+              method="post"
+              enctype="multipart/form-data">
+
+            <input asp-for="File"
+                   type="file"
+                   class="form-control" />
+
+            <span asp-validation-for="File"
+                  class="text-danger"></span>
+
+            <button type="submit"
+                    class="btn btn-primary mt-3">
+                Upload
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+@if (Model.Result != null)
+{
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>@Model.Result.TotalRecords</h3>
+                    <small>Total Records</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>@Model.Result.SuccessRecords</h3>
+                    <small>Success Records</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>@Model.Result.FailedRecords</h3>
+                    <small>Failed Records</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+@if (Model.Result?.Errors.Any() == true)
+{
+    <div class="card mt-3">
+
+        <div class="card-header">
+            Invalid Records
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <thead>
+
+                    <tr>
+                        <th>Row</th>
+                        <th>Employee Code</th>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Error</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model.Result.Errors)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.RowNumber
+                            </td>
+
+                            <td>
+                                @item.EmployeeData.EmployeeCode
+                            </td>
+
+                            <td>
+                                @item.EmployeeData.Name
+                            </td>
+
+                            <td>
+                                @item.EmployeeData.DepartmentName
+                            </td>
+
+                            <td>
+                                @item.ErrorMessage
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+}
+@if (ViewBag.Message != null)
+{
+    <div class="alert @(ViewBag.Success ? "alert-success" : "alert-warning")">
+        @ViewBag.Message
+    </div>
+}

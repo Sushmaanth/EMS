@@ -1,4 +1,5 @@
 ﻿using EMSFrontend.Api.Abstraction;
+using EMSFrontend.Api.Implementation;
 using EMSFrontend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -143,5 +144,42 @@ namespace EMSFrontend.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }*/
+
+        [HttpGet]
+        public IActionResult BulkUpload()
+        {
+            return View(new EmployeeBulkUploadViewModel());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BulkUpload(EmployeeBulkUploadViewModel model)
+        {
+            if (model.File == null)
+            {
+                ModelState.AddModelError("File","Please select a file.");
+
+                return View(model);
+            }
+
+            var result = await _request.UploadEmployeesAsync(model.File);
+
+            model.Result = result.Data;
+
+            ViewBag.Message = result.Message;
+            ViewBag.Success = result.Success;
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadTemplate()
+        {
+            var fileBytes =await _request.DownloadTemplateAsync();
+
+            return File(
+                fileBytes,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "EmployeeUploadTemplate.xlsx");
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EMSFrontend.Api.Abstraction;
+﻿using Dtos;
+using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.ApiException;
 using EMSFrontend.Models;
 using System.Net;
@@ -518,6 +519,32 @@ namespace EMSFrontend.Api.Implementation
                         ServiceResponseViewModel<DashboardViewModel>>();
 
             return result.Data;
+        }
+
+        public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>> UploadEmployeesAsync(IFormFile file)
+        {
+            using var content =new MultipartFormDataContent();
+
+            using var stream = file.OpenReadStream();
+
+            var fileContent = new StreamContent(stream);
+
+            content.Add(fileContent,"file",file.FileName);
+
+            var response =await client.PostAsync("upload-employees",content);
+
+            return await response.Content.ReadFromJsonAsync<ServiceResponseDto<EmployeeUploadExcelResponseDto>>();
+        }
+
+        public async Task<byte[]> DownloadTemplateAsync()
+        {
+            var response = await client.GetAsync("download-template");
+
+            var contentType = response.Content.Headers.ContentType?.ToString();
+
+            Console.WriteLine("Console:"+contentType);
+
+            return await response.Content.ReadAsByteArrayAsync();
         }
     }
 }

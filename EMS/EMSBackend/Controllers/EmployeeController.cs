@@ -221,5 +221,29 @@ namespace EMSBackend.Controllers
 
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("upload-employees")]
+        public async Task<IActionResult> UploadEmployeeData(IFormFile file)
+        {
+            var result = await _employeeService.UploadEmployeesAsync(file);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("download-template")]
+        public IActionResult DownloadTemplate()
+        {
+            var result = _employeeService.DownloadTemplate();
+
+            return File(result.Data,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "EmployeeUploadTemplate.xlsx");
+        }
     }
 }

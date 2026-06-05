@@ -1,4 +1,5 @@
-﻿using EMSFrontend.Models;
+﻿using Dtos;
+using EMSFrontend.Models;
 using System.Collections;
 
 namespace EMSFrontend.Api.Abstraction
@@ -32,5 +33,9 @@ namespace EMSFrontend.Api.Abstraction
         Task<DocumentViewResponseViewModel>SendViewDocumentAsync(int documentId);
 
         Task<DashboardViewModel> GetDashboardAsync(int employeeId);
+
+        Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file);
+
+        Task<byte[]>DownloadTemplateAsync();
     }
 }

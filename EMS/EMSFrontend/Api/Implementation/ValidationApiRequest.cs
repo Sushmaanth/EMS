@@ -19,8 +19,8 @@ namespace EMSFrontend.Api.Implementation
 
             var content = await response.Content.ReadFromJsonAsync<bool>();
 
-            Console.WriteLine($"Status: {response.StatusCode}");
-            Console.WriteLine($"Content: {content}");
+            //Console.WriteLine($"Status: {response.StatusCode}");
+            //Console.WriteLine($"Content: {content}");
 
             return JsonSerializer.Deserialize<bool>(content);
         }

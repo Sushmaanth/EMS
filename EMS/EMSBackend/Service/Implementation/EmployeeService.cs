@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Validation.Abstraction;
@@ -715,7 +716,9 @@ namespace EMSBackend.Service.Implementation
             }
 
             var employeesToInsert = new List<Employee>();
-            var validationErrors = new Dictionary<string, List<string>>();
+            //var validationErrors = new Dictionary<string, List<string>>();
+
+            var uploadResponse = new EmployeeUploadExcelResponseDto();
 
             using var stream = new MemoryStream();
 
@@ -723,7 +726,42 @@ namespace EMSBackend.Service.Implementation
 
             using var workbook = new XLWorkbook(stream);
 
+            //one worksheet validation
+            if (workbook.Worksheets.Count != 1)
+            {
+                response.Success = false;
+                response.Message =
+                    "Excel file should contain only one worksheet.";
+
+                return response;
+            }
+
             var worksheet = workbook.Worksheet(1);
+
+            var expectedHeaders = new[]
+            {
+                "EmployeeCode",
+                "Name",
+                "Gender",
+                "DateOfBirth",
+                "EmailId",
+                "Mobile",
+                "Salary",
+                "DateOfJoining",
+                "DepartmentName"
+            };
+
+            for (int i = 0; i < expectedHeaders.Length; i++)
+            {
+                var actualHeader = worksheet.Cell(1, i + 1).GetString().Trim();
+                if (!actualHeader.Equals(expectedHeaders[i], StringComparison.OrdinalIgnoreCase))
+                {
+                    response.Success = false;
+                    response.Message = $"Invalid template. Expected column '{expectedHeaders[i]}'.";
+
+                    return response;
+                }
+            }
 
             var rows = worksheet.RowsUsed().Skip(1).ToList();
 
@@ -951,22 +989,21 @@ namespace EMSBackend.Service.Implementation
                 }
                 else if (salary <= 0)
                 {
-                    rowErrors.Add(
-                        "Salary must be greater than zero.");
+                    rowErrors.Add("Salary must be greater than zero.");
                 }
 
                 // Date Of Birth Validation
 
-                DateOnly dateOfBirth;
+                DateOnly dateOfBirth = default;
 
-                if (!DateOnly.TryParse(
-                        row.Cell(4).GetString(),
-                        out dateOfBirth))
+                if (!row.Cell(4).TryGetValue<DateTime>(out var dob))
                 {
                     rowErrors.Add("Invalid Date Of Birth.");
                 }
                 else
                 {
+                    dateOfBirth = DateOnly.FromDateTime(dob);
+
                     if (dateOfBirth > today)
                     {
                         rowErrors.Add(
@@ -989,16 +1026,16 @@ namespace EMSBackend.Service.Implementation
 
                 // Date Of Joining Validation
 
-                DateOnly dateOfJoining;
+                DateOnly dateOfJoining = default;
 
-                if (!DateOnly.TryParse(
-                        row.Cell(8).GetString(),
-                        out dateOfJoining))
+                if (!row.Cell(8).TryGetValue<DateTime>(out var doj))
                 {
                     rowErrors.Add("Invalid Date Of Joining.");
                 }
                 else
                 {
+                    dateOfJoining = DateOnly.FromDateTime(doj);
+
                     if (dateOfJoining > today)
                     {
                         rowErrors.Add(
@@ -1015,9 +1052,25 @@ namespace EMSBackend.Service.Implementation
 
                 if (rowErrors.Any())
                 {
-                    validationErrors.Add(
-                        $"Row {rowNumber}",
-                        rowErrors);
+                    uploadResponse.Errors.Add(new UploadEmployeeExcelErrorDto
+                    {
+                        RowNumber = rowNumber,
+
+                        EmployeeData = new EmployeeExcelUploadDto
+                        {
+                            EmployeeCode = employeeCode,
+                            Name = name,
+                            Gender = gender,
+                            DateOfBirth = dateOfBirth,
+                            EmailId = emailId,
+                            Mobile = mobile,
+                            Salary = salary,
+                            DateOfJoining = dateOfJoining,
+                            DepartmentName = departmentName
+                        },
+
+                        ErrorMessage = string.Join(",",rowErrors)
+                    });
 
                     rowNumber++;
                     continue;
@@ -1046,27 +1099,103 @@ namespace EMSBackend.Service.Implementation
                     .BulkInsertAsync(employeesToInsert);
             }
 
-            response.Success = validationErrors.Count == 0;
+            response.Success = uploadResponse.Errors.Count == 0;
 
-            response.Message = validationErrors.Count == 0
-                ? "Employees uploaded successfully."
-                : "Upload completed with validation errors.";
-
-            response.Data = new EmployeeUploadExcelResponseDto
+            if (employeesToInsert.Count == 0)
             {
-                TotalRecords = rows.Count,
-                SuccessRecords = employeesToInsert.Count,
-                FailedRecords = validationErrors.Count
-            };
+                response.Message =
+                    "No employee records were uploaded due to validation errors.";
+            }
+            else if (uploadResponse.Errors.Any())
+            {
+                response.Message =
+                    $"{employeesToInsert.Count} records uploaded successfully and {uploadResponse.Errors.Count} records failed validation.";
+            }
+            else
+            {
+                response.Message =
+                    "All employee records uploaded successfully.";
+            }
 
-            response.Errors = validationErrors;
+            uploadResponse.TotalRecords = rows.Count;
+
+            uploadResponse.SuccessRecords = employeesToInsert.Count;
+
+            uploadResponse.FailedRecords = uploadResponse.Errors.Count;
+
+            response.Data = uploadResponse;
 
             return response;
         }
 
-        public Task<ServiceResponseDto<byte[]>> DownloadTemplateAsync()
+        public ServiceResponseDto<byte[]>DownloadTemplate()
         {
-            throw new NotImplementedException();
+            var response = new ServiceResponseDto<byte[]>();
+
+            using var workbook = new XLWorkbook();
+
+            var worksheet = workbook.Worksheets.Add("Employee Upload");
+
+            // Headers
+            worksheet.Cell(1, 1).Value = "EmployeeCode";
+            worksheet.Cell(1, 2).Value = "Name";
+            worksheet.Cell(1, 3).Value = "Gender";
+            worksheet.Cell(1, 4).Value = "DateOfBirth";
+            worksheet.Cell(1, 5).Value = "EmailId";
+            worksheet.Cell(1, 6).Value = "Mobile";
+            worksheet.Cell(1, 7).Value = "Salary";
+            worksheet.Cell(1, 8).Value = "DateOfJoining";
+            worksheet.Cell(1, 9).Value = "DepartmentName";
+
+            worksheet.Row(1).Style.Font.Bold = true;
+
+            var genderRange = worksheet.Range("C2:C101");
+
+            genderRange.CreateDataValidation()
+                       .List("\"Male,Female,Other\"");
+
+            var departments = _employeeRepository.GetDepartments();
+
+            var departmentList = string.Join(",", departments.Select(x => x.DepartmentName));
+
+            //create a hidden sheet
+            //var lookupSheet = workbook.Worksheets.Add("Lookups");
+
+            //int row = 1;
+
+            //foreach (var dept in departments)
+            //{
+            //    lookupSheet.Cell(row, 1).Value =
+            //        dept.DepartmentName;
+
+            //    row++;
+            //}
+
+            //lookupSheet.Hide();
+
+            var departmentRange =worksheet.Range("I2:I101");
+
+            departmentRange.CreateDataValidation()
+               .List($"\"{departmentList}\"");
+
+
+            worksheet.Column(4).Style.DateFormat.Format ="dd/MM/yyyy";
+
+            worksheet.Column(8).Style.DateFormat.Format ="dd/MM/yyyy";
+
+            //auto column width
+            worksheet.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+
+            workbook.SaveAs(stream);
+
+            response.Success = true;
+            response.Message = "Template generated successfully.";
+
+            response.Data = stream.ToArray();
+
+            return response;
         }
     }
 }
