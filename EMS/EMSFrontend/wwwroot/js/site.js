@@ -184,4 +184,11 @@
         });
     }
 
+    //cdn pagenation
+    new DataTable('#errorTable', {
+        pageLength: 5,
+        lengthChange: false,
+        ordering: false,
+        searching: true
+    });
 });

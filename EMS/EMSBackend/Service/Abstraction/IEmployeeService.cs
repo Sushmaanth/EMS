@@ -39,6 +39,8 @@ namespace EMSBackend.Service.Abstraction
         Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file);
 
         ServiceResponseDto<byte[]> DownloadTemplate();
+
+        ServiceResponseDto<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors);
     }
 
 }

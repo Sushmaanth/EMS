@@ -228,11 +228,6 @@ namespace EMSBackend.Controllers
         {
             var result = await _employeeService.UploadEmployeesAsync(file);
 
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-
             return Ok(result);
         }
 
@@ -244,6 +239,18 @@ namespace EMSBackend.Controllers
 
             return File(result.Data,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "EmployeeUploadTemplate.xlsx");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("download-failed-records")]
+        public IActionResult DownloadFailedRecords(List<UploadEmployeeExcelErrorDto> errors)
+        {
+            var result = _employeeService.DownloadFailedRecordsAsync(errors);
+
+            return File(
+                result.Data,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "FailedEmployeeRecords.xlsx");
         }
     }
 }

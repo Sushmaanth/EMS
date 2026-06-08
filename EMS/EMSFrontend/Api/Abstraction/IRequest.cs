@@ -36,6 +36,8 @@ namespace EMSFrontend.Api.Abstraction
 
         Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file);
 
+        Task<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors);
+
         Task<byte[]>DownloadTemplateAsync();
     }
 }

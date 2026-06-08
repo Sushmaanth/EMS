@@ -1,8 +1,11 @@
-﻿using EMSFrontend.Api.Abstraction;
+﻿using Dtos;
+using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
 using EMSFrontend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text.Json;
 
 namespace EMSFrontend.Controllers
 {
@@ -165,10 +168,35 @@ namespace EMSFrontend.Controllers
 
             model.Result = result.Data;
 
-            ViewBag.Message = result.Message;
-            ViewBag.Success = result.Success;
+            TempData["Message"] = result.Message;
+            TempData["Success"] = result.Success;
+
+            if (result.Data?.Errors?.Any() == true)
+            {
+                HttpContext.Session.SetString("FailedEmployeeRecords", JsonSerializer.Serialize(result.Data.Errors));
+            }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadFailedRecords()
+        {
+            var json = HttpContext.Session.GetString("FailedEmployeeRecords");
+
+            if (string.IsNullOrEmpty(json))
+            {
+                TempData["Error"] = "No failed records found.";
+
+                return RedirectToAction(nameof(BulkUpload));
+            }
+
+            var errors =JsonSerializer.Deserialize<List<UploadEmployeeExcelErrorDto>>(json);
+
+            var fileBytes =
+                await _request.DownloadFailedRecordsAsync(errors);
+
+            return File(fileBytes,"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","FailedEmployeeRecords.xlsx");
         }
 
         [HttpGet]

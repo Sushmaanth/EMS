@@ -1,5 +1,4 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Validation.Abstraction;
@@ -757,7 +756,8 @@ namespace EMSBackend.Service.Implementation
                 if (!actualHeader.Equals(expectedHeaders[i], StringComparison.OrdinalIgnoreCase))
                 {
                     response.Success = false;
-                    response.Message = $"Invalid template. Expected column '{expectedHeaders[i]}'.";
+                    response.Message = $"Invalid template. Expected column: '{expectedHeaders[i]}'. Please download the latest template and upload the file again.";
+                    response.Data = uploadResponse;
 
                     return response;
                 }
@@ -1192,6 +1192,86 @@ namespace EMSBackend.Service.Implementation
 
             response.Success = true;
             response.Message = "Template generated successfully.";
+
+            response.Data = stream.ToArray();
+
+            return response;
+        }
+
+        public ServiceResponseDto<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors)
+        {
+            var response = new ServiceResponseDto<byte[]>();
+
+            if (errors == null || !errors.Any())
+            {
+                response.Success = false;
+                response.Message = "No failed records available.";
+
+                return response;
+            }
+
+            using var workbook = new XLWorkbook();
+
+            var worksheet = workbook.Worksheets.Add("Failed Records");
+
+            // Headers
+            worksheet.Cell(1, 1).Value = "Row";
+            worksheet.Cell(1, 2).Value = "EmployeeCode";
+            worksheet.Cell(1, 3).Value = "Name";
+            worksheet.Cell(1, 4).Value = "Gender";
+            worksheet.Cell(1, 5).Value = "DateOfBirth";
+            worksheet.Cell(1, 6).Value = "EmailId";
+            worksheet.Cell(1, 7).Value = "Mobile";
+            worksheet.Cell(1, 8).Value = "Salary";
+            worksheet.Cell(1, 9).Value = "DateOfJoining";
+            worksheet.Cell(1, 10).Value = "DepartmentName";
+            worksheet.Cell(1, 11).Value = "Error Message";
+
+            worksheet.Row(1).Style.Font.Bold = true;
+
+            int row = 2;
+
+            foreach (var error in errors)
+            {
+                worksheet.Cell(row, 1).Value = error.RowNumber;
+                worksheet.Cell(row, 2).Value = error.EmployeeData.EmployeeCode;
+                worksheet.Cell(row, 3).Value = error.EmployeeData.Name;
+                worksheet.Cell(row, 4).Value = error.EmployeeData.Gender;
+
+                if (error.EmployeeData.DateOfBirth != default)
+                {
+                    worksheet.Cell(row, 5).Value =
+                        error.EmployeeData.DateOfBirth.ToString("dd/MM/yyyy");
+                }
+
+                worksheet.Cell(row, 6).Value = error.EmployeeData.EmailId;
+                worksheet.Cell(row, 7).Value = error.EmployeeData.Mobile;
+                worksheet.Cell(row, 8).Value = error.EmployeeData.Salary;
+
+                if (error.EmployeeData.DateOfJoining != default)
+                {
+                    worksheet.Cell(row, 9).Value =
+                        error.EmployeeData.DateOfJoining.ToString("dd/MM/yyyy");
+                }
+
+                worksheet.Cell(row, 10).Value =
+                    error.EmployeeData.DepartmentName;
+
+                worksheet.Cell(row, 11).Value =
+                    error.ErrorMessage;
+
+                row++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+
+            workbook.SaveAs(stream);
+
+            response.Success = true;
+            response.Message =
+                "Failed records file generated successfully.";
 
             response.Data = stream.ToArray();
 

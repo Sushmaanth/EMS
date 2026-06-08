@@ -521,9 +521,11 @@ namespace EMSFrontend.Api.Implementation
             return result.Data;
         }
 
-        public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>> UploadEmployeesAsync(IFormFile file)
+        public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file)
         {
-            using var content =new MultipartFormDataContent();
+            SetBearerToken();
+
+            using var content = new MultipartFormDataContent();
 
             using var stream = file.OpenReadStream();
 
@@ -533,16 +535,86 @@ namespace EMSFrontend.Api.Implementation
 
             var response =await client.PostAsync("upload-employees",content);
 
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                using var retryContent =new MultipartFormDataContent();
+
+                using var retryStream = file.OpenReadStream();
+
+                var retryFileContent =
+                    new StreamContent(retryStream);
+
+                retryContent.Add(retryFileContent,"file",file.FileName);
+
+                response = await client.PostAsync("upload-employees",retryContent);
+            }
+
+            await HandleErrorResponse(response);
+
             return await response.Content.ReadFromJsonAsync<ServiceResponseDto<EmployeeUploadExcelResponseDto>>();
         }
 
         public async Task<byte[]> DownloadTemplateAsync()
         {
+            SetBearerToken();
+
             var response = await client.GetAsync("download-template");
 
-            var contentType = response.Content.Headers.ContentType?.ToString();
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
 
-            Console.WriteLine("Console:"+contentType);
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                response = await client.GetAsync("download-template");
+            }
+
+            await HandleErrorResponse(response);
+
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+
+        public async Task<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors)
+        {
+            SetBearerToken();
+
+            var response = await client.PostAsJsonAsync("download-failed-records",errors);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+
+                response = await client.PostAsJsonAsync("download-failed-records", errors);
+            }
+
+            await HandleErrorResponse(response);
 
             return await response.Content.ReadAsByteArrayAsync();
         }
