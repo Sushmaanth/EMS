@@ -6,10 +6,12 @@ namespace EMSBackend.Middleware
     public class ExceptionMiddleware
     {
             private readonly RequestDelegate _next;
+            private readonly ILogger<ExceptionMiddleware> _logger;
 
-            public ExceptionMiddleware(RequestDelegate next)
+            public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
             {
                 _next = next;
+                _logger = logger;
             }
 
             public async Task InvokeAsync(HttpContext context)
@@ -21,22 +23,27 @@ namespace EMSBackend.Middleware
 
                 catch (UnauthorizedAccessException ex)
                 {
-                    await HandleExceptionAsync(context, HttpStatusCode.Unauthorized, ex.Message);
+                   _logger.LogWarning(ex, "Unauthorised access attempt. Path: {Path}", context.Request.Path);
+
+                   await HandleExceptionAsync(context, HttpStatusCode.Unauthorized, ex.Message);
                 }
 
                 catch (KeyNotFoundException ex)
                 {
+                    _logger.LogWarning(ex, "Resource not found. Path: {Path}", context.Request.Path);
                     await HandleExceptionAsync(context, HttpStatusCode.NotFound, ex.Message);
                 }
 
                 catch (ArgumentException ex)
                 {
+                    _logger.LogWarning(ex, "Bad argument. Path: {Path}", context.Request.Path);
                     await HandleExceptionAsync(context, HttpStatusCode.BadRequest, ex.Message);
                 }
 
                 catch (Exception ex)
                 {
-                    await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, ex.Message);
+                    _logger.LogError(ex, "Unhandled exception. Path: {Path}", context.Request.Path);
+                    await HandleExceptionAsync(context, HttpStatusCode.InternalServerError,"An unexpected error occurred. Please try again later.");
                 }
             }
 

@@ -7,6 +7,11 @@ namespace EMSFrontend.Models
     public class CreateEmployeeViewModel
     {
 
+        [Required(ErrorMessage = "Employee Code is required")]
+        [RegularExpression(@"^NQAI\d{3}R$", ErrorMessage = "Employee Code must be in format NQAI000R")]
+        [Remote(action: "CheckEmployeeCode",controller: "Validation",ErrorMessage = "Employee Code already exists")]
+        public string EmployeeCode { get; set; }
+
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100, MinimumLength = 2, ErrorMessage = "Name must be 2–100 characters")]
         [RegularExpression(@"^[a-zA-Z\s\.,-]+$", ErrorMessage = "Invalid name format")]

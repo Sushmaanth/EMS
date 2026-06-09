@@ -8,7 +8,12 @@ namespace Dtos.Repository.Abstraction
     public interface IAuthRepository
     {
         ActivateAccountResponseDTO AccountActivation(ActivateAccountDTO data);
+
+        //for login
         User? GetUserByEmail(string email);
+
+        //refractor login
+        //Task<LoginUserDto?> GetLoginUserByEmailAsync(string email);
 
         void UpdateRefreshToken(User user, string refreshToken, DateTime expiryTime);
 

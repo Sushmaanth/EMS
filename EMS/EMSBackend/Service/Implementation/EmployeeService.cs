@@ -1,7 +1,9 @@
-﻿using ClosedXML.Excel;
+﻿using AutoMapper;
+using ClosedXML.Excel;
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Validation.Abstraction;
+using EMSBackend.Common.Exceptions;
 using EMSBackend.Service.Abstraction;
 using Entities;
 using System.ComponentModel.DataAnnotations;
@@ -17,30 +19,18 @@ namespace EMSBackend.Service.Implementation
         private readonly IBlobService _blobService;
         private readonly IDocumentRepository _documentRepository;
         private readonly IEmployeeValidation _employeeValidation;
-
-        public EmployeeService(IEmployeeRepository repository,IBlobService blobService,IDocumentRepository documentRepository, IEmployeeValidation employeeValidation)
+        private readonly IMapper _mapper;
+        public EmployeeService(IEmployeeRepository repository,IBlobService blobService,IDocumentRepository documentRepository, IEmployeeValidation employeeValidation,IMapper mapper)
         {
             _employeeRepository = repository;
             _blobService = blobService;
             _documentRepository = documentRepository;
             _employeeValidation = employeeValidation;
+            _mapper = mapper;
         }
 
         public async Task<ServiceResponseDto<CreateEmployeeDto>>Create(CreateEmployeeDto dto)
         {
-            Employee employee = new()
-            {
-                Name = dto.Name,
-                Gender = dto.Gender,
-                DateOfBirth = dto.DateOfBirth,
-                EmailId = dto.EmailId,
-                Mobile = dto.Mobile,
-                Salary = dto.Salary,
-                DateOfJoining = dto.DateOfJoining,
-                DepartmentId = dto.DepartmentId
-            };
-
-
             var errors = await _employeeValidation.Validate(dto);
 
             if (errors.Any())
@@ -53,21 +43,11 @@ namespace EMSBackend.Service.Implementation
                 };
             }
 
+            var employee = _mapper.Map<Employee>(dto);
+
             var createdEmployee = _employeeRepository.Create(employee);
 
-            CreateEmployeeDto responseDto = new()
-            {
-                Id = createdEmployee.Id,
-                EmployeeCode = createdEmployee.EmployeeCode,
-                Name = createdEmployee.Name,
-                Gender = createdEmployee.Gender,
-                DateOfBirth = createdEmployee.DateOfBirth,
-                EmailId = createdEmployee.EmailId,
-                Mobile = createdEmployee.Mobile,
-                Salary = createdEmployee.Salary,
-                DateOfJoining = createdEmployee.DateOfJoining,
-                DepartmentId = createdEmployee.DepartmentId
-            };
+            var responseDto = _mapper.Map<CreateEmployeeDto>(createdEmployee);
 
             return new ServiceResponseDto<CreateEmployeeDto>
             {
@@ -77,31 +57,12 @@ namespace EMSBackend.Service.Implementation
             };
         }
 
-
         public ServiceResponseDto<ICollection<EmployeeDto>> View()
         {
 
             var employees = _employeeRepository.View();
 
-            var employeeDtos = employees
-               .Select(e => new EmployeeDto
-               {
-                   Id = e.Id,
-                   EmployeeCode = e.EmployeeCode,
-                   Name = e.Name,
-                   Gender = e.Gender,
-                   DateOfBirth = e.DateOfBirth,
-                   EmailId = e.EmailId,
-                   Mobile = e.Mobile,
-                   Salary = e.Salary,
-                   DateOfJoining = e.DateOfJoining,
-                   DepartmentId = e.DepartmentId,
-                   DepartmentName =
-                        e.Department != null
-                            ? e.Department.DepartmentName
-                            : null
-
-               }).ToList();
+            var employeeDtos = _mapper.Map<ICollection<EmployeeDto>>(employees);
 
             return new ServiceResponseDto<ICollection<EmployeeDto>>
             {
@@ -112,50 +73,41 @@ namespace EMSBackend.Service.Implementation
         }
 
 
-        public ServiceResponseDto<EmployeeDto> Update(int id, EmployeeDto dto)
+        public async Task<ServiceResponseDto<CreateEmployeeDto>>Update(int id, CreateEmployeeDto dto)
         {
+            var errors = await _employeeValidation.Validate(dto);
+
+            if (errors.Any())
+            {
+                return new ServiceResponseDto<CreateEmployeeDto>
+                {
+                    Success = false,
+                    Message = "Update Employee Validation",
+                    Errors = errors
+                };
+            }
 
             var foundEmployee = _employeeRepository.GetById(id);
 
             if (foundEmployee == null)
             {
-                return new ServiceResponseDto<EmployeeDto>
+                return new ServiceResponseDto<CreateEmployeeDto>
                 {
                     Success = false,
                     Message = "Employee not found"
                 };
             }
 
-            foundEmployee.Name = dto.Name;
-            foundEmployee.Gender = dto.Gender;
-            foundEmployee.DateOfBirth = dto.DateOfBirth;
-            foundEmployee.EmailId = dto.EmailId;
-            foundEmployee.Mobile = dto.Mobile;
-            foundEmployee.Salary = dto.Salary;
-            foundEmployee.DateOfJoining = dto.DateOfJoining;
-            foundEmployee.DepartmentId = dto.DepartmentId;
+            _mapper.Map(dto, foundEmployee);
 
             var updatedEmployee = _employeeRepository.Update(foundEmployee);
 
-            EmployeeDto employeeDto = new()
-            {
-                Id = updatedEmployee.Id,
-                EmployeeCode = updatedEmployee.EmployeeCode,
-                Name = updatedEmployee.Name,
-                Gender = updatedEmployee.Gender,
-                DateOfBirth = updatedEmployee.DateOfBirth,
-                EmailId = updatedEmployee.EmailId,
-                Mobile = updatedEmployee.Mobile,
-                Salary = updatedEmployee.Salary,
-                DateOfJoining = updatedEmployee.DateOfJoining,
-                DepartmentId = updatedEmployee.DepartmentId
-            };
 
-            return new ServiceResponseDto<EmployeeDto>
+            return new ServiceResponseDto<CreateEmployeeDto>
             {
                 Success = true,
                 Message = "Employee updated successfully",
-                Data = employeeDto
+                Data = _mapper.Map<CreateEmployeeDto>(updatedEmployee)
             };
         }
 
@@ -176,25 +128,12 @@ namespace EMSBackend.Service.Implementation
 
             var deletedEmployee = _employeeRepository.Delete(foundEmployee);
 
-            EmployeeDto dto = new()
-            {
-                Id = deletedEmployee.Id,
-                EmployeeCode = deletedEmployee.EmployeeCode,
-                Name = deletedEmployee.Name,
-                Gender = deletedEmployee.Gender,
-                DateOfBirth = deletedEmployee.DateOfBirth,
-                EmailId = deletedEmployee.EmailId,
-                Mobile = deletedEmployee.Mobile,
-                Salary = deletedEmployee.Salary,
-                DateOfJoining = deletedEmployee.DateOfJoining,
-                DepartmentId = deletedEmployee.DepartmentId
-            };
 
             return new ServiceResponseDto<EmployeeDto>
             {
                 Success = true,
                 Message = "Employee deleted successfully",
-                Data = dto
+                Data = _mapper.Map<EmployeeDto>(deletedEmployee)
             };
         }
 
@@ -212,29 +151,11 @@ namespace EMSBackend.Service.Implementation
                 };
             }
 
-            EmployeeDto dto = new()
-            {
-                Id = employee.Id,
-                EmployeeCode = employee.EmployeeCode,
-                Name = employee.Name,
-                Gender = employee.Gender,
-                DateOfBirth = employee.DateOfBirth,
-                EmailId = employee.EmailId,
-                Mobile = employee.Mobile,
-                Salary = employee.Salary,
-                DateOfJoining = employee.DateOfJoining,
-                DepartmentId = employee.DepartmentId,
-                DepartmentName =
-                        employee.Department != null
-                            ? employee.Department.DepartmentName
-                            : null
-            };
-
             return new ServiceResponseDto<EmployeeDto>
             {
                 Success = true,
                 Message = "Employee fetched successfully",
-                Data = dto
+                Data = _mapper.Map<EmployeeDto>(employee)
             };
         }
 
@@ -247,28 +168,12 @@ namespace EMSBackend.Service.Implementation
             var totalRecords = query.Count();
 
             var employees = query
-                .OrderBy(e => e.Id)
+                .OrderByDescending(e => e.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(e => new EmployeeDto
-                {
-                    Id = e.Id,
-                    EmployeeCode =e.EmployeeCode,
-                    Name = e.Name,
-                    Gender = e.Gender,
-                    DateOfBirth = e.DateOfBirth,
-                    EmailId = e.EmailId,
-                    Mobile = e.Mobile,
-                    Salary = e.Salary,
-                    DateOfJoining = e.DateOfJoining,
-                    DepartmentId = e.DepartmentId,
-
-                    DepartmentName =
-                        e.Department != null
-                            ? e.Department.DepartmentName
-                            : null
-                })
                 .ToList();
+
+            var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
 
             return new ServiceResponseDto<PagenationDto<EmployeeDto>>
             {
@@ -277,7 +182,7 @@ namespace EMSBackend.Service.Implementation
 
                 Data = new PagenationDto<EmployeeDto>
                 {
-                    Data = employees,
+                    Data = employeeDtos,
                     TotalRecords = totalRecords,
                     PageNumber = pageNumber,
                     PageSize = pageSize,
@@ -686,6 +591,10 @@ namespace EMSBackend.Service.Implementation
             return null;
         }
 
+
+
+
+        //**Upload Employee Excel Data
         public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>> UploadEmployeesAsync(IFormFile file)
         {
             var response = new ServiceResponseDto<EmployeeUploadExcelResponseDto>();

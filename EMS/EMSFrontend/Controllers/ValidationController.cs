@@ -35,5 +35,15 @@ namespace EMSFrontend.Controllers
                 : Json("Mobile already exists");
         }
 
+        [AcceptVerbs("GET", "POST")]
+        public async Task<IActionResult> CheckEmployeeCode(
+      string employeeCode)
+        {
+            bool valid = await _validationrequest.CheckEmployeeCodeExistsAsync(employeeCode);
+
+            return valid
+                ? Json(true)
+                : Json("Employee Code already exists");
+        }
     }
 }

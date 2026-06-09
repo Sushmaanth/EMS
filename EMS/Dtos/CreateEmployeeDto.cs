@@ -7,6 +7,7 @@ namespace Dtos
     {
         public int Id { get; set; }
 
+        [RegularExpression(@"^NQAI\d{3}R$",ErrorMessage = "Employee Code must be in format NQAI000R")]
         public string EmployeeCode { get; set; }
 
         [Required(ErrorMessage = "Name is required")]

@@ -37,9 +37,11 @@
                         </label>
 
                         <input asp-for="EmployeeCode"
-                               class="form-control"
-                               readonly />
+                               class="form-control"/>
 
+                        <span asp-validation-for="EmployeeCode"
+                              class="text-danger">
+                        </span>
                     </div>  
                   
                     <div class="col-md-6 mb-3">

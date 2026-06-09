@@ -3,13 +3,12 @@ using Azure.Storage.Blobs;
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
-using Dtos.Validation;
 using Dtos.Validation.Abstraction;
 using Dtos.Validation.Implementation;
+using EMSBackend.Mapper;
 using EMSBackend.Middleware;
 using EMSBackend.Service.Abstraction;
 using EMSBackend.Service.Implementation;
-using Entities;
 using Entities.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +32,7 @@ namespace EMSBackend
             var connStr = builder.Configuration.GetConnectionString("employeeManagementDbConStr");
 
             builder.Services.AddDbContext<AppDbContext>(opt=> opt.UseSqlServer(connStr, config=> config.MigrationsAssembly("EMSBackend")));
+            builder.Services.AddAutoMapper(config => config.AddProfile<EmployeeMappingProfile>());
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();

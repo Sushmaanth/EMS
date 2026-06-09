@@ -32,5 +32,13 @@ namespace EMSFrontend.Api.Implementation
 
             return await response.Content.ReadFromJsonAsync<bool>();
         }
+
+        public async Task<bool> CheckEmployeeCodeExistsAsync(string employeeCode)
+        {
+            var response =
+                await _client.GetAsync($"employeecode?employeeCode={employeeCode}");
+
+            return await response.Content.ReadFromJsonAsync<bool>();
+        }
     }
 }

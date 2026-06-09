@@ -32,5 +32,12 @@ namespace EMSBackend.Controllers
 
             return Ok(!exists);
         }
+
+        [HttpGet("employeecode")]
+        public async Task<IActionResult> CheckEmployeeCode(string employeeCode)
+        {
+            bool exists = await _context.Employees.AnyAsync(e => e.EmployeeCode == employeeCode);
+            return Ok(!exists);
+        }
     }
 }

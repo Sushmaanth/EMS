@@ -74,7 +74,7 @@ namespace Dtos.Repository.Implementation
         public Employee? GetById(int id)
         {
 
-            return _context.Employees.FirstOrDefault(e => e.Id == id);
+            return _context.Employees.Include(e => e.Department).FirstOrDefault(e => e.Id == id);
 
         }
 
@@ -110,7 +110,7 @@ namespace Dtos.Repository.Implementation
         {
 
             IQueryable<Employee> query =
-                 _context.Employees;
+                 _context.Employees.AsNoTracking().Include(e => e.Department); ;
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {

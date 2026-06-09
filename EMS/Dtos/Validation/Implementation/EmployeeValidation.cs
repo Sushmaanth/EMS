@@ -17,7 +17,20 @@ namespace Dtos.Validation.Implementation
         {
             var errors = new Dictionary<string, List<string>>();
 
-            bool emailExists = await context.Employees
+            if (string.IsNullOrWhiteSpace(dto.EmployeeCode))
+            {
+                errors["EmployeeCode"] = new List<string> { "Employee code is required" };
+            }
+            else
+            {
+                bool codeExists = await context.Employees
+                   .AnyAsync(x => x.EmployeeCode == dto.EmployeeCode.Trim());
+
+                if (codeExists)
+                    errors["EmployeeCode"] = new List<string> { "Employee code already exists" };
+            }
+
+                bool emailExists = await context.Employees
                 .AnyAsync(x => x.EmailId.ToLower().Trim() == dto.EmailId.ToLower().Trim());
 
             bool mobileExists = await context.Employees

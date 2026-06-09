@@ -6,10 +6,12 @@ namespace EMSAuthApi.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -21,30 +23,35 @@ namespace EMSAuthApi.Middleware
 
             catch (UnauthorizedAccessException ex)
             {
-                await HandleExceptionAsync(context,HttpStatusCode.Unauthorized,ex.Message);
+                _logger.LogWarning(ex, "Unauthorised access attempt. Path: {Path}", context.Request.Path);
+
+                await HandleExceptionAsync(context, HttpStatusCode.Unauthorized, ex.Message);
             }
 
             catch (KeyNotFoundException ex)
             {
-                await HandleExceptionAsync(context,HttpStatusCode.NotFound,ex.Message);
+                _logger.LogWarning(ex, "Resource not found. Path: {Path}", context.Request.Path);
+                await HandleExceptionAsync(context, HttpStatusCode.NotFound, ex.Message);
             }
 
             catch (ArgumentException ex)
             {
-                await HandleExceptionAsync(context,HttpStatusCode.BadRequest,ex.Message);
+                _logger.LogWarning(ex, "Bad argument. Path: {Path}", context.Request.Path);
+                await HandleExceptionAsync(context, HttpStatusCode.BadRequest, ex.Message);
             }
 
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context,HttpStatusCode.InternalServerError,ex.Message);
+                _logger.LogError(ex, "Unhandled exception. Path: {Path}", context.Request.Path);
+                await HandleExceptionAsync(context, HttpStatusCode.InternalServerError, "An unexpected error occurred. Please try again later.");
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context,HttpStatusCode statusCode,string message)
+        private static async Task HandleExceptionAsync(HttpContext context, HttpStatusCode statusCode, string message)
         {
-            context.Response.ContentType ="application/json";
+            context.Response.ContentType = "application/json";
 
-            context.Response.StatusCode =(int)statusCode;
+            context.Response.StatusCode = (int)statusCode;
 
             var response = new
             {
@@ -53,7 +60,7 @@ namespace EMSAuthApi.Middleware
                 Message = message
             };
 
-            var jsonResponse =JsonSerializer.Serialize(response);
+            var jsonResponse = JsonSerializer.Serialize(response);
 
             await context.Response.WriteAsync(jsonResponse);
         }

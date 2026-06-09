@@ -19,11 +19,30 @@ namespace Dtos.Repository.Implementation
             _context = context;
             _passwordHasher = passwordHasher;
         }
+
+        //for login 
         public User? GetUserByEmail(string email)
         {
-            return _context.Users.Include(u => u.Employee).Include(u => u.Role).FirstOrDefault(u => u.EmailId == email);
+            return _context.Users.AsNoTracking().Include(u => u.Employee).Include(u => u.Role).FirstOrDefault(u => u.EmailId == email);
         }
 
+        //refractor login
+        //public async Task<LoginUserDto?> GetLoginUserByEmailAsync(string email)
+        //{
+        //    return await _context.Users
+        //        .AsNoTracking()
+        //        .Where(x => x.EmailId == email)
+        //        .Select(x => new LoginUserDto
+        //        {
+        //            UserId = x.Id,
+        //            EmployeeId = x.EmployeeId,
+        //            EmailId = x.EmailId,
+        //            PasswordHash = x.PasswordHash,
+        //            EmployeeName = x.Employee.Name,
+        //            RoleName = x.Role.RoleName
+        //        })
+        //        .FirstOrDefaultAsync();
+        //}
         public void Save()
         {
             _context.SaveChanges();

@@ -8,7 +8,7 @@ namespace EMSBackend.Service.Abstraction
 
         ServiceResponseDto<ICollection<EmployeeDto>>View();
 
-        ServiceResponseDto<EmployeeDto>Update(int id, EmployeeDto dto);
+        Task<ServiceResponseDto<CreateEmployeeDto>>Update(int id, CreateEmployeeDto dto);
 
         ServiceResponseDto<EmployeeDto>Delete(int id);
 

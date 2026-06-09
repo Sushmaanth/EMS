@@ -63,13 +63,13 @@ namespace EMSBackend.Controllers
         [Authorize(Roles = "Admin")]
         [Route("update/{id}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] EmployeeDto dto)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, [FromBody] CreateEmployeeDto dto)
         {
-            var result = _employeeService.Update(id, dto);
+            var result = await _employeeService.Update(id, dto);
 
             if (!result.Success)
             {
-                return NotFound(result.Message);
+                return BadRequest(result);
             }
 
             return Ok(result);
