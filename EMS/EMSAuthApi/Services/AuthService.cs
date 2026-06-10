@@ -29,30 +29,18 @@ namespace EMSAuthApi.Services
 
             if (user == null)
             {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "Invalid Email or Password"
-                };
+                return ServiceResponseDto<LoginResponseDTO>.Fail("Invalid Email or Password");
             }
 
             bool isValidPassword = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password) == PasswordVerificationResult.Success;
 
             if (!isValidPassword)
             {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "Invalid Email or Password"
-                };
+                return ServiceResponseDto<LoginResponseDTO>.Fail("Invalid Email or Password");
             }
             if (!user.IsActive)
             {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "User account inactive"
-                };
+                return ServiceResponseDto<LoginResponseDTO>.Fail("User account inactive");
             }
 
             string token = _tokenService.GenerateToken(user);
@@ -62,11 +50,8 @@ namespace EMSAuthApi.Services
             _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(30));
 
 
-            return new ServiceResponseDto<LoginResponseDTO>
-            {
-                Success = true,
-
-                Data = new LoginResponseDTO
+            return ServiceResponseDto<LoginResponseDTO>.Ok(
+                new LoginResponseDTO
                 {
                     Token = token,
                     EmailId = user.EmailId,
@@ -74,8 +59,9 @@ namespace EMSAuthApi.Services
                     RefreshToken = refreshToken,
                     EmployeeId = user.EmployeeId,
                     EmployeeName = user.Employee.Name
-                }
-            };
+                },
+                "Login successful"
+            );
 
         }
 
@@ -90,29 +76,17 @@ namespace EMSAuthApi.Services
 
             if (user == null)
             {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "User not found"
-                };
+                return ServiceResponseDto<LoginResponseDTO>.Fail("User not found");
             }
 
             if (user.RefreshToken != dto.RefreshToken)
             {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "Invalid refresh token"
-                };
+                return ServiceResponseDto<LoginResponseDTO>.Fail("Invalid refresh token");
             }
 
             if (user.RefreshTokenExpiryTime <= DateTime.Now)
             {
-                return new ServiceResponseDto<LoginResponseDTO>
-                {
-                    Success = false,
-                    Message = "Refresh token expired"
-                };
+                return ServiceResponseDto<LoginResponseDTO>.Fail("Refresh token expired");
             }
 
             string newAccessToken = _tokenService.GenerateToken(user);
@@ -122,25 +96,18 @@ namespace EMSAuthApi.Services
             _authrepository.UpdateRefreshToken(user, newRefreshToken, DateTime.Now.AddMinutes(30));
 
 
-            return new ServiceResponseDto<LoginResponseDTO>
-            {
-                Success = true,
-                Message = "Logged in succesfully",
-                Data = new LoginResponseDTO
+            return ServiceResponseDto<LoginResponseDTO>.Ok(
+                new LoginResponseDTO
                 {
                     Token = newAccessToken,
-
                     RefreshToken = newRefreshToken,
-
                     EmailId = user.EmailId,
-
                     Role = user.Role.RoleName,
-
                     EmployeeId = user.EmployeeId,
-
                     EmployeeName = user.Employee.Name
-                }
-            };
+                },
+                "Logged in successfully"
+            );
         }
 
         public ServiceResponseDto<LoginResponseDTO> MicrosoftLogin(string email)
@@ -150,12 +117,12 @@ namespace EMSAuthApi.Services
 
             if (user == null)
             {
-                throw new Exception("User not registered in EMS");
+                return ServiceResponseDto<LoginResponseDTO>.Fail("User not registered in EMS");
             }
 
             if (!user.IsActive)
             {
-                throw new Exception("User account inactive");
+                return ServiceResponseDto<LoginResponseDTO>.Fail("User account inactive");
             }
 
             string token = _tokenService.GenerateToken(user);
@@ -165,20 +132,17 @@ namespace EMSAuthApi.Services
             _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(30));
 
 
-            return new ServiceResponseDto<LoginResponseDTO>
-            {
-                Success = true,
-                Message = "Login successful",
-
-                Data = new LoginResponseDTO
+            return ServiceResponseDto<LoginResponseDTO>.Ok(
+                new LoginResponseDTO
                 {
                     Token = token,
                     RefreshToken = refreshToken,
                     EmailId = user.EmailId,
                     Role = user.Role.RoleName,
                     EmployeeId = user.EmployeeId
-                }
-            };
+                },
+                "Login successful"
+            );
         }
 
         public async Task<ServiceResponseDto<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
@@ -214,14 +178,10 @@ namespace EMSAuthApi.Services
                     "Reset Password OTP",
                     body);
             }
-            return new ServiceResponseDto<string>
-            {
-                Success = true,
-                Message = "If the email exists, OTP has been sent"
-            };
+            return ServiceResponseDto<string>.Ok(null,"If the email exists, OTP has been sent");
         }
 
-    
+
 
         public async Task<ServiceResponseDto<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
@@ -229,11 +189,7 @@ namespace EMSAuthApi.Services
 
             if (user == null)
             {
-                return new ServiceResponseDto<string>
-                {
-                    Success = false,
-                    Message = "Invalid user"
-                };
+                return ServiceResponseDto<string>.Fail("Invalid user");
             }
 
             if (user.PasswordResetOtp != dto.Otp)
@@ -246,29 +202,17 @@ namespace EMSAuthApi.Services
 
                     _authrepository.Save();
 
-                    return new ServiceResponseDto<string>
-                    {
-                        Success = false,
-                        Message = "Too many invalid attempts"
-                    };
+                    return ServiceResponseDto<string>.Fail("Too many invalid attempts");
                 }
 
                 _authrepository.Save();
 
-                return new ServiceResponseDto<string>
-                {
-                    Success = false,
-                    Message = "Invalid OTP"
-                };
+                return ServiceResponseDto<string>.Fail("Invalid OTP");
             }
 
             if (user.PasswordResetOtpExpiry < DateTime.Now)
             {
-                return new ServiceResponseDto<string>
-                {
-                    Success = false,
-                    Message = "OTP expired"
-                };
+                return ServiceResponseDto<string>.Fail("OTP expired");
             }
 
             string hashedPassword = _passwordHasher.HashPassword(user, dto.NewPassword);
@@ -281,11 +225,7 @@ namespace EMSAuthApi.Services
 
             _authrepository.Save();
 
-            return new ServiceResponseDto<string>
-            {
-                Success = true,
-                Message = "Password reset successfully"
-            };
+            return ServiceResponseDto<string>.Ok(null,"Password reset successfully");
         }
 
         public ActivateAccountResponseDTO ActivateAccount(ActivateAccountDTO dto)

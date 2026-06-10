@@ -3,6 +3,7 @@ using Azure.Storage.Blobs;
 using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
+using Dtos.Validation;
 using Dtos.Validation.Abstraction;
 using Dtos.Validation.Implementation;
 using EMSBackend.Mapper;
@@ -10,6 +11,8 @@ using EMSBackend.Middleware;
 using EMSBackend.Service.Abstraction;
 using EMSBackend.Service.Implementation;
 using Entities.Data;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +41,10 @@ namespace EMSBackend
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();
             builder.Services.AddScoped<IEmployeeValidation, EmployeeValidation>();
             builder.Services.AddScoped<IBlobService, BlobService>();
+            builder.Services.AddScoped<IEmployeeDuplicateUploadValidator, EmployeeDuplicateUploadValidator>();
+
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
 
             builder.Configuration.AddUserSecrets<Program>();
 
@@ -134,7 +141,7 @@ namespace EMSBackend
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
-            {
+            { 
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }

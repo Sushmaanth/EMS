@@ -24,12 +24,12 @@ namespace Dtos.Repository.Abstraction
 
         EmployeeDashboardData GetDashboardData(int employeeId);
 
-        Task<List<string>> GetExistingEmployeeCodesAsync(List<string> employeeCodes);
+        Task<List<string>> GetExistingEmployeeCodesAsync(IEnumerable<string> employeeCodes);
 
         Task BulkInsertAsync(List<Employee> employees);
 
-        Task<List<string>> GetExistingEmailsAsync(List<string> emails);
+        Task<List<string>> GetExistingEmailsAsync(IEnumerable<string> emails);
 
-        Task<List<long>> GetExistingMobilesAsync(List<long> mobiles);
+        Task<List<long>> GetExistingMobilesAsync(IEnumerable<long> mobiles);
     }
 }

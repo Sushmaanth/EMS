@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Dtos\Dtos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\Helper\" />
+  </ItemGroup>
+
 </Project>

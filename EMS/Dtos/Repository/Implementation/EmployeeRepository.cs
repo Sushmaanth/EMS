@@ -35,7 +35,7 @@ namespace Dtos.Repository.Implementation
 
         public ICollection<Employee> View()
         {
-            return _context.Employees.ToList();
+            return _context.Employees.AsNoTracking().Include(e=>e.Department).ToList();
         }
 
         public Employee Delete(Employee employee)
@@ -160,12 +160,12 @@ namespace Dtos.Repository.Implementation
             };
         }
 
-        public async Task<List<string>> GetExistingEmployeeCodesAsync(List<string> employeeCodes)
+        public async Task<List<string>> GetExistingEmployeeCodesAsync(IEnumerable<string> employeeCodes)
         {
             return await _context.Employees.Where(e => employeeCodes.Contains(e.EmployeeCode)).Select(e => e.EmployeeCode).ToListAsync();
         }
 
-        public async Task<List<string>> GetExistingEmailsAsync(List<string> emails)
+        public async Task<List<string>> GetExistingEmailsAsync(IEnumerable<string> emails)
         {
             return await _context.Employees
                 .Where(e => emails.Contains(e.EmailId))
@@ -173,7 +173,7 @@ namespace Dtos.Repository.Implementation
                 .ToListAsync();
         }
 
-        public async Task<List<long>> GetExistingMobilesAsync(List<long> mobiles)
+        public async Task<List<long>> GetExistingMobilesAsync(IEnumerable<long> mobiles)
         {
             return await _context.Employees
                 .Where(e => mobiles.Contains(e.Mobile))
