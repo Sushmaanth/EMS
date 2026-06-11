@@ -23,7 +23,7 @@ namespace EMSBackend
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +34,10 @@ namespace EMSBackend
 
             var connStr = builder.Configuration.GetConnectionString("employeeManagementDbConStr");
 
-            builder.Services.AddDbContext<AppDbContext>(opt=> opt.UseSqlServer(connStr, config=> config.MigrationsAssembly("EMSBackend")));
+            //builder.Services.AddDbContext<AppDbContext>(opt=> opt.UseSqlServer(connStr, config=> config.MigrationsAssembly("EMSBackend")));
+            builder.Services.AddDbContextPool<AppDbContext>(opt => opt.UseSqlServer(connStr, config => config.MigrationsAssembly("EMSBackend")), poolSize: 32);
+
+
             builder.Services.AddAutoMapper(config => config.AddProfile<EmployeeMappingProfile>());
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -138,6 +141,15 @@ namespace EMSBackend
             
 
             var app = builder.Build();
+
+            // Warm up the database connection during application startup// to reduce first-request/login latency.using (var scope = app.Services.CreateScope())
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await db.Database.CanConnectAsync();
+                Console.WriteLine("EMS Backend Database warm-up completed.");
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

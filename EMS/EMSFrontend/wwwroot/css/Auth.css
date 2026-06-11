@@ -4,10 +4,11 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    display:flex;
+    display: flex;
     height: 100vh;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
 }
 
 .employee-login, .employee-activation {

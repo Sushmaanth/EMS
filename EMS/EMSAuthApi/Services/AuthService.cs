@@ -22,10 +22,10 @@ namespace EMSAuthApi.Services
             _tokenService = tokenService;
             _emailService = emailService;
         }
-        public ServiceResponseDto<LoginResponseDTO> LoginEmployee(LoginDto dto)
+        public async Task<ServiceResponseDto<LoginResponseDTO>> LoginEmployee(LoginDto dto)
         {
 
-            var user = _authrepository.GetUserByEmail(dto.Email);
+            var user = await _authrepository.GetUserByEmailAsync(dto.Email);
 
             if (user == null)
             {
@@ -47,7 +47,7 @@ namespace EMSAuthApi.Services
 
             string refreshToken = _tokenService.GenerateRefreshToken();
 
-            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(30));
+            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.UtcNow.AddDays(7)); 
 
 
             return ServiceResponseDto<LoginResponseDTO>.Ok(
@@ -65,14 +65,14 @@ namespace EMSAuthApi.Services
 
         }
 
-        public ServiceResponseDto<LoginResponseDTO> RefreshToken(RefreshTokenDTO dto)
+        public async Task<ServiceResponseDto<LoginResponseDTO>> RefreshToken(RefreshTokenDTO dto)
         {
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
 
             string email = principal.FindFirst(ClaimTypes.Email)?.Value;
 
-            var user = _authrepository.GetUserByEmail(email);
+            var user = await _authrepository.GetUserByEmailAsync(email);
 
             if (user == null)
             {
@@ -84,7 +84,7 @@ namespace EMSAuthApi.Services
                 return ServiceResponseDto<LoginResponseDTO>.Fail("Invalid refresh token");
             }
 
-            if (user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 return ServiceResponseDto<LoginResponseDTO>.Fail("Refresh token expired");
             }
@@ -93,7 +93,7 @@ namespace EMSAuthApi.Services
 
             string newRefreshToken = _tokenService.GenerateRefreshToken();
 
-            _authrepository.UpdateRefreshToken(user, newRefreshToken, DateTime.Now.AddMinutes(30));
+            _authrepository.UpdateRefreshToken(user, newRefreshToken, DateTime.UtcNow.AddDays(7));
 
 
             return ServiceResponseDto<LoginResponseDTO>.Ok(
@@ -110,10 +110,10 @@ namespace EMSAuthApi.Services
             );
         }
 
-        public ServiceResponseDto<LoginResponseDTO> MicrosoftLogin(string email)
+        public async Task<ServiceResponseDto<LoginResponseDTO>> MicrosoftLogin(string email)
         {
 
-            var user = _authrepository.GetUserByEmail(email);
+            var user = await _authrepository.GetUserByEmailAsync(email);
 
             if (user == null)
             {
@@ -129,7 +129,7 @@ namespace EMSAuthApi.Services
 
             string refreshToken = _tokenService.GenerateRefreshToken();
 
-            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.Now.AddMinutes(30));
+            _authrepository.UpdateRefreshToken(user, refreshToken, DateTime.UtcNow.AddDays(7));
 
 
             return ServiceResponseDto<LoginResponseDTO>.Ok(
@@ -148,7 +148,7 @@ namespace EMSAuthApi.Services
         public async Task<ServiceResponseDto<string>> ForgotPasswordAsync(ForgotPasswordDto dto)
         {
 
-            var user = _authrepository.GetUserByEmail(dto.Email);
+            var user = await _authrepository.GetUserByEmailAsync(dto.Email);
 
             if (user != null)
             {
@@ -156,7 +156,7 @@ namespace EMSAuthApi.Services
 
                 string otp = random.Next(100000, 999999).ToString();
 
-                _authrepository.UpdatePasswordResetOtp(user, otp, DateTime.Now.AddMinutes(2));
+                _authrepository.UpdatePasswordResetOtp(user, otp, DateTime.UtcNow.AddMinutes(30));
 
                 string body = $@"
                             <div style='font-family:Arial;padding:20px;'>
@@ -181,15 +181,20 @@ namespace EMSAuthApi.Services
             return ServiceResponseDto<string>.Ok(null,"If the email exists, OTP has been sent");
         }
 
-
-
         public async Task<ServiceResponseDto<string>> ResetPasswordAsync(ResetPasswordDto dto)
         {
-            var user = _authrepository.GetUserByEmail(dto.Email);
+            var user = await _authrepository.GetUserByEmailAsync(dto.Email);
 
             if (user == null)
             {
                 return ServiceResponseDto<string>.Fail("Invalid user");
+            }
+
+            if (user.PasswordResetOtpExpiry < DateTime.UtcNow)
+            {
+                _authrepository.ClearOtp(user);
+                _authrepository.Save();
+                return ServiceResponseDto<string>.Fail("OTP expired");
             }
 
             if (user.PasswordResetOtp != dto.Otp)
@@ -208,11 +213,6 @@ namespace EMSAuthApi.Services
                 _authrepository.Save();
 
                 return ServiceResponseDto<string>.Fail("Invalid OTP");
-            }
-
-            if (user.PasswordResetOtpExpiry < DateTime.Now)
-            {
-                return ServiceResponseDto<string>.Fail("OTP expired");
             }
 
             string hashedPassword = _passwordHasher.HashPassword(user, dto.NewPassword);

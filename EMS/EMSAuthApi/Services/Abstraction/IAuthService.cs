@@ -4,11 +4,11 @@ namespace EMSAuthApi.Services.Abstraction
 {
     public interface IAuthService
     {
-        ServiceResponseDto<LoginResponseDTO> LoginEmployee(LoginDto dto);
+        Task<ServiceResponseDto<LoginResponseDTO>> LoginEmployee(LoginDto dto);
 
-        ServiceResponseDto<LoginResponseDTO> RefreshToken(RefreshTokenDTO dto);
+        Task<ServiceResponseDto<LoginResponseDTO>> RefreshToken(RefreshTokenDTO dto);
 
-        ServiceResponseDto<LoginResponseDTO> MicrosoftLogin(string email);
+        Task<ServiceResponseDto<LoginResponseDTO>> MicrosoftLogin(string email);
 
         Task<ServiceResponseDto<string>> ForgotPasswordAsync(ForgotPasswordDto dto);
         

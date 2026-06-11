@@ -107,7 +107,7 @@ namespace EMSFrontend.Controllers
 
             HttpContext.Session.SetString("Role",loginResult.Role);
 
-            HttpContext.Session.SetString("Email",loginResult.EmailId);
+            HttpContext.Session.SetString("EmailId", loginResult.EmailId);
 
             HttpContext.Session.SetInt32("EmployeeId",loginResult.EmployeeId);
 
@@ -183,7 +183,7 @@ namespace EMSFrontend.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-
+            TempData["loggedOutSuccessfully"] = "Logged out successfully";
             return RedirectToAction("Login","Auth");
         }
 

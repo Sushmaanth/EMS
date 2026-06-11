@@ -21,9 +21,9 @@ namespace Dtos.Repository.Implementation
         }
 
         //for login 
-        public User? GetUserByEmail(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return _context.Users.AsNoTracking().Include(u => u.Employee).Include(u => u.Role).FirstOrDefault(u => u.EmailId == email);
+            return await _context.Users.AsNoTracking().Include(u => u.Employee).Include(u => u.Role).FirstOrDefaultAsync(u => u.EmailId == email);
         }
 
         //refractor login
@@ -53,6 +53,8 @@ namespace Dtos.Repository.Implementation
             user.RefreshToken = refreshToken;
 
             user.RefreshTokenExpiryTime = expiryTime;
+
+            _context.Users.Update(user);
 
             _context.SaveChanges();
         }
@@ -123,7 +125,7 @@ namespace Dtos.Repository.Implementation
                 EmailId = data.EmailId,
                 IsActive = true,
                 EmployeeId = employeeExists.Id,
-                RoleId = employeeRole.Id = 2
+                RoleId = employeeRole.Id
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, data.Password);

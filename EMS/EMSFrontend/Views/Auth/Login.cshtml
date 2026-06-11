@@ -75,6 +75,22 @@
            value="@TempData["PasswordSuccessResetMessage"]" />
 }
 
+@if (TempData["MicrosoftLoginError"] != null)
+{
+
+    <input type="hidden"
+           id="microsoftLoginErrorMessage"
+           value="@TempData["MicrosoftLoginError"]" />
+}
+
+@if (TempData["loggedOutSuccessfully"] != null)
+{
+
+    <input type="hidden"
+           id="loggedOutSuccessfully"
+           value="@TempData["loggedOutSuccessfully"]" />
+}
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync(

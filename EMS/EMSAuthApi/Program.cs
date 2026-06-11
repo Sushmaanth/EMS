@@ -1,5 +1,3 @@
-
-using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
 using EMSAuthApi.Middleware;
@@ -17,7 +15,7 @@ namespace EMSAuthApi
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -56,8 +54,20 @@ namespace EMSAuthApi
             builder.Services.AddAuthorization();
             var connStr = builder.Configuration.GetConnectionString("employeeManagementDbConStr");
 
-            builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connStr, config => config.MigrationsAssembly("EMSBackend")));
+            //builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connStr, config => config.MigrationsAssembly("EMSBackend")));
+
+            builder.Services.AddDbContextPool<AppDbContext>(opt => opt.UseSqlServer(connStr, config => config.MigrationsAssembly("EMSBackend")),poolSize: 32);
+
             var app = builder.Build();
+
+            // Warm up the database connection during application startup// to reduce first-request/login latency.using (var scope = app.Services.CreateScope())
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await db.Database.CanConnectAsync();
+                Console.WriteLine("EMS Auth Database warm-up completed.");
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

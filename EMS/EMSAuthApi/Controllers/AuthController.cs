@@ -31,9 +31,9 @@ namespace EMSAuthApi.Controllers
 
         [Route("login")]
         [HttpPost]
-        public IActionResult Login([FromBody]LoginDto dto)
+        public async Task<IActionResult> Login([FromBody]LoginDto dto)
         {
-            var result = _authService.LoginEmployee(dto);
+            var result = await _authService.LoginEmployee(dto);
 
             if (!result.Success)
             {
@@ -45,9 +45,9 @@ namespace EMSAuthApi.Controllers
 
         [Route("refresh-token")]
         [HttpPost]
-        public IActionResult RefreshToken(RefreshTokenDTO dto)
+        public async Task<IActionResult> RefreshToken(RefreshTokenDTO dto)
         {
-            var result = _authService.RefreshToken(dto);
+            var result = await _authService.RefreshToken(dto);
 
             if (!result.Success)
             {
@@ -60,9 +60,9 @@ namespace EMSAuthApi.Controllers
 
         [Route("microsoft-login")]
         [HttpPost]
-        public IActionResult MicrosoftLogin([FromBody] string email)
+        public async Task<IActionResult> MicrosoftLogin([FromBody] string email)
         {
-            var result = _authService.MicrosoftLogin(email);
+            var result = await _authService.MicrosoftLogin(email);
 
             if (!result.Success)
             {

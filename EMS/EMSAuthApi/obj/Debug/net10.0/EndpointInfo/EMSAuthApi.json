@@ -1,9 +1,17 @@
 {
-  "openapi": "3.0.4",
+  "openapi": "3.1.1",
   "info": {
-    "title": "EMSAuthApi",
-    "version": "1.0"
+    "title": "EMSAuthApi | v1",
+    "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://localhost:7007"
+    },
+    {
+      "url": "http://localhost:5167"
+    }
+  ],
   "paths": {
     "/api/Auth/activate-account": {
       "post": {
@@ -27,7 +35,8 @@
                 "$ref": "#/components/schemas/ActivateAccountDTO"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -58,7 +67,8 @@
                 "$ref": "#/components/schemas/LoginDto"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -89,7 +99,8 @@
                 "$ref": "#/components/schemas/RefreshTokenDTO"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -120,7 +131,8 @@
                 "type": "string"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -151,7 +163,8 @@
                 "$ref": "#/components/schemas/ForgotPasswordDto"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -182,7 +195,8 @@
                 "$ref": "#/components/schemas/ResetPasswordDto"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -196,29 +210,25 @@
     "schemas": {
       "ActivateAccountDTO": {
         "required": [
-          "confirmPassword",
           "emailId",
-          "password"
+          "password",
+          "confirmPassword"
         ],
         "type": "object",
         "properties": {
           "emailId": {
             "maxLength": 255,
             "minLength": 0,
-            "type": "string",
-            "format": "email"
+            "type": "string"
           },
           "password": {
-            "minLength": 1,
             "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$",
             "type": "string"
           },
           "confirmPassword": {
-            "minLength": 1,
             "type": "string"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "ForgotPasswordDto": {
         "required": [
@@ -229,11 +239,9 @@
           "email": {
             "maxLength": 255,
             "minLength": 0,
-            "type": "string",
-            "format": "email"
+            "type": "string"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "LoginDto": {
         "required": [
@@ -245,61 +253,50 @@
           "email": {
             "maxLength": 255,
             "minLength": 0,
-            "type": "string",
-            "format": "email"
+            "type": "string"
           },
           "password": {
-            "minLength": 1,
             "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$",
             "type": "string"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "RefreshTokenDTO": {
         "type": "object",
         "properties": {
           "accessToken": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "refreshToken": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
-        },
-        "additionalProperties": false
+        }
       },
       "ResetPasswordDto": {
         "required": [
-          "confirmPassword",
           "email",
+          "otp",
           "newPassword",
-          "otp"
+          "confirmPassword"
         ],
         "type": "object",
         "properties": {
           "email": {
             "maxLength": 255,
             "minLength": 0,
-            "type": "string",
-            "format": "email"
+            "type": "string"
           },
           "otp": {
-            "minLength": 1,
             "type": "string"
           },
           "newPassword": {
-            "minLength": 1,
             "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$",
             "type": "string"
           },
           "confirmPassword": {
-            "minLength": 1,
             "type": "string"
           }
-        },
-        "additionalProperties": false
+        }
       }
     }
   },

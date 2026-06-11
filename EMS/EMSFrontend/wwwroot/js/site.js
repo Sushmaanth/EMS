@@ -33,6 +33,12 @@
     const passwordSuccessResetMessage =
         document.getElementById("passwordSuccessResetMessage");
 
+    const microsoftLoginErrorMessage =
+        document.getElementById("microsoftLoginErrorMessage");
+
+    const loggedOutSuccessfully =
+        document.getElementById("loggedOutSuccessfully");
+
     let debounceTimer;
 
     function loadEmployees(searchValue) {
@@ -123,7 +129,30 @@
             icon: 'success',
             title: 'Success',
             text: oTPSentSuccessMessage.value,
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
+        });
+    }
+
+    if (loggedOutSuccessfully) {
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: loggedOutSuccessfully.value,
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
+        });
+    }
+
+    if (microsoftLoginErrorMessage) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: microsoftLoginErrorMessage.value,
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
         });
     }
 
@@ -133,7 +162,8 @@
             icon: 'success',
             title: 'Success',
             text: passwordSuccessResetMessage.value,
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
         });
     }
 
@@ -142,7 +172,8 @@
             icon: 'warning',
             title: '⏳',
             text: sessionExpired.value,
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
         });
     }
 
@@ -161,7 +192,8 @@
             icon: 'success',
             title: 'Success',
             text: successfullyAccountActivated.value,
-            confirmButtonColor: '#3085d6'
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
         });
     }
 

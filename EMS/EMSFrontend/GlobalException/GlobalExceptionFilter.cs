@@ -10,8 +10,24 @@ namespace EMSFrontend.GlobalException
     {
         public void OnException(ExceptionContext context)
         {
+            var action = context.RouteData.Values["action"]?.ToString();
+
             if (context.Exception is ApiRequestException apiRequestException)
             {
+                if (action == "MicrosoftResponse")
+                {
+                    var tempDataFactory = context.HttpContext.RequestServices.GetService<ITempDataDictionaryFactory>();
+
+                    var tempData = tempDataFactory?.GetTempData(context.HttpContext);
+
+                    tempData["MicrosoftLoginError"] = "Access denied. Your Microsoft account is not registered in the EMS system.\r\nPlease contact the administrator for access.";
+
+                    context.Result = new RedirectToActionResult("Login", "Auth", null);
+
+                    context.ExceptionHandled = true;
+                    return;
+                }
+
                 if (apiRequestException.StatusCode == 401)
                 {
                     context.ModelState.AddModelError("Password", "Invalid Email or Password");

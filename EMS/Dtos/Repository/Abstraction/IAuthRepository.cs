@@ -10,7 +10,7 @@ namespace Dtos.Repository.Abstraction
         ActivateAccountResponseDTO AccountActivation(ActivateAccountDTO data);
 
         //for login
-        User? GetUserByEmail(string email);
+        Task<User?> GetUserByEmailAsync(string email);
 
         //refractor login
         //Task<LoginUserDto?> GetLoginUserByEmailAsync(string email);
