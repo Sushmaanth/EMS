@@ -91,6 +91,14 @@
            value="@TempData["loggedOutSuccessfully"]" />
 }
 
+@if (TempData["TenantError"] != null)
+{
+
+    <input type="hidden"
+           id="TenantError"
+           value="@TempData["TenantError"]" />
+}
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync(

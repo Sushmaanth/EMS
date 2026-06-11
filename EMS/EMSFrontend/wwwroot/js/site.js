@@ -39,6 +39,9 @@
     const loggedOutSuccessfully =
         document.getElementById("loggedOutSuccessfully");
 
+    const tenantError =
+        document.getElementById("TenantError");
+
     let debounceTimer;
 
     function loadEmployees(searchValue) {
@@ -151,6 +154,16 @@
             icon: 'error',
             title: 'Error',
             text: microsoftLoginErrorMessage.value,
+            confirmButtonColor: '#3085d6',
+            heightAuto: false
+        });
+    }
+
+    if (tenantError) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: tenantError.value,
             confirmButtonColor: '#3085d6',
             heightAuto: false
         });

@@ -86,14 +86,22 @@ namespace EMSFrontend.Api.Implementation
         public async Task<string> SendResetPasswordAsync(ResetPasswordViewModel model)
         {
             var response = await client.PostAsJsonAsync("reset-password", model);
-            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<string>>();
+            
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadFromJsonAsync<ErrorResponseViewModel>();
-                throw new ApiRequestException(error.Message, (int)response.StatusCode);
+                throw new ApiRequestException(
+            error?.Message ?? "Something went wrong",
+            (int)response.StatusCode);
             }
 
-            return result.Message;
+            var json = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine(json);
+
+            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<string>>();
+
+            return result?.Message ?? string.Empty;
         }
     }
 }

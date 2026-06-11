@@ -13,10 +13,12 @@ namespace EMSFrontend.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthRequest authRequest;
+        private readonly IConfiguration _configuration;
 
-        public AuthController( IAuthRequest authRequest)
+        public AuthController( IAuthRequest authRequest, IConfiguration configuration)
         {
             this.authRequest = authRequest;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -92,6 +94,26 @@ namespace EMSFrontend.Controllers
 
             if (!result.Succeeded)
             {
+                return RedirectToAction("Login");
+            }
+
+            var tenantId = result.Principal.FindFirst("tid")?.Value
+       ??
+       result.Principal.FindFirst(
+           "http://schemas.microsoft.com/identity/claims/tenantid")
+       ?.Value;
+
+            // Compare with your company tenant
+            var expectedTenantId =
+                _configuration["Authentication:Microsoft:TenantId"];
+
+            if (tenantId != expectedTenantId)
+            {
+                await HttpContext.SignOutAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme);
+
+                TempData["TenantError"] ="Only Noventiq employees can login.";
+
                 return RedirectToAction("Login");
             }
 
