@@ -57,11 +57,18 @@ namespace EMSFrontend.GlobalException
                     {
                         context.ModelState.AddModelError("EmailId", "Account already activated");
                     }
+                    else if (apiRequestException.Message.Contains("Invalid OTP"))
+                    {
+                        context.ModelState.AddModelError("Otp", "Invalid OTP");
+                    }
+                    else if (apiRequestException.Message.Contains("Too many invalid attempts"))
+                    {
+                        context.ModelState.AddModelError("Otp", "Too many invalid attempts please generate new OTP");
+                    }
                     else
                     {
                         context.ModelState.AddModelError("", apiRequestException.Message);
                     }
-
 
                     context.Result =
                              new ViewResult

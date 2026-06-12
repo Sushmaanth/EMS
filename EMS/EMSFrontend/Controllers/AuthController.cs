@@ -5,7 +5,9 @@ using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace EMSFrontend.Controllers
@@ -85,7 +87,7 @@ namespace EMSFrontend.Controllers
 
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
 
-            return Challenge(properties, MicrosoftAccountDefaults.AuthenticationScheme);
+            return Challenge(properties,OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         public async Task<IActionResult> MicrosoftResponse()
@@ -97,29 +99,13 @@ namespace EMSFrontend.Controllers
                 return RedirectToAction("Login");
             }
 
-            var tenantId = result.Principal.FindFirst("tid")?.Value
-       ??
-       result.Principal.FindFirst(
-           "http://schemas.microsoft.com/identity/claims/tenantid")
-       ?.Value;
+            //foreach (var claim in result.Principal.Claims)
+            //{
+            //    Debug.WriteLine(
+            //        $"{claim.Type} = {claim.Value}");
+            //}
 
-            // Compare with your company tenant
-            var expectedTenantId =
-                _configuration["Authentication:Microsoft:TenantId"];
-
-            if (tenantId != expectedTenantId)
-            {
-                await HttpContext.SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
-
-                TempData["TenantError"] ="Only Noventiq employees can login.";
-
-                return RedirectToAction("Login");
-            }
-
-            var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
-
-            var name = result.Principal.FindFirst(ClaimTypes.Name)?.Value;
+            var email = result.Principal.FindFirst("preferred_username")?.Value;
 
             var loginResult =await authRequest.MicrosoftLoginAsync(email);
 

@@ -3,7 +3,9 @@ using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
 using EMSFrontend.GlobalException;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+//using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
 
 namespace EMSFrontend
 {
@@ -39,24 +41,13 @@ namespace EMSFrontend
                     client.Timeout = TimeSpan.FromMinutes(5);
                 });
 
-            //Microsoft OAuth
-            builder.Services.AddAuthentication(options =>
+            builder.Services
+            .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApp(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                builder.Configuration.Bind("AzureAd", options);
 
-                options.DefaultChallengeScheme =
-                    MicrosoftAccountDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddMicrosoftAccount(options =>
-            {
-                options.ClientId =
-                    builder.Configuration["Authentication:Microsoft:ClientId"];
-
-                options.ClientSecret =
-                    builder.Configuration["Authentication:Microsoft:ClientSecret"];
-
-                options.AuthorizationEndpoint += "?prompt=select_account";
+                options.Prompt = "select_account";
             });
 
             builder.Services.AddHttpContextAccessor();
@@ -93,6 +84,7 @@ namespace EMSFrontend
             app.MapStaticAssets();
             app.UseRouting();
             app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

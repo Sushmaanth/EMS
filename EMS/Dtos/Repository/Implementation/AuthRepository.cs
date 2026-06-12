@@ -23,7 +23,7 @@ namespace Dtos.Repository.Implementation
         //for login 
         public async Task<User?> GetUserByEmailAsync(string email)
         {
-            return await _context.Users.AsNoTracking().Include(u => u.Employee).Include(u => u.Role).FirstOrDefaultAsync(u => u.EmailId == email);
+            return await _context.Users.Include(u => u.Employee).Include(u => u.Role).FirstOrDefaultAsync(u => u.EmailId == email);
         }
 
         //refractor login
