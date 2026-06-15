@@ -618,6 +618,62 @@ namespace EMSFrontend.Api.Implementation
 
             return await response.Content.ReadAsByteArrayAsync();
         }
+
+        public async Task<IEnumerable<RoleViewModel>> SendGetRolesAsync()
+        {
+            SetBearerToken();
+
+            var response = await client.GetAsync("roles/all");
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+                response = await client.GetAsync("roles/all");
+            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<
+            ServiceResponseDto<IEnumerable<RoleViewModel>>>();
+
+            return result.Data;
+        }
+
+        public async Task<IEnumerable<EmployeeDropdownViewModel>> SendGetManagersAsync()
+        {
+            SetBearerToken();
+
+            var response = await client.GetAsync("managers/all");
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                bool refreshed = await RefreshTokenJwtAsync();
+
+                if (!refreshed)
+                {
+                    accessor.HttpContext.Session.Clear();
+
+                    throw new UnauthorizedException("Session expired");
+                }
+
+                SetBearerToken();
+                response = await client.GetAsync("managers/all");
+            }
+
+            await HandleErrorResponse(response);
+
+            var result = await response.Content.ReadFromJsonAsync<
+            ServiceResponseDto<IEnumerable<EmployeeDropdownViewModel>>>();
+
+            return result.Data;
+        }
     }
 }
  

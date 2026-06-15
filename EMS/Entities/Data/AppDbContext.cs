@@ -89,6 +89,24 @@ namespace Entities.Data
                 .WithMany(e => e.Employees)
                 .HasForeignKey(e => e.DepartmentId);
 
+            //Manager ID
+            employeeBuilder.Property<int?>(e => e.ManagerId);
+
+
+            //Manager Realtionship
+            employeeBuilder.HasOne(e => e.Manager)
+                .WithMany(e => e.SubOrdinates)
+                .HasForeignKey(e => e.ManagerId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //Role Id
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Role)
+                .WithMany()
+                .HasForeignKey(e => e.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //[Department] - PK
             departmentBuilder.ToTable("Department").HasKey(d => d.Id);
 

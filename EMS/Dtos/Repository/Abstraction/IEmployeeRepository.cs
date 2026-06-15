@@ -31,5 +31,7 @@ namespace Dtos.Repository.Abstraction
         Task<List<string>> GetExistingEmailsAsync(IEnumerable<string> emails);
 
         Task<List<long>> GetExistingMobilesAsync(IEnumerable<long> mobiles);
+
+        IEnumerable<Employee> GetManagers();
     }
 }

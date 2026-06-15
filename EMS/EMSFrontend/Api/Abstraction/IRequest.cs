@@ -39,5 +39,9 @@ namespace EMSFrontend.Api.Abstraction
         Task<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors);
 
         Task<byte[]>DownloadTemplateAsync();
+
+        Task<IEnumerable<RoleViewModel>> SendGetRolesAsync();
+
+        Task<IEnumerable<EmployeeDropdownViewModel>> SendGetManagersAsync();
     }
 }

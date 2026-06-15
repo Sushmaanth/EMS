@@ -37,5 +37,10 @@ namespace Dtos
         public DateOnly DateOfJoining { get; set; }
 
         public int? DepartmentId { get; set; }
+
+        [Required(ErrorMessage ="Role is required")]
+        public int RoleId { get; set; }
+
+        public int? ManagerId { get; set; }
     }
 }

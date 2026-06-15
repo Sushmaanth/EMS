@@ -42,5 +42,13 @@ namespace EMSFrontend.Models
 
         public int? DepartmentId { get; set; }
         public string? DepartmentName { get; set; }
+
+        [Required(ErrorMessage = "Role is required")]
+        public int? RoleId { get; set; }
+
+        public string RoleName { get; set; }
+        public int? ManagerId { get; set; }
+
+        public string ManagerName { get; set; }
     }
 }

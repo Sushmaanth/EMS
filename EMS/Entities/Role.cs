@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string RoleName { get; set; } = "User";
+        public string RoleName { get; set; } = "Employee";
 
         public ICollection<User> Users { get; set; }
     }

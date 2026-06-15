@@ -1,13 +1,9 @@
-﻿using Dtos.Repository.Abstraction;
+﻿using Dtos.Constants;
+using Dtos.Repository.Abstraction;
 using Dtos.Repository.Model;
 using Entities;
 using Entities.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Dtos.Repository.Implementation
 {
@@ -74,7 +70,7 @@ namespace Dtos.Repository.Implementation
         public Employee? GetById(int id)
         {
 
-            return _context.Employees.Include(e => e.Department).FirstOrDefault(e => e.Id == id);
+            return _context.Employees.Include(e => e.Department).Include(e => e.Role).FirstOrDefault(e => e.Id == id);
 
         }
 
@@ -186,6 +182,11 @@ namespace Dtos.Repository.Implementation
             await _context.Employees.AddRangeAsync(employees);
 
             await _context.SaveChangesAsync();
+        }
+
+        public IEnumerable<Employee> GetManagers()
+        {
+            return _context.Employees.Where(e => e.RoleId == RoleConstants.Manager).ToList();
         }
     }
 }

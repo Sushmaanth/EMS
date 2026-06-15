@@ -33,6 +33,20 @@ namespace EMSFrontend.Controllers
                     selectedDepartmentId);
         }
 
+        private async Task LoadRolesAsync()
+        {
+            var roles = await _request.SendGetRolesAsync();
+
+            ViewBag.Roles = new SelectList(roles, "Id", "RoleName");
+        }
+
+        private async Task LoadManagersAsync(int? selectedManagerId = null)
+        {
+            var managers = await _request.SendGetManagersAsync();
+
+            ViewBag.Managers = new SelectList(managers, "Id", "ManagerName");
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index(string searchText, int pageNumber = 1, int pageSize = 7)
         {

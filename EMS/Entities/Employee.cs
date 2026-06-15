@@ -21,6 +21,15 @@
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }
 
+        public int? RoleId { get; set; }
+        public Role? Role { get; set; }
+
+        public int? ManagerId { get; set; }
+
+        public Employee? Manager { get; set; }
+
+        public ICollection<Employee> SubOrdinates { get; set; } = new List<Employee>();
+
         public User? User { get; set; }
 
         public ICollection<EmployeeDocument> EmployeeDocuments { get; set; }

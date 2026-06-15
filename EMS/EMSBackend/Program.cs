@@ -1,19 +1,18 @@
 
 using Azure.Storage.Blobs;
-using Dtos;
 using Dtos.Repository.Abstraction;
 using Dtos.Repository.Implementation;
-using Dtos.Validation;
 using Dtos.Validation.Abstraction;
 using Dtos.Validation.Implementation;
 using EMSBackend.Mapper;
 using EMSBackend.Middleware;
 using EMSBackend.Service.Abstraction;
 using EMSBackend.Service.Implementation;
+using Entities;
 using Entities.Data;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -40,12 +39,14 @@ namespace EMSBackend
 
             builder.Services.AddAutoMapper(config => config.AddProfile<EmployeeMappingProfile>());
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();
+            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<IEmployeeValidation, EmployeeValidation>();
             builder.Services.AddScoped<IBlobService, BlobService>();
             builder.Services.AddScoped<IEmployeeDuplicateUploadValidator, EmployeeDuplicateUploadValidator>();
-
+            builder.Services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>>();
             builder.Services.AddFluentValidationAutoValidation();
             builder.Services.AddFluentValidationClientsideAdapters();
 

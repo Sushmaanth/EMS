@@ -28,5 +28,7 @@ namespace Dtos.Repository.Abstraction
         void ResetOtpAttempts(User user);
 
         void UpdatePassword(User user, string passwordHash);
+
+        User? GetUserByEmployeeId(int employeeId);
     }
 }

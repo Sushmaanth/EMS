@@ -100,13 +100,6 @@ namespace Dtos.Repository.Implementation
                 };
             }
 
-            var employeeRole = _context.Role
-                .FirstOrDefault(e => e.RoleName == "User");
-
-            if (employeeRole == null)
-            {
-                throw new Exception("Role configuration missing");
-            }
 
             var userExists = _context.Users
             .Any(u => u.EmailId == data.EmailId);
@@ -125,7 +118,7 @@ namespace Dtos.Repository.Implementation
                 EmailId = data.EmailId,
                 IsActive = true,
                 EmployeeId = employeeExists.Id,
-                RoleId = employeeRole.Id
+                RoleId = employeeExists.RoleId.Value
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, data.Password);
@@ -139,6 +132,12 @@ namespace Dtos.Repository.Implementation
                 EmailId = user.EmailId,
                 Message = "Account activated successfully"
             };
+        }
+
+        public User? GetUserByEmployeeId(int employeeId)
+        {
+            return _context.Users
+                .FirstOrDefault(u => u.EmployeeId == employeeId);
         }
     }
 }

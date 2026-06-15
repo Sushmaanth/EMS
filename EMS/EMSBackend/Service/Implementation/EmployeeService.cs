@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using ClosedXML.Excel;
 using Dtos;
+using Dtos.Constants;
 using Dtos.Repository.Abstraction;
+using Dtos.Repository.Implementation;
 using Dtos.Validation;
 using Dtos.Validation.Abstraction;
-using EMSBackend.Common.Exceptions;
 using EMSBackend.Service.Abstraction;
 using Entities;
 using FluentValidation;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
 
 namespace EMSBackend.Service.Implementation
@@ -23,9 +22,12 @@ namespace EMSBackend.Service.Implementation
         private readonly IEmployeeValidation _employeeValidation;
         private readonly IMapper _mapper;
         private readonly IEmployeeDuplicateUploadValidator _duplicateUploadValidator;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IAuthRepository _authRepository;
 
         public EmployeeService(IEmployeeRepository repository, IBlobService blobService, IDocumentRepository documentRepository, IEmployeeValidation employeeValidation, IMapper mapper,
-            IEmployeeDuplicateUploadValidator duplicateUploadValidator)
+            IEmployeeDuplicateUploadValidator duplicateUploadValidator, IRoleRepository roleRepository,
+            IAuthRepository authRepository)
         {
             _employeeRepository = repository;
             _blobService = blobService;
@@ -33,6 +35,8 @@ namespace EMSBackend.Service.Implementation
             _employeeValidation = employeeValidation;
             _mapper = mapper;
             _duplicateUploadValidator = duplicateUploadValidator;
+            _roleRepository = roleRepository;
+            _authRepository = authRepository;
         }
 
         public async Task<ServiceResponseDto<CreateEmployeeDto>> Create(CreateEmployeeDto dto)
@@ -41,17 +45,61 @@ namespace EMSBackend.Service.Implementation
 
             if (errors.Any())
             {
-                return ServiceResponseDto<CreateEmployeeDto>.Fail("Create Employee Validation", errors);
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Create Employee Validation",
+                    errors);
+            }
+
+            // Validate Role
+            var role = await _roleRepository.GetByIdAsync(dto.RoleId);
+
+            if (role == null)
+            {
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Selected role does not exist");
+            }
+
+            // Employee must have a manager
+            if (dto.RoleId == RoleConstants.Employee &&
+                !dto.ManagerId.HasValue)
+            {
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Manager is required for employees");
+            }
+
+            // Validate manager if selected
+            if (dto.ManagerId.HasValue)
+            {
+                var manager = _employeeRepository.GetById(dto.ManagerId.Value);
+
+                if (manager == null)
+                {
+                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                        "Selected manager does not exist");
+                }
+
+                if (manager.RoleId != RoleConstants.Manager &&
+                    manager.RoleId != RoleConstants.Admin)
+                {
+                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                        "Selected employee is not a manager");
+                }
+
+                // Prevent employee being assigned as their own manager
+                if (dto.Id > 0 && dto.Id == dto.ManagerId)
+                {
+                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                        "Employee cannot be their own manager");
+                }
             }
 
             var employee = _mapper.Map<Employee>(dto);
 
             var createdEmployee = _employeeRepository.Create(employee);
 
-            var responseDto = _mapper.Map<CreateEmployeeDto>(createdEmployee);
-
-            return ServiceResponseDto<CreateEmployeeDto>.Ok(_mapper.Map<CreateEmployeeDto>(createdEmployee), "Employee created successfully");
-
+            return ServiceResponseDto<CreateEmployeeDto>.Ok(
+                _mapper.Map<CreateEmployeeDto>(createdEmployee),
+                "Employee created successfully");
         }
 
         public ServiceResponseDto<ICollection<EmployeeDto>> View()
@@ -66,26 +114,83 @@ namespace EMSBackend.Service.Implementation
         }
 
 
-        public async Task<ServiceResponseDto<CreateEmployeeDto>> Update(int id, CreateEmployeeDto dto)
+        public async Task<ServiceResponseDto<CreateEmployeeDto>> Update(
+    int id,
+    CreateEmployeeDto dto)
         {
             var errors = await _employeeValidation.Validate(dto);
 
             if (errors.Any())
             {
-                return ServiceResponseDto<CreateEmployeeDto>.Fail("Update Employee Validation", errors);
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Update Employee Validation",
+                    errors);
             }
 
             var foundEmployee = _employeeRepository.GetById(id);
 
             if (foundEmployee == null)
             {
-                return ServiceResponseDto<CreateEmployeeDto>.Fail("Employee not found");
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Employee not found");
+            }
+
+            var oldRoleId = foundEmployee.RoleId;
+
+            var role = await _roleRepository.GetByIdAsync(dto.RoleId);
+
+            if (role == null)
+            {
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Selected role does not exist");
+            }
+
+            if (dto.ManagerId == id)
+            {
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Employee cannot be their own manager");
+            }
+
+            if (dto.RoleId == RoleConstants.Employee &&
+                !dto.ManagerId.HasValue)
+            {
+                return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                    "Manager is required for employees");
+            }
+
+            if (dto.ManagerId.HasValue)
+            {
+                var manager = _employeeRepository.GetById(dto.ManagerId.Value);
+
+                if (manager == null)
+                {
+                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                        "Selected manager does not exist");
+                }
+
+                if (manager.RoleId != RoleConstants.Manager &&
+                    manager.RoleId != RoleConstants.Admin)
+                {
+                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
+                        "Selected employee is not a manager");
+                }
             }
 
             _mapper.Map(dto, foundEmployee);
 
             var updatedEmployee = _employeeRepository.Update(foundEmployee);
 
+            if (oldRoleId != dto.RoleId)
+            {
+                var user = _authRepository.GetUserByEmployeeId(id);
+
+                if (user != null)
+                {
+                    user.RoleId = dto.RoleId;
+
+                    _authRepository.Save();
+                }
+            }
 
             return ServiceResponseDto<CreateEmployeeDto>.Ok(
                 _mapper.Map<CreateEmployeeDto>(updatedEmployee),
@@ -404,19 +509,19 @@ namespace EMSBackend.Service.Implementation
             decimal completionPercentage = totalMandatoryDocuments == 0
                         ? 100 : (uploadedDocuments * 100m) / totalMandatoryDocuments;
 
-           return ServiceResponseDto<DashboardDto>.Ok(
-                new DashboardDto
-                {
-                    EmployeeName = data.Employee.Name,
-                    DepartmentName = data.Employee.Department?.DepartmentName ?? "Department not assigned",
-                    DateOfJoining = data.Employee.DateOfJoining,
-                    TotalMandatoryDocuments = totalMandatoryDocuments,
-                    UploadedDocuments = uploadedDocuments,
-                    MissingDocuments = missingDocuments,
-                    CompletionPercentage = completionPercentage,
-                    RequiredDocuments = requiredDocuments
-                },
-                "Dashboard fetched successfully");
+            return ServiceResponseDto<DashboardDto>.Ok(
+                 new DashboardDto
+                 {
+                     EmployeeName = data.Employee.Name,
+                     DepartmentName = data.Employee.Department?.DepartmentName ?? "Department not assigned",
+                     DateOfJoining = data.Employee.DateOfJoining,
+                     TotalMandatoryDocuments = totalMandatoryDocuments,
+                     UploadedDocuments = uploadedDocuments,
+                     MissingDocuments = missingDocuments,
+                     CompletionPercentage = completionPercentage,
+                     RequiredDocuments = requiredDocuments
+                 },
+                 "Dashboard fetched successfully");
         }
 
         public ServiceResponseDto<EmployeeDocumentResponseDto>? ValidateFile(IFormFile file)
@@ -455,7 +560,7 @@ namespace EMSBackend.Service.Implementation
             return null;
         }
 
-       
+
 
         //validate the excel file
         private ServiceResponseDto<EmployeeUploadExcelResponseDto>? ValidateExcelFile(IFormFile file)
@@ -527,7 +632,7 @@ namespace EMSBackend.Service.Implementation
             if (long.TryParse(value, out var result))
                 return result;
 
-            return 0; 
+            return 0;
         }
         private decimal ParseDecimal(IXLCell cell)
         {
@@ -542,7 +647,7 @@ namespace EMSBackend.Service.Implementation
         {
             var employees = new List<EmployeeExcelUploadDto>();
 
-            var rows = worksheet.RowsUsed().Skip(1); 
+            var rows = worksheet.RowsUsed().Skip(1);
 
             foreach (var row in rows)
             {
@@ -612,7 +717,7 @@ namespace EMSBackend.Service.Implementation
         }
 
         //processRowAsync
-        private async Task<UploadResult> ProcessRowsAsync(List<EmployeeExcelUploadDto> rows,EmployeeUploadValidationContext context, EmployeeExcelUploadValidator validator)
+        private async Task<UploadResult> ProcessRowsAsync(List<EmployeeExcelUploadDto> rows, EmployeeUploadValidationContext context, EmployeeExcelUploadValidator validator)
         {
             var result = new UploadResult
             {
@@ -672,7 +777,7 @@ namespace EMSBackend.Service.Implementation
         }
 
         //upload excel response
-        private ServiceResponseDto<EmployeeUploadExcelResponseDto> BuildResponse(UploadResult result,int totalRecords)
+        private ServiceResponseDto<EmployeeUploadExcelResponseDto> BuildResponse(UploadResult result, int totalRecords)
         {
             var uploadResponse = new EmployeeUploadExcelResponseDto
             {
@@ -694,7 +799,7 @@ namespace EMSBackend.Service.Implementation
             };
         }
 
-        public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file)
+        public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>> UploadEmployeesAsync(IFormFile file)
         {
 
             var fileValidation = ValidateExcelFile(file);
@@ -741,9 +846,9 @@ namespace EMSBackend.Service.Implementation
                     "Maximum 100 employee records can be uploaded at a time.");
             }
 
-           var context = await BuildContextAsync(rows);
+            var context = await BuildContextAsync(rows);
 
-            
+
             var validator = new EmployeeExcelUploadValidator(context);
 
             var result = await ProcessRowsAsync(rows, context, validator);
@@ -1317,6 +1422,32 @@ namespace EMSBackend.Service.Implementation
 
             return ServiceResponseDto<byte[]>.Ok(
                 stream.ToArray(), "Failed records file generated successfully.");
+        }
+
+
+        public ServiceResponseDto<IEnumerable<RoleDto>> GetRoles()
+        {
+            var roles = _roleRepository.GetRoles();
+
+            var roleDtos = roles.Select(r => new RoleDto
+            {
+                Id = r.Id,
+                RoleName = r.RoleName
+            }).ToList();
+
+            return ServiceResponseDto<IEnumerable<RoleDto>>.Ok(
+               roleDtos, "Roles fetched successfully");
+        }
+
+        public ServiceResponseDto<IEnumerable<EmployeeDropdownDto>> GetManagers()
+        {
+            var managers = _employeeRepository.GetManagers().Select(e => new EmployeeDropdownDto
+            {
+                Id = e.Id,
+                ManagerName = e.Name
+            });
+
+            return ServiceResponseDto<IEnumerable<EmployeeDropdownDto>>.Ok(managers);
         }
     }
 }

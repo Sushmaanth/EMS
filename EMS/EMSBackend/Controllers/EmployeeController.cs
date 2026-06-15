@@ -121,7 +121,16 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Admin")]
+        [Route("roles/all")]
+        [HttpGet]
+        public IActionResult GetRoles()
+        {
+            var result = _employeeService.GetRoles();
+
+            return Ok(result);
+        }
+        [Authorize(Roles = "Employee")]
         [RequestSizeLimit(62914560)]
         [RequestFormLimits(MultipartBodyLengthLimit = 62914560)]
         [Route("upload")]
@@ -136,7 +145,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("category/{categoryId}")]
         public IActionResult GetByCategory(int categoryId)
         {
@@ -145,7 +154,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("documentcategory")]
         public IActionResult GetAllCategory()
         {
@@ -154,7 +163,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Employee")]
         [HttpDelete("delete-document/{documentId}")]
         public async Task<IActionResult>DeleteDocument(int documentId)
         {
@@ -169,7 +178,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Employee")]
         [HttpPut("edit-document")]
         public async Task<IActionResult> ReplaceDocument([FromForm] ReplaceDocumentDto dto)
         {
@@ -183,7 +192,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet("view/{documentId}")]
         public async Task<IActionResult>ViewDocument(int documentId)
         {
@@ -192,7 +201,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles ="User")]
+        [Authorize(Roles = "Employee")]
         [HttpGet("category/{categoryId}/employee/{employeeId}")]
         public async Task<IActionResult> GetDocumentTypesByCategory(int categoryId,int employeeId)
         {
@@ -208,7 +217,7 @@ namespace EMSBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Employee")]
         [HttpGet("dashboard/{employeeId}")]
         public IActionResult GetDashboard(int employeeId)
         {
@@ -251,6 +260,15 @@ namespace EMSBackend.Controllers
                 result.Data,
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "FailedEmployeeRecords.xlsx");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("managers/all")]
+        public IActionResult GetManagers()
+        {
+            var result = _employeeService.GetManagers();
+
+            return Ok(result);
         }
     }
 }

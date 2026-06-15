@@ -53,12 +53,17 @@ namespace EMSFrontend.Controllers
 
             TempData["SuccessfullyUserLoggegIn"] = "Login Successfully";
 
-                if (result.Role == "Admin")
-                {
-                    return RedirectToAction("Index", "Home");
-                }
+            if (result.Role == "Manager")
+            {
+                return RedirectToAction("LeaveApproval", "Leave");
+            }
 
+            if (result.Role == "Employee")
+            {
                 return RedirectToAction("Dashboard", "Employee");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -119,7 +124,7 @@ namespace EMSFrontend.Controllers
 
             HttpContext.Session.SetInt32("EmployeeId",loginResult.EmployeeId);
 
-            if (loginResult.Role == "User")
+            if (loginResult.Role == "Employee")
             {
                 return RedirectToAction("Dashboard","Employee");
             }

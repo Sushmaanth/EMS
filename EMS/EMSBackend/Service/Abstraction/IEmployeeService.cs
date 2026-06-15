@@ -41,6 +41,10 @@ namespace EMSBackend.Service.Abstraction
         ServiceResponseDto<byte[]> DownloadTemplate();
 
         ServiceResponseDto<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors);
+
+        ServiceResponseDto<IEnumerable<RoleDto>> GetRoles();
+
+        ServiceResponseDto<IEnumerable<EmployeeDropdownDto>> GetManagers();
     }
 
 }

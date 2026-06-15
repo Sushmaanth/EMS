@@ -38,5 +38,9 @@ namespace Dtos
         public int? DepartmentId { get; set; }
 
         public string? DepartmentName { get; set; }
+
+        public int RoleId { get; set; }
+
+        public int? ManagerId { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Entities.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMSBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260615052632_AddManagerIdToEmployee")]
+    partial class AddManagerIdToEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,9 +129,6 @@ namespace EMSBackend.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
@@ -143,8 +143,6 @@ namespace EMSBackend.Migrations
                         .IsUnique();
 
                     b.HasIndex("ManagerId");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Employee", (string)null);
                 });
@@ -283,16 +281,9 @@ namespace EMSBackend.Migrations
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Department");
 
                     b.Navigation("Manager");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Entities.EmployeeDocument", b =>
