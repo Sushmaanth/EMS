@@ -65,6 +65,10 @@ namespace EMSFrontend.GlobalException
                     {
                         context.ModelState.AddModelError("Otp", "Too many invalid attempts please generate new OTP");
                     }
+                    else if (apiRequestException.Message.Contains("Employee cannot be their own manager"))
+                    {
+                        context.ModelState.AddModelError("ManagerId","Employee cannot be their own manager");
+                    }
                     else
                     {
                         context.ModelState.AddModelError("", apiRequestException.Message);

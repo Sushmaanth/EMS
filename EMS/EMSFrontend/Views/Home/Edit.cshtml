@@ -197,6 +197,52 @@
 
                     </div>
 
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label fw-semibold">
+                            Role
+                        </label>
+
+                        <select asp-for="RoleId"
+                                asp-items="ViewBag.Roles"
+                                class="form-select"
+                                id="RoleId">
+
+                            <option value="">
+                                Select Role
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="RoleId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3" id="managerDiv">
+
+                        <label class="form-label fw-semibold">
+                            Manager
+                        </label>
+
+                        <select asp-for="ManagerId"
+                                asp-items="ViewBag.Managers"
+                                class="form-select"
+                                id="ManagerId">
+
+                            <option value="">
+                                Manager Not Assigned
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="ManagerId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
                 </div>
 
              

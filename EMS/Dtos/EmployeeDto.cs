@@ -30,6 +30,7 @@ namespace Dtos
         public long Mobile { get; set; }
 
         [Required(ErrorMessage = "Salary is required")]
+        [Range(1, 10000000)]
         public decimal Salary { get; set; }
 
         [Required(ErrorMessage ="Date Of Joining is required")]
@@ -41,6 +42,10 @@ namespace Dtos
 
         public int RoleId { get; set; }
 
+        public string? RoleName { get; set; }
+
         public int? ManagerId { get; set; }
+
+        public string? ManagerName { get; set; }
     }
 }

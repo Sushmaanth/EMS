@@ -2,6 +2,7 @@
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
 using EMSFrontend.Models;
+using Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -33,18 +34,18 @@ namespace EMSFrontend.Controllers
                     selectedDepartmentId);
         }
 
-        private async Task LoadRolesAsync()
+        private async Task LoadRolesAsync(int? selectedRoleId = null)
         {
             var roles = await _request.SendGetRolesAsync();
 
-            ViewBag.Roles = new SelectList(roles, "Id", "RoleName");
+            ViewBag.Roles = new SelectList(roles, "Id", "RoleName", selectedRoleId);
         }
 
         private async Task LoadManagersAsync(int? selectedManagerId = null)
         {
             var managers = await _request.SendGetManagersAsync();
 
-            ViewBag.Managers = new SelectList(managers, "Id", "ManagerName");
+            ViewBag.Managers = new SelectList(managers, "Id", "ManagerName", selectedManagerId);
         }
 
         [HttpGet]
@@ -92,6 +93,8 @@ namespace EMSFrontend.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadDepartmentsAsync();
+            await LoadRolesAsync();     
+            await LoadManagersAsync();
             return View();
         }
 
@@ -100,8 +103,19 @@ namespace EMSFrontend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await LoadDepartmentsAsync();
+                foreach (var error in ModelState)
+                {
+                    Console.WriteLine($"Field: {error.Key}");
 
+                    foreach (var err in error.Value.Errors)
+                    {
+                        Console.WriteLine($"Error: {err.ErrorMessage}");
+                    }
+                }
+
+                await LoadDepartmentsAsync();
+                await LoadRolesAsync();      
+                await LoadManagersAsync();
                 return View(model);
             }
 
@@ -127,6 +141,8 @@ namespace EMSFrontend.Controllers
             var employee = await _request.SendGetAEmployeeRequestAsync(id);
 
             await LoadDepartmentsAsync(employee.DepartmentId);
+            await LoadRolesAsync(employee.RoleId);
+            await LoadManagersAsync(employee.ManagerId);
 
             return View(employee);
         }
@@ -136,7 +152,9 @@ namespace EMSFrontend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await LoadDepartmentsAsync(model.DepartmentId);
+                await LoadDepartmentsAsync(model.DepartmentId); 
+                await LoadRolesAsync(model.RoleId);
+                await LoadManagersAsync(model.ManagerId);
 
                 return View(model);
             }

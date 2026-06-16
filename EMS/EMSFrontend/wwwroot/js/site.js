@@ -222,4 +222,29 @@
         ordering: false,
         searching: true
     });
+
+    checkRole();
+
+    document.getElementById("RoleId").addEventListener("change", function () {
+        checkRole();
+    });
+
+    function checkRole() {
+        const roleId = document.getElementById("RoleId");
+
+        const managerDiv = document.getElementById("managerDiv");
+
+        const managerDropdown = document.getElementById("ManagerId");
+
+        if (roleId.value === "1") {
+
+            managerDiv.style.display = "none";
+
+            managerDropdown.value = "";
+
+        }
+        else {
+            managerDiv.style.display = "block";
+        }
+    }
 });

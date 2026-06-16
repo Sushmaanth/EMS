@@ -191,6 +191,56 @@ namespace EMSBackend.Migrations
                     b.ToTable("EmployeeDocument", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.LeaveRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AppliedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("LeaveType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ManagerComments")
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("LeaveRequest", (string)null);
+                });
+
             modelBuilder.Entity("Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -314,6 +364,25 @@ namespace EMSBackend.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Entities.LeaveRequest", b =>
+                {
+                    b.HasOne("Entities.Employee", "Employee")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Employee", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Manager");
+                });
+
             modelBuilder.Entity("Entities.User", b =>
                 {
                     b.HasOne("Entities.Employee", "Employee")
@@ -351,6 +420,8 @@ namespace EMSBackend.Migrations
             modelBuilder.Entity("Entities.Employee", b =>
                 {
                     b.Navigation("EmployeeDocuments");
+
+                    b.Navigation("LeaveRequests");
 
                     b.Navigation("SubOrdinates");
 

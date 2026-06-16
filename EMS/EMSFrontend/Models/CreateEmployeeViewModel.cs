@@ -35,20 +35,19 @@ namespace EMSFrontend.Models
         public long Mobile { get; set; }
 
         [Required(ErrorMessage = "Salary is required")]
+        [Range(1, 10000000)]
         public decimal Salary { get; set; }
 
         [Required(ErrorMessage = "Date Of Joining is required")]
         public DateOnly DateOfJoining { get; set; }
 
+        [Required(ErrorMessage = "Department is required")]
         public int? DepartmentId { get; set; }
-        public string? DepartmentName { get; set; }
 
         [Required(ErrorMessage = "Role is required")]
         public int? RoleId { get; set; }
 
-        public string RoleName { get; set; }
         public int? ManagerId { get; set; }
 
-        public string ManagerName { get; set; }
     }
 }

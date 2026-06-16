@@ -38,13 +38,17 @@ namespace EMSBackend
 
 
             builder.Services.AddAutoMapper(config => config.AddProfile<EmployeeMappingProfile>());
+            builder.Services.AddAutoMapper(config => config.AddProfile<LeaveMappingProfile>());
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IEmployeeService,EmployeeService>();
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+            builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             builder.Services.AddScoped<IEmployeeValidation, EmployeeValidation>();
+            builder.Services.AddScoped<ILeaveValidation, LeaveValidation>();
             builder.Services.AddScoped<IBlobService, BlobService>();
+            builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
             builder.Services.AddScoped<IEmployeeDuplicateUploadValidator, EmployeeDuplicateUploadValidator>();
             builder.Services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>>();
             builder.Services.AddFluentValidationAutoValidation();

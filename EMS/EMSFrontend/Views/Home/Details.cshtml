@@ -81,8 +81,26 @@
                     <strong>Date Of Joining:</strong>
                     @Model.DateOfJoining
                 </div>
+                
+
+                <div class="col-md-6">
+                    <strong>Role:</strong>
+                    @(Model.RoleName ?? "Role Not Assigned")
+                </div>
 
             </div>
+
+            @if (!string.Equals(Model.RoleName, "Admin",StringComparison.OrdinalIgnoreCase))
+            {
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <strong>Manager:</strong>
+                        @(Model.ManagerName ?? "Manager Not Assigned")
+                    </div>
+
+                </div>
+            }
 
             <div class="mt-4">
 

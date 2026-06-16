@@ -13,7 +13,21 @@ namespace EMSBackend.Mapper
                .ForMember(
                    dest => dest.DepartmentName,
                    opt => opt.MapFrom(src =>
-                       src.Department != null ? src.Department.DepartmentName : null));
+                       src.Department != null ? src.Department.DepartmentName : null))
+
+               .ForMember(
+                    dest => dest.RoleName,
+                    opt => opt.MapFrom(src =>
+                        src.Role != null
+                            ? src.Role.RoleName
+                            : null))
+
+                .ForMember(
+                    dest => dest.ManagerName,
+                    opt => opt.MapFrom(src =>
+                        src.Manager != null
+                            ? src.Manager.Name
+                            : null)); 
 
             // -- EmployeeDto -> Employee - for update
             CreateMap<EmployeeDto, Employee>()

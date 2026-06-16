@@ -50,49 +50,6 @@ namespace EMSBackend.Service.Implementation
                     errors);
             }
 
-            // Validate Role
-            var role = await _roleRepository.GetByIdAsync(dto.RoleId);
-
-            if (role == null)
-            {
-                return ServiceResponseDto<CreateEmployeeDto>.Fail(
-                    "Selected role does not exist");
-            }
-
-            // Employee must have a manager
-            if (dto.RoleId == RoleConstants.Employee &&
-                !dto.ManagerId.HasValue)
-            {
-                return ServiceResponseDto<CreateEmployeeDto>.Fail(
-                    "Manager is required for employees");
-            }
-
-            // Validate manager if selected
-            if (dto.ManagerId.HasValue)
-            {
-                var manager = _employeeRepository.GetById(dto.ManagerId.Value);
-
-                if (manager == null)
-                {
-                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
-                        "Selected manager does not exist");
-                }
-
-                if (manager.RoleId != RoleConstants.Manager &&
-                    manager.RoleId != RoleConstants.Admin)
-                {
-                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
-                        "Selected employee is not a manager");
-                }
-
-                // Prevent employee being assigned as their own manager
-                if (dto.Id > 0 && dto.Id == dto.ManagerId)
-                {
-                    return ServiceResponseDto<CreateEmployeeDto>.Fail(
-                        "Employee cannot be their own manager");
-                }
-            }
-
             var employee = _mapper.Map<Employee>(dto);
 
             var createdEmployee = _employeeRepository.Create(employee);
@@ -114,9 +71,8 @@ namespace EMSBackend.Service.Implementation
         }
 
 
-        public async Task<ServiceResponseDto<CreateEmployeeDto>> Update(
-    int id,
-    CreateEmployeeDto dto)
+        public async Task<ServiceResponseDto<CreateEmployeeDto>> Update(int id,
+                     CreateEmployeeDto dto)
         {
             var errors = await _employeeValidation.Validate(dto);
 

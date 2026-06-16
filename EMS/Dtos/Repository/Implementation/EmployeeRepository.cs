@@ -31,7 +31,12 @@ namespace Dtos.Repository.Implementation
 
         public ICollection<Employee> View()
         {
-            return _context.Employees.AsNoTracking().Include(e=>e.Department).ToList();
+            return _context.Employees
+                     .AsNoTracking()
+                     .Include(e => e.Role)
+                     .Include(e => e.Department)
+                     .Include(e => e.Manager)
+                     .ToList();
         }
 
         public Employee Delete(Employee employee)
@@ -46,14 +51,12 @@ namespace Dtos.Repository.Implementation
                 throw new Exception("Unable to delete employee");
             }
 
-            return employee;
-
+            return employee;        
 
         }
 
         public Employee Update(Employee employee)
         {
-
             _context.Employees.Update(employee);
 
             int result = _context.SaveChanges();
@@ -64,7 +67,6 @@ namespace Dtos.Repository.Implementation
             }
 
             return employee;
-
         }
 
         public Employee? GetById(int id)
@@ -104,7 +106,6 @@ namespace Dtos.Repository.Implementation
 
         public IQueryable<Employee> GetEmployees(string? searchText)
         {
-
             IQueryable<Employee> query =
                  _context.Employees.AsNoTracking().Include(e => e.Department); ;
 
@@ -117,17 +118,18 @@ namespace Dtos.Repository.Implementation
             }
 
             return query;
-
         }
 
-        public ICollection<Department> GetDepartments()
+        public IEnumerable<Department> GetDepartments()
         {
-
             return _context.Departments.ToList();
 
-
         }
 
+        public async Task<Department?> GetByIdAsync(int id)
+        {
+            return await _context.Departments.FirstOrDefaultAsync(d => d.Id == id);
+        }
         public async Task AddDocumentAsync(EmployeeDocument document)
         {
             await _context.EmployeeDocuments.AddAsync(document);

@@ -1,4 +1,5 @@
 ﻿
+using Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities.Data
@@ -18,6 +19,7 @@ namespace Entities.Data
         public DbSet<DocumentCategory> DocumentCategories { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
 
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +36,8 @@ namespace Entities.Data
             var documentCategoryBuilder = modelBuilder.Entity<DocumentCategory>();
 
             var documentTypeBuilder = modelBuilder.Entity<DocumentType>();
+
+            var leaveRequestBuilder = modelBuilder.Entity<LeaveRequest>();
 
             //[Employee Table]
 
@@ -270,6 +274,38 @@ namespace Entities.Data
                 })
                 .IsUnique();
 
+            //[Leave Request]
+            leaveRequestBuilder.ToTable("LeaveRequest").HasKey(l => l.Id);
+
+            leaveRequestBuilder.Property(l => l.Id).ValueGeneratedOnAdd().UseIdentityColumn(1, 1);
+
+            leaveRequestBuilder.Property(l => l.Reason).HasColumnType("varchar(1000)").IsRequired();
+
+            leaveRequestBuilder.Property(l => l.ManagerComments).HasColumnType("varchar(1000)");
+
+            leaveRequestBuilder.Property(l => l.StartDate).HasColumnType("date");
+
+            leaveRequestBuilder.Property(l => l.EndDate).HasColumnType("date");
+
+            leaveRequestBuilder.Property(l => l.Status)
+                .HasConversion<int>().HasDefaultValue(LeaveStatus.Pending);
+
+            leaveRequestBuilder.Property(l => l.LeaveType).HasConversion<int>();
+
+            leaveRequestBuilder.Property(l => l.AppliedAt).HasColumnType("datetime2");
+
+            leaveRequestBuilder.Property(l => l.ReviewedAt).HasColumnType("datetime2");
+
+            leaveRequestBuilder.HasOne(l => l.Employee)
+                .WithMany(e => e.LeaveRequests)
+                .HasForeignKey(l => l.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            leaveRequestBuilder
+                .HasOne(l => l.Manager)
+                .WithMany()                            
+                .HasForeignKey(l => l.ManagerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

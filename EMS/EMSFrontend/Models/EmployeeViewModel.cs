@@ -46,5 +46,13 @@ namespace EMSFrontend.Models
 
         public string? DepartmentName { get; set; }
 
+        public int? ManagerId { get; set; }
+
+        public string? ManagerName { get; set; }
+
+        public int? RoleId { get; set; }
+
+        public string? RoleName { get; set; }
+
     }
 }

@@ -18,7 +18,9 @@ namespace Dtos.Repository.Abstraction
         Employee? Delete(Employee employee);
         IQueryable<Employee> GetEmployees(string? searchText);
 
-        ICollection<Department> GetDepartments();
+        IEnumerable<Department> GetDepartments();
+
+        Task<Department?> GetByIdAsync(int id);
 
         Task AddDocumentAsync(EmployeeDocument document);
 

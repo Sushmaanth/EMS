@@ -642,7 +642,7 @@ namespace EMSFrontend.Api.Implementation
             await HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<
-            ServiceResponseDto<IEnumerable<RoleViewModel>>>();
+            ServiceResponseViewModel<IEnumerable<RoleViewModel>>>();
 
             return result.Data;
         }
@@ -670,7 +670,7 @@ namespace EMSFrontend.Api.Implementation
             await HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<
-            ServiceResponseDto<IEnumerable<EmployeeDropdownViewModel>>>();
+            ServiceResponseViewModel<IEnumerable<EmployeeDropdownViewModel>>>();
 
             return result.Data;
         }
