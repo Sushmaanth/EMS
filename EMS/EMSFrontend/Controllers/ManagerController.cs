@@ -4,7 +4,7 @@ namespace EMSFrontend.Controllers
 {
     public class ManagerController : Controller
     {
-        public IActionResult LeaveApproval()
+       public IActionResult Dashboard()
         {
             return View();
         }

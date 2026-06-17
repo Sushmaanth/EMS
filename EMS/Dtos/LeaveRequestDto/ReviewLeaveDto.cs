@@ -8,6 +8,6 @@ namespace Dtos.LeaveRequestDto
 
         public bool IsApproved { get; set; }
 
-        public string Comments { get; set; }
+        public string? ManagerComments { get; set; }
     }
 }

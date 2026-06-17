@@ -1,7 +1,8 @@
-﻿using Dtos.LeaveRequestDto;
+﻿using Dtos;
+using Dtos.LeaveRequestDto;
+using EMSBackend.Helpers;
 using EMSBackend.Service.Abstraction;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMSBackend.Controllers
@@ -21,7 +22,8 @@ namespace EMSBackend.Controllers
         [HttpPost("apply")]
         public async Task<IActionResult> Apply([FromBody] ApplyLeaveDto dto)
         {
-            var result = await _leaveRequestService.ApplyLeaveAsync(dto);
+            int employeeId = User.GetEmployeeId();
+            var result = await _leaveRequestService.ApplyLeaveAsync(employeeId,dto);
 
             if (!result.Success)
             {
@@ -35,7 +37,8 @@ namespace EMSBackend.Controllers
         [HttpPut("review")]
         public async Task<IActionResult> Review([FromBody] ReviewLeaveDto dto)
         {
-            var result = await _leaveRequestService.ReviewLeaveAsync(dto);
+            int managerId = User.GetEmployeeId();
+            var result = await _leaveRequestService.ReviewLeaveAsync(managerId,dto);
 
             if (!result.Success)
             {
@@ -47,9 +50,10 @@ namespace EMSBackend.Controllers
 
 
         [Authorize(Roles = "Employee,Manager")]
-        [HttpGet("my-leaves/{employeeId}")]
-        public async Task<IActionResult> MyLeaves(int employeeId)
+        [HttpGet("my-leaves")]
+        public async Task<IActionResult> MyLeaves()
         {
+            int employeeId = User.GetEmployeeId();
             var result = await _leaveRequestService.GetMyLeavesAsync(employeeId);
 
             if (!result.Success)
@@ -62,10 +66,11 @@ namespace EMSBackend.Controllers
 
 
         [Authorize(Roles = "Manager,Admin")]
-        [HttpGet("team-leaves/{managerId}")]
-        public async Task<IActionResult> TeamLeaves(
-            int managerId)
+        [HttpGet("team-leaves")]
+        public async Task<IActionResult> TeamLeaves()
         {
+            int managerId = User.GetEmployeeId();
+
             var result = await _leaveRequestService.GetTeamLeavesAsync(managerId);
 
             if (!result.Success)

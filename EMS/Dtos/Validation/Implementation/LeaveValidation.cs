@@ -30,15 +30,15 @@ namespace Dtos.Validation.Implementation
         }
 
         public async Task<Dictionary<string, List<string>>> Validate(
-           ApplyLeaveDto dto)
+           int employeeId, ApplyLeaveDto dto)
         {
             var errors = new Dictionary<string, List<string>>();
 
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == dto.EmployeeId);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == employeeId);
 
             if (employee == null)
             {
-                AddError(errors,"EmployeeId","Employee does not exist");
+                AddError(errors,"Employee","Employee does not exist");
 
                 return errors;
             }
@@ -81,7 +81,7 @@ namespace Dtos.Validation.Implementation
 
             bool overlappingLeave =
                 await _context.LeaveRequests.AnyAsync(l =>
-                    l.EmployeeId == dto.EmployeeId
+                    l.EmployeeId == employeeId
                     &&
                     l.Status != Entities.Enums.LeaveStatus.Rejected
                     &&

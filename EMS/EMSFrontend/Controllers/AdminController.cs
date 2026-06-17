@@ -1,21 +1,18 @@
 ﻿using Dtos;
 using EMSFrontend.Api.Abstraction;
-using EMSFrontend.Api.Implementation;
 using EMSFrontend.Models;
-using Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 
 namespace EMSFrontend.Controllers
 {
-    public class HomeController : Controller
+    public class AdminController : Controller
     {
         private readonly IRequest _request;
         //private readonly EmployeeValidator validator;
 
-        public HomeController(IRequest request)
+        public AdminController(IRequest request)
         {
             this._request = request;
             //this.validator = validator;
@@ -103,16 +100,6 @@ namespace EMSFrontend.Controllers
         {
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState)
-                {
-                    Console.WriteLine($"Field: {error.Key}");
-
-                    foreach (var err in error.Value.Errors)
-                    {
-                        Console.WriteLine($"Error: {err.ErrorMessage}");
-                    }
-                }
-
                 await LoadDepartmentsAsync();
                 await LoadRolesAsync();      
                 await LoadManagersAsync();
@@ -122,7 +109,7 @@ namespace EMSFrontend.Controllers
             var createEmployee = await _request.SendCreateEmployeeRequestAsync(model);
 
             TempData["SuccessfullyCreatedEmployee"] = "Employee Added Successfully";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
 
         }
 
@@ -132,7 +119,7 @@ namespace EMSFrontend.Controllers
 
             await _request.SendDeleteEmployeeRequestAsync(id);
             TempData["DeletedEmployee"] = "Employee Deleted Successfully";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpGet]
@@ -162,7 +149,7 @@ namespace EMSFrontend.Controllers
 
             var updateEmployee = await _request.SendUpdateEmployeeRequestAsync(id, model);
             TempData["employeeUpdateSuccessully"] = "Employee Updated Successfully";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
         }
 
         /*[HttpGet]
@@ -176,7 +163,7 @@ namespace EMSFrontend.Controllers
             catch (Exception e)
             {
                 TempData["ErrorMessage"] = e.Message;
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error", "Admin");
             }
         }*/
 

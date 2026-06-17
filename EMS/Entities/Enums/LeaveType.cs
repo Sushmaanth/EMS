@@ -6,7 +6,7 @@ namespace Entities.Enums
     {
         Casual = 1,
         Sick = 2,
-        Annual = 3,
+        Earned = 3,
         Unpaid = 4
     }
 }

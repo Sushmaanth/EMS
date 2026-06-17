@@ -1,0 +1,224 @@
+﻿@using EMSFrontend.Models.Leavemodels
+@model IEnumerable<LeaveRequestViewModel>
+
+@{
+    Layout = "_ManagerLayout";
+    ViewData["Title"] = "Leave Approval";
+}
+
+@if (TempData["ReviewSuccessMessage"] != null)
+{
+    <input type="hidden"
+           id="leaveReviewSuccessMessage"
+           value="@TempData["ReviewSuccessMessage"]" />
+}
+
+@if (TempData["ReviewErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ReviewErrorMessage"]
+    </div>
+}
+
+<div class="dashboard-card">
+
+    <div class="card-header">
+        <h5>
+            <i class="bi bi-people-fill me-2"></i>
+            Team Leave Requests
+        </h5>
+    </div>
+
+    <div class="table-responsive">
+
+        <table id="team-leaves"
+               class="table table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Leave Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Days</th>
+                    <th>Status</th>
+                    <th>Applied</th>
+                    <th>Manager Comments</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var leave in Model)
+                {
+                    <tr>
+
+                        <td>@leave.EmployeeName</td>
+
+                        <td>@leave.LeaveType</td>
+
+                        <td>@leave.StartDate</td>
+
+                        <td>@leave.EndDate</td>
+
+                        <td>@leave.TotalDays</td>
+
+                        <td>
+
+                            @if (leave.Status == "Pending")
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                            }
+                            else if (leave.Status == "Approved")
+                            {
+                                <span class="badge bg-success">
+                                    Approved
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
+                            }
+
+                        </td>
+
+                        <td>
+                            @leave.AppliedAt.ToString("dd MMM yyyy")
+                        </td>
+
+                        <td>
+                            @(string.IsNullOrWhiteSpace(
+                                leave.ManagerComments)
+                                ? "-"
+                                : leave.ManagerComments)
+                        </td>
+
+                        <td>
+
+                            @if (leave.Status == "Pending")
+                            {
+                                <button class="btn btn-success btn-sm review-btn"
+                                        data-id="@leave.Id"
+                                        data-approved="true">
+
+                                    <i class="bi bi-check-lg"></i>
+                                    Approve
+                                </button>
+
+                                <button class="btn btn-danger btn-sm review-btn"
+                                        data-id="@leave.Id"
+                                        data-approved="false">
+
+                                    <i class="bi bi-x-lg"></i>
+                                    Reject
+                                </button>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Reviewed
+                                </span>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="reviewLeaveModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form asp-action="Review"
+                  method="post">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Review Leave Request
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="LeaveRequestId" name="LeaveRequestId" />
+
+                    <input type="hidden" id="IsApproved" name="IsApproved" />
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Comments
+                        </label>
+
+                        <textarea id="ManagerComments" name="ManagerComments" class="form-control" rows="4">
+                        </textarea>
+
+                        <div class="invalid-feedback">
+                            Comments are required when rejecting a leave request.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn btn-primary" id="submitReviewBtn">
+                        Submit
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    (function () {
+        const form = document.querySelector('#reviewLeaveModal form');
+        const submitBtn = document.getElementById('submitReviewBtn');
+
+        if (!form) return;
+
+        form.addEventListener('submit', function () {
+            // disable submit to prevent double submits
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Submitting...';
+            }
+        });
+    })();
+</script>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,7 +1,10 @@
 
+using Dtos.Repository.Abstraction;
+using Dtos.Repository.Implementation;
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.Implementation;
 using EMSFrontend.GlobalException;
+using EMSFrontend.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 //using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -30,6 +33,15 @@ namespace EMSFrontend
                 {
                     client.BaseAddress =
                         new Uri(builder.Configuration["RequestUrls:ValidationRequestUrl"]!);
+                });
+
+            string leaveRequestUrl = builder.Configuration["RequestUrls:LeaveRequestUrl"]!;
+
+            builder.Services.AddHttpClient<ILeaveApiRequest, LeaveApiRequest>()
+                .ConfigureHttpClient((sp, client) =>
+                {
+                    client.BaseAddress = new Uri(leaveRequestUrl);
+                    client.Timeout = TimeSpan.FromMinutes(5);
                 });
 
             string authUrl = builder.Configuration["RequestUrls:AuthRequestUrl"]!;
@@ -69,12 +81,14 @@ namespace EMSFrontend
                 options.Cookie.IsEssential = true;
             });
 
+            builder.Services.AddScoped<IApiRequestHelper, ApiRequestHelper>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Admin/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -89,7 +103,7 @@ namespace EMSFrontend
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{controller=Admin}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();

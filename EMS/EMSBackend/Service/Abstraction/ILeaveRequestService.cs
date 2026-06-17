@@ -5,9 +5,9 @@ namespace EMSBackend.Service.Abstraction
 {
     public interface ILeaveRequestService
     {
-        Task<ServiceResponseDto<LeaveRequestResponseDto>>ApplyLeaveAsync(ApplyLeaveDto dto);
+        Task<ServiceResponseDto<LeaveRequestResponseDto>>ApplyLeaveAsync(int employeeId,ApplyLeaveDto dto);
 
-        Task<ServiceResponseDto<LeaveRequestResponseDto>>ReviewLeaveAsync(ReviewLeaveDto dto);
+        Task<ServiceResponseDto<LeaveRequestResponseDto>>ReviewLeaveAsync(int managerId,ReviewLeaveDto dto);
 
         Task<ServiceResponseDto<ICollection<LeaveRequestResponseDto>>>GetMyLeavesAsync(int employeeId);
 

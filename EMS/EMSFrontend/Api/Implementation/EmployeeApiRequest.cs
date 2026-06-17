@@ -1,6 +1,7 @@
 ﻿using Dtos;
 using EMSFrontend.Api.Abstraction;
 using EMSFrontend.Api.ApiException;
+using EMSFrontend.Helpers;
 using EMSFrontend.Models;
 using System.Net;
 using System.Net.Http.Headers;
@@ -9,144 +10,58 @@ namespace EMSFrontend.Api.Implementation
 {
     public class EmployeeApiRequest : IRequest
     {
-        private readonly HttpClient client;
-        private readonly IHttpContextAccessor accessor;
-        private readonly IAuthRequest authRequest;
+        private readonly HttpClient _client;
+        private readonly IHttpContextAccessor _accessor;
+        private readonly IApiRequestHelper _apiRequestHelper;
 
-        public EmployeeApiRequest(HttpClient client, IHttpContextAccessor accessor, IAuthRequest authRequest)
+        public EmployeeApiRequest(HttpClient client, IHttpContextAccessor accessor, IApiRequestHelper apiRequestHelper)
         {
-            this.client = client;
-            this.accessor = accessor;
-            this.authRequest = authRequest;
+            _client = client;
+            _accessor = accessor;
+            _apiRequestHelper = apiRequestHelper;
         }
-
-        private void SetBearerToken()
-        {
-            try
+            public async Task<IEnumerable<EmployeeViewModel>> SendViewAllEmployeeRequestAsync()
             {
-                string token =
-                accessor.HttpContext.Session
-                    .GetString("JWToken");
 
-                if (!string.IsNullOrEmpty(token))
+                _apiRequestHelper.SetBearerToken(_client);
+                var response = await _client.GetAsync("all");
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    client.DefaultRequestHeaders.Authorization =
-                        new AuthenticationHeaderValue(
-                            "Bearer",
-                            token);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-
-        }
-
-        private async Task<bool> RefreshTokenJwtAsync()
-        {
-            try
-            {
-                var session = accessor.HttpContext.Session;
-
-                string jwtToken = session.GetString("JWToken");
-
-                string refreshToken = session.GetString("RefreshToken");
-
-                if (string.IsNullOrEmpty(jwtToken) || string.IsNullOrEmpty(refreshToken))
-                {
-                    return false;
-                }
-                var response = await authRequest.RefreshTokenAsync(
-                    new RefreshTokenViewModel
+                    bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
+                    if (!refreshed)
                     {
-                        AccessToken = jwtToken,
+                        _accessor.HttpContext.Session.Clear();
 
-                        RefreshToken =
-                            refreshToken
-                    });
-                if (response == null)
-                {
-                    return false;
+                        throw new UnauthorizedException("Session expired");
+                    }
+                    _apiRequestHelper.SetBearerToken(_client);
+
+                    response = await _client.GetAsync("all");
                 }
+                await _apiRequestHelper.HandleErrorResponse(response);
 
-                session.SetString("JWToken", response.Token);
+                var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<EmployeeViewModel>>>();
+                return result.Data;
 
-                session.SetString("RefreshToken", response.RefreshToken);
-                return true;
             }
-            catch
-            {
-                accessor.HttpContext.Session.Clear();
-
-                return false;
-            }
-        }
-
-        private async Task HandleErrorResponse(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-            {
-                return;
-            }
-
-            var error =
-                await response.Content.ReadAsStringAsync();
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                throw new UnauthorizedException("Session expired");
-            }
-
-            if ((int)response.StatusCode >= 500)
-            {
-                throw new Exception("Internal server error");
-            }
-
-            throw new ApiRequestException(error,(int)response.StatusCode);
-        }
-        public async Task<IEnumerable<EmployeeViewModel>> SendViewAllEmployeeRequestAsync()
-        {
-
-            SetBearerToken();
-            var response = await client.GetAsync("all");
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                bool refreshed = await RefreshTokenJwtAsync();
-                if (!refreshed)
-                {
-                    accessor.HttpContext.Session.Clear();
-
-                    throw new UnauthorizedException("Session expired");
-                }
-                SetBearerToken();
-
-                response = await client.GetAsync("all");
-            }
-            await HandleErrorResponse(response);
-
-            var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<EmployeeViewModel>>>();
-            return result.Data;
-
-        }
 
         public async Task<CreateEmployeeViewModel> SendCreateEmployeeRequestAsync(CreateEmployeeViewModel model)
         {
-            SetBearerToken();
-            var response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
+            _apiRequestHelper.SetBearerToken(_client);
+            var response = await _client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
-                response = await client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
+                _apiRequestHelper.SetBearerToken(_client);
+                response = await _client.PostAsJsonAsync<CreateEmployeeViewModel>("add", model);
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<CreateEmployeeViewModel>>();
 
             return result.Data;
@@ -154,21 +69,21 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<EmployeeViewModel> SendDeleteEmployeeRequestAsync(int id)
         {
-            SetBearerToken();
-            var response = await client.DeleteAsync($"delete/{id}");
+            _apiRequestHelper.SetBearerToken(_client);
+            var response = await _client.DeleteAsync($"delete/{id}");
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.DeleteAsync($"delete/{id}");
+                response = await _client.DeleteAsync($"delete/{id}");
             }
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<EmployeeViewModel>>();
             return result.Data;
@@ -176,24 +91,24 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<EmployeeViewModel> SendUpdateEmployeeRequestAsync(int id, EmployeeViewModel model)
         {
-            SetBearerToken();
-            var response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
+            _apiRequestHelper.SetBearerToken(_client);
+            var response = await _client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
+                response = await _client.PutAsJsonAsync<EmployeeViewModel>($"update/{id}", model);
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<EmployeeViewModel>>();
 
@@ -202,25 +117,25 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<EmployeeViewModel> SendGetAEmployeeRequestAsync(int id)
         {
-            SetBearerToken();
-            var response = await client.GetAsync($"employee/{id}");
+            _apiRequestHelper.SetBearerToken(_client);
+            var response = await _client.GetAsync($"employee/{id}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
 
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync($"employee/{id}");
+                response = await _client.GetAsync($"employee/{id}");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<EmployeeViewModel>>();
 
@@ -231,20 +146,20 @@ namespace EMSFrontend.Api.Implementation
         public async Task<IEnumerable<EmployeeViewModel>> SendSearchEmployeeRequestAsync(string searchText)
         {
 
-            var response = await client.GetAsync($"employee/search?searchText={searchText}");
+            var response = await _client.GetAsync($"employee/search?searchText={searchText}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync($"employee/search?searchText={searchText}");
+                response = await _client.GetAsync($"employee/search?searchText={searchText}");
             }
 
             if (response.StatusCode == HttpStatusCode.NoContent)
@@ -252,7 +167,7 @@ namespace EMSFrontend.Api.Implementation
                 return new List<EmployeeViewModel>();
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<EmployeeViewModel>>>();
 
@@ -262,24 +177,24 @@ namespace EMSFrontend.Api.Implementation
         public async Task<PaginationViewModel<EmployeeViewModel>> SendGetEmployeesAsync(string? searchText, int pageNumber, int pageSize)
         {
 
-            SetBearerToken();
-            var response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
+            _apiRequestHelper.SetBearerToken(_client);
+            var response = await _client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
+                response = await _client.GetAsync($"employees?searchText={searchText}&pageNumber={pageNumber}&pageSize={pageSize}");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<PaginationViewModel<EmployeeViewModel>>>();
 
@@ -289,24 +204,24 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<IEnumerable<DepartmentViewmodel>> SendGetDepartmentsAsync()
         {
-            SetBearerToken();
-            var response = await client.GetAsync("department/all");
+            _apiRequestHelper.SetBearerToken(_client);
+            var response = await _client.GetAsync("department/all");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync("department/all");
+                response = await _client.GetAsync("department/all");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<DepartmentViewmodel>>>();
 
@@ -315,27 +230,27 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<IEnumerable<DocumentCategoryViewModel>> SendGetDocumentCategoriesAsync()
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync("documentcategory");
+            var response = await _client.GetAsync("documentcategory");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response =await client.GetAsync("documentcategory");
+                response =await _client.GetAsync("documentcategory");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result =await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<IEnumerable<DocumentCategoryViewModel>>>();
 
@@ -344,27 +259,27 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<IEnumerable<DocumentTypeViewModel>> SendGetDocumentTypesByCategoryAsync(int categoryId, int employeeId)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync($"category/{categoryId}/employee/{employeeId}");
+            var response = await _client.GetAsync($"category/{categoryId}/employee/{employeeId}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed =await RefreshTokenJwtAsync();
+                bool refreshed =await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response =await client.GetAsync($"category/{categoryId}/employee/{employeeId}");
+                response =await _client.GetAsync($"category/{categoryId}/employee/{employeeId}");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result =await response.Content.ReadFromJsonAsync<ServiceResponseViewModel< IEnumerable<DocumentTypeViewModel>>>();
 
@@ -373,23 +288,23 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<DeleteDocumentResponseViewModel> SendDeleteDocumentAsync(int documentId)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.DeleteAsync($"delete-document/{documentId}");
+            var response = await _client.DeleteAsync($"delete-document/{documentId}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.DeleteAsync($"delete-document/{documentId}");
+                response = await _client.DeleteAsync($"delete-document/{documentId}");
             }
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<DeleteDocumentResponseViewModel>>();
             return result.Data;
@@ -397,7 +312,7 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<EmployeeDocumentResponseViewModel> SendUploadDocumentAsync(EmployeeDocumentUploadViewModel model)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
             MultipartFormDataContent content = new();
 
@@ -407,21 +322,21 @@ namespace EMSFrontend.Api.Implementation
 
             content.Add(new StreamContent(model.File.OpenReadStream()),"File",model.File.FileName);
 
-            var response =await client.PostAsync("upload",content);
+            var response =await _client.PostAsync("upload",content);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
-                response = await client.PostAsync("upload", content);
+                _apiRequestHelper.SetBearerToken(_client);
+                response = await _client.PostAsync("upload", content);
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync
                 <ServiceResponseViewModel
@@ -432,7 +347,7 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<EmployeeDocumentResponseViewModel> SendReplaceDocumentAsync(ReplaceDocumentViewModel model)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
             MultipartFormDataContent content = new();
 
@@ -440,21 +355,21 @@ namespace EMSFrontend.Api.Implementation
 
             content.Add(new StreamContent(model.File.OpenReadStream()),"File", model.File.FileName);
 
-            var response = await client.PutAsync("edit-document", content);
+            var response = await _client.PutAsync("edit-document", content);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
                     throw new UnauthorizedException("Session expired");
                 }
-                SetBearerToken();
-                response = await client.PutAsync("edit-document", content);
+                _apiRequestHelper.SetBearerToken(_client);
+                response = await _client.PutAsync("edit-document", content);
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync
                 <ServiceResponseViewModel
@@ -465,27 +380,27 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<DocumentViewResponseViewModel> SendViewDocumentAsync(int documentId)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync($"view/{documentId}");
+            var response = await _client.GetAsync($"view/{documentId}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync($"view/{documentId}");
+                response = await _client.GetAsync($"view/{documentId}");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<ServiceResponseViewModel<DocumentViewResponseViewModel>>();
 
@@ -494,26 +409,26 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<DashboardViewModel> GetDashboardAsync(int employeeId)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync($"dashboard/{employeeId}");
+            var response = await _client.GetAsync($"dashboard/{employeeId}");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync($"dashboard/{employeeId}");
+                response = await _client.GetAsync($"dashboard/{employeeId}");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<
                         ServiceResponseViewModel<DashboardViewModel>>();
@@ -523,7 +438,7 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<ServiceResponseDto<EmployeeUploadExcelResponseDto>>UploadEmployeesAsync(IFormFile file)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
             using var content = new MultipartFormDataContent();
 
@@ -533,20 +448,20 @@ namespace EMSFrontend.Api.Implementation
 
             content.Add(fileContent,"file",file.FileName);
 
-            var response =await client.PostAsync("upload-employees",content);
+            var response =await _client.PostAsync("upload-employees",content);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
                 using var retryContent =new MultipartFormDataContent();
 
@@ -557,89 +472,89 @@ namespace EMSFrontend.Api.Implementation
 
                 retryContent.Add(retryFileContent,"file",file.FileName);
 
-                response = await client.PostAsync("upload-employees",retryContent);
+                response = await _client.PostAsync("upload-employees",retryContent);
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             return await response.Content.ReadFromJsonAsync<ServiceResponseDto<EmployeeUploadExcelResponseDto>>();
         }
 
         public async Task<byte[]> DownloadTemplateAsync()
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync("download-template");
+            var response = await _client.GetAsync("download-template");
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.GetAsync("download-template");
+                response = await _client.GetAsync("download-template");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             return await response.Content.ReadAsByteArrayAsync();
         }
 
         public async Task<byte[]> DownloadFailedRecordsAsync(List<UploadEmployeeExcelErrorDto> errors)
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.PostAsJsonAsync("download-failed-records",errors);
+            var response = await _client.PostAsJsonAsync("download-failed-records",errors);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
+                _apiRequestHelper.SetBearerToken(_client);
 
-                response = await client.PostAsJsonAsync("download-failed-records", errors);
+                response = await _client.PostAsJsonAsync("download-failed-records", errors);
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             return await response.Content.ReadAsByteArrayAsync();
         }
 
         public async Task<IEnumerable<RoleViewModel>> SendGetRolesAsync()
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync("roles/all");
+            var response = await _client.GetAsync("roles/all");
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
-                response = await client.GetAsync("roles/all");
+                _apiRequestHelper.SetBearerToken(_client);
+                response = await _client.GetAsync("roles/all");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<
             ServiceResponseViewModel<IEnumerable<RoleViewModel>>>();
@@ -649,25 +564,25 @@ namespace EMSFrontend.Api.Implementation
 
         public async Task<IEnumerable<EmployeeDropdownViewModel>> SendGetManagersAsync()
         {
-            SetBearerToken();
+            _apiRequestHelper.SetBearerToken(_client);
 
-            var response = await client.GetAsync("managers/all");
+            var response = await _client.GetAsync("managers/all");
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                bool refreshed = await RefreshTokenJwtAsync();
+                bool refreshed = await _apiRequestHelper.RefreshTokenJwtAsync(_client);
 
                 if (!refreshed)
                 {
-                    accessor.HttpContext.Session.Clear();
+                    _accessor.HttpContext.Session.Clear();
 
                     throw new UnauthorizedException("Session expired");
                 }
 
-                SetBearerToken();
-                response = await client.GetAsync("managers/all");
+                _apiRequestHelper.SetBearerToken(_client);
+                response = await _client.GetAsync("managers/all");
             }
 
-            await HandleErrorResponse(response);
+            await _apiRequestHelper.HandleErrorResponse(response);
 
             var result = await response.Content.ReadFromJsonAsync<
             ServiceResponseViewModel<IEnumerable<EmployeeDropdownViewModel>>>();

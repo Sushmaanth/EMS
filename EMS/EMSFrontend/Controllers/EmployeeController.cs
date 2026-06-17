@@ -8,6 +8,7 @@ namespace EMSFrontend.Controllers
     public class EmployeeController : Controller
     {
         private readonly IRequest _request;
+        
 
         public EmployeeController(IRequest request)
         {

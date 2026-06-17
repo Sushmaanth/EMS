@@ -7,7 +7,14 @@
         initializeDeleteEvents();
         initializeEditEvents();
         showLoginSuccessMessage();
+        showApplyLeaveSuccessMessage();
 
+        new DataTable('#applied-leaves', {
+            pageLength: 5,
+            lengthChange: false,
+            ordering: false,
+            searching: false
+        });
     });
 
     function initializeCategoryButtons() {
@@ -145,7 +152,9 @@
 
                 fileInput.click();
             });
-        }
+    }
+
+    //login success message
         function showLoginSuccessMessage() {
 
             const successMessage =
@@ -162,6 +171,24 @@
                 confirmButtonColor: "#3085d6"
             });
         }
+
+        //Apply Leave Success Message
+    function showApplyLeaveSuccessMessage() {
+
+        const leaveApplysuccessMessage =
+            document.getElementById("leaveAppliedSuccessMessage");
+
+        if (!leaveApplysuccessMessage) {
+            return;
+        }
+
+        Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: leaveApplysuccessMessage.value,
+            confirmButtonColor: "#3085d6"
+        });
+    }
 
         //upload request
         async function uploadDocument(fileInput) {

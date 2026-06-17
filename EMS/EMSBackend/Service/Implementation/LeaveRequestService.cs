@@ -27,9 +27,9 @@ namespace EMSBackend.Service.Implementation
             _leaveValidation = leaveValidation;
         
         }
-        public async Task<ServiceResponseDto<LeaveRequestResponseDto>> ApplyLeaveAsync(ApplyLeaveDto dto)
+        public async Task<ServiceResponseDto<LeaveRequestResponseDto>> ApplyLeaveAsync(int employeeId,ApplyLeaveDto dto)
         {
-            var errors = await _leaveValidation.Validate(dto);
+            var errors = await _leaveValidation.Validate(employeeId,dto);
 
             if (errors.Any())
             {
@@ -38,11 +38,11 @@ namespace EMSBackend.Service.Implementation
                                                         errors);
             }
 
-            var employee = _employeeRepository.GetById(dto.EmployeeId);
+            var employee = _employeeRepository.GetById(employeeId);
 
             var leave = _mapper.Map<LeaveRequest>(dto);
 
-            leave.EmployeeId = dto.EmployeeId;
+            leave.EmployeeId = employeeId;
 
             leave.ManagerId = employee.ManagerId!.Value;
 
@@ -60,13 +60,20 @@ namespace EMSBackend.Service.Implementation
             return ServiceResponseDto<LeaveRequestResponseDto>.Ok(response,"Leave applied successfully");
         }
 
-        public async Task<ServiceResponseDto<LeaveRequestResponseDto>>ReviewLeaveAsync(ReviewLeaveDto dto)
+        public async Task<ServiceResponseDto<LeaveRequestResponseDto>>ReviewLeaveAsync(int managerId,ReviewLeaveDto dto)
         {
             var leave = await _leaveRepository.GetLeaveRequestByIdAsync(dto.LeaveRequestId);
 
             if (leave == null)
             {
                 return ServiceResponseDto<LeaveRequestResponseDto>.Fail("Leave request not found");
+            }
+
+            if (leave.ManagerId != managerId)
+            {
+                return ServiceResponseDto<LeaveRequestResponseDto>
+                    .Fail(
+                        "You are not authorized to review this leave request");
             }
 
             if (leave.Status != LeaveStatus.Pending)
@@ -76,7 +83,7 @@ namespace EMSBackend.Service.Implementation
 
             leave.Status = dto.IsApproved ? LeaveStatus.Approved:LeaveStatus.Rejected;
 
-            leave.ManagerComments = dto.Comments;
+            leave.ManagerComments = dto.ManagerComments;
 
             leave.ReviewedAt = DateTime.UtcNow;
 

@@ -18,10 +18,10 @@
     <title>@ViewData["Title"] - EMSFrontend</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/Admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Manager.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EMSFrontend.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 <body>
     <div class="mobile-header d-md-none">
@@ -58,20 +58,12 @@
         <div class="offcanvas-body">
             <nav class="sidebar-menu">
 
-                <a asp-controller="Home"
-                   asp-action="Index"
-                   class="sidebar-link @(currentAction == "Employee" ? "active" : "")">
+                <a asp-controller="Leave"
+                   asp-action="Apply"
+                   class="sidebar-link @(currentAction == "TeamLeaves" ? "active" : "")">
 
-                    <i class="bi bi-people-fill"></i>
-                    Employee
-                </a>
-
-                <a asp-controller="Home"
-                   asp-action="BulkUpload"
-                   class="sidebar-link @(currentAction == "BulkUpload" ? "active" : "")">
-
-                    <i class="bi bi-file-earmark-arrow-up"></i>
-                    Bulk Upload
+                    <i class="bi-people-fill + bi-check"></i>
+                    Leave Approval
                 </a>
 
             </nav>
@@ -110,21 +102,14 @@
             </div>
             <nav class="sidebar-menu">
 
-                <a asp-controller="Home"
-                   asp-action="Index"
-                   class="sidebar-link @(currentAction == "Employee" ? "active" : "")">
+                <a asp-controller="Leave"
+                   asp-action="Apply"
+                   class="sidebar-link @(currentAction == "TeamLeaves" ? "active" : "")">
 
-                    <i class="bi bi-people-fill"></i>
-                    Employee
+                    <i class="bi-people-fill + bi-check"></i>
+                    Leave Approval
                 </a>
 
-                <a asp-controller="Home"
-                   asp-action="BulkUpload"
-                   class="sidebar-link @(currentAction == "BulkUpload" ? "active" : "")">
-
-                    <i class="bi bi-file-earmark-arrow-up"></i>
-                    Bulk Upload
-                </a>
             </nav>
             <div class="sidebar-user">
                 <div class="user-avatar">
@@ -157,7 +142,7 @@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/Manager.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @await RenderSectionAsync("Scripts", required: false)

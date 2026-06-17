@@ -55,7 +55,7 @@ namespace EMSFrontend.Controllers
 
             if (result.Role == "Manager")
             {
-                return RedirectToAction("LeaveApproval", "Leave");
+                return RedirectToAction("TeamLeaves", "Leave");
             }
 
             if (result.Role == "Employee")
@@ -63,7 +63,7 @@ namespace EMSFrontend.Controllers
                 return RedirectToAction("Dashboard", "Employee");
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Admin");
         }
 
         [HttpGet]
@@ -129,7 +129,7 @@ namespace EMSFrontend.Controllers
                 return RedirectToAction("Dashboard","Employee");
             }
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index","Admin");
         }
 
         [HttpGet]

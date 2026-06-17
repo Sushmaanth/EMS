@@ -81,8 +81,8 @@
                     <strong>Date Of Joining:</strong>
                     @Model.DateOfJoining
                 </div>
-                
 
+                
                 <div class="col-md-6">
                     <strong>Role:</strong>
                     @(Model.RoleName ?? "Role Not Assigned")
@@ -90,7 +90,7 @@
 
             </div>
 
-            @if (!string.Equals(Model.RoleName, "Admin",StringComparison.OrdinalIgnoreCase))
+            @if (!string.Equals(Model.RoleName, "Admin", StringComparison.OrdinalIgnoreCase))
             {
                 <div class="row mb-3">
 
@@ -105,7 +105,7 @@
             <div class="mt-4">
 
                 <a asp-action="Index"
-                       class="btn btn-secondary">
+                   class="btn btn-secondary">
 
                     Back
 

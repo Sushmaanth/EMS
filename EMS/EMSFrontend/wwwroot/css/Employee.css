@@ -575,3 +575,144 @@ body {
     height: 40px;
     border-radius: 50%;
 }
+
+/*Leave Request*/
+
+/* Leave Dashboard Cards */
+/* Leave Summary Cards */
+
+.leave-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+
+.leave-summary-card {
+    background: white;
+    border-radius: 18px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    transition: .25s;
+}
+
+
+    .leave-summary-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+
+    .leave-summary-card h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+
+    .leave-summary-card span {
+        color: #64748b;
+        font-weight: 500;
+    }
+
+
+/* Total Requests */
+
+.leave-total-card {
+    border-top: 4px solid #3b82f6;
+}
+
+    .leave-total-card h3 {
+        color: #2563eb;
+    }
+
+
+/* Approved */
+
+.leave-approved-card {
+    border-top: 4px solid #10b981;
+}
+
+    .leave-approved-card h3 {
+        color: #059669;
+    }
+
+
+/* Pending */
+
+.leave-pending-card {
+    border-top: 4px solid #f59e0b;
+}
+
+    .leave-pending-card h3 {
+        color: #d97706;
+    }
+
+
+/* Rejected */
+
+.leave-rejected-card {
+    border-top: 4px solid #ef4444;
+}
+
+    .leave-rejected-card h3 {
+        color: #dc2626;
+    }
+
+
+/* Responsive */
+
+@media(max-width:992px) {
+
+    .leave-summary-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+
+@media(max-width:576px) {
+
+    .leave-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*Apply leave*/
+
+.leave-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.leave-page .dashboard-card {
+     background: white;
+     border-radius: 18px;
+     padding: 24px;
+     border: 1px solid #e2e8f0;
+     box-shadow: 0 8px 20px rgba(0,0,0,.03);
+}
+
+.leave-page .form-control,
+.leave-page .form-select {
+     border-radius: 12px;
+}
+
+.leave-page .btn-primary {
+     background: linear-gradient( 135deg, #8b5cf6, #6d28d9 );
+     border: none;
+}
+
+.leave-page .table {
+     margin-bottom: 0;
+}
+
+.leave-page .badge {
+     padding: 8px 12px;
+     border-radius: 999px;
+}
+
+
+

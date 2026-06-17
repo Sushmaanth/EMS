@@ -7,6 +7,6 @@ namespace Dtos.Validation.Abstraction
 {
     public interface ILeaveValidation
     {
-        Task<Dictionary<string, List<string>>> Validate(ApplyLeaveDto dto);
+        Task<Dictionary<string, List<string>>> Validate(int employeeId, ApplyLeaveDto dto);
     }
 }

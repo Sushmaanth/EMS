@@ -10,9 +10,6 @@ namespace Dtos.LeaveRequestDto
 {
     public class ApplyLeaveDto
     {
-        [Required(ErrorMessage = "Employee ID is required")]
-        public int EmployeeId { get; set; }
-
         [Required(ErrorMessage ="Leave Type is required")]
         public LeaveType LeaveType { get; set; }
 

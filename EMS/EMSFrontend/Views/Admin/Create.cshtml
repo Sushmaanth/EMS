@@ -159,7 +159,7 @@
 
                         <input asp-for="DateOfJoining"
                                type="date"
-                               class="form-control" 
+                               class="form-control"
                                max="@DateTime.Today.ToString("yyyy-MM-dd")" />
 
                         <span asp-validation-for="DateOfJoining"
@@ -191,41 +191,41 @@
 
                     <div class="col-md-6 mb-3">
 
-                    <label class="form-label fw-semibold">
-                        Role
-                    </label>
+                        <label class="form-label fw-semibold">
+                            Role
+                        </label>
 
-                    <select asp-for="RoleId"
-                            asp-items="ViewBag.Roles"
-                            class="form-select"
-                            id="RoleId">
+                        <select asp-for="RoleId"
+                                asp-items="ViewBag.Roles"
+                                class="form-select"
+                                id="RoleId">
 
-                        <option value="">Select Role</option>
+                            <option value="">Select Role</option>
 
-                    </select>
+                        </select>
 
-                    <span asp-validation-for="RoleId" class="text-danger"></span>
+                        <span asp-validation-for="RoleId" class="text-danger"></span>
 
-                </div>
+                    </div>
 
-                <div class="col-md-6 mb-3" id="managerDiv">
+                    <div class="col-md-6 mb-3" id="managerDiv">
 
-                    <label class="form-label fw-semibold">
-                        Manager
-                    </label>
+                        <label class="form-label fw-semibold">
+                            Manager
+                        </label>
 
-                    <select asp-for="ManagerId"
-                            asp-items="ViewBag.Managers"
-                            class="form-select"
-                            id="ManagerId">
+                        <select asp-for="ManagerId"
+                                asp-items="ViewBag.Managers"
+                                class="form-select"
+                                id="ManagerId">
 
-                        <option value="">Select Manager</option>
+                            <option value="">Select Manager</option>
 
-                    </select>
+                        </select>
 
-                    <span asp-validation-for="ManagerId" class="text-danger"></span>
+                        <span asp-validation-for="ManagerId" class="text-danger"></span>
 
-                </div>
+                    </div>
 
                 </div>
 
@@ -239,7 +239,7 @@
                     </button>
 
                     <a asp-action="Index"
-                           class="btn btn-secondary">
+                       class="btn btn-secondary">
 
                         Back
 
